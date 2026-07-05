@@ -4,20 +4,22 @@
 
 **The ritual (README, "Tracking your progress"):** at the end of every working session — (1) tick what you finished below, (2) set *Current position* to the next step, (3) commit: `git add docs/build-guide/PROGRESS.md && git commit -m "docs: progress"`. Returning after a longer pause: read this file, then run the re-entry protocol ([file 09](09-troubleshooting.md)).
 
-> **Current position:** ⟨not started — begin with 01-model-strategy.md⟩
-> **Last updated:** ⟨YYYY-MM-DD⟩
+> **Current position:** Phase 0. - Setup, 02 §2.9 read — the keep-current ritual (recurs at every milestone kickoff + after long pauses)
+
+> **Last updated:** 2026-07-05
+
 > **Paused mid-feature?** If a `/speckit.implement` run was interrupted, the HANDOFF note lives in that feature's `specs/⟨NNN⟩/tasks.md` ([file 08 §D](08-claude-code-reference.md)) — this file only points there.
 
 ## Phase 0 — Setup ([file 02](02-setup.md))
 
-- [ ] 01 read; `/model` output noted (which models your plan shows)
-- [ ] 02 §2.1 local tooling installed + sanity checks pass (node v24.x, pnpm 11.x, fnm hook in `~/.zshrc`)
-- [ ] 02 §2.2 Claude Code on Pro login; permission prompts ON
-- [ ] 02 §2.3–2.4 bootstrap commit pushed (LICENSE, skeleton, guide in-repo, README stub, CONTRIBUTING, manual-config-log started)
-- [ ] 02 §2.4 GitHub-side switches done **and logged** (secret scanning, push protection, priv. vuln. reporting, Issues+Discussions, fork-PR approval, 2FA both accounts, optional interaction limits)
-- [ ] 02 §2.4 throwaway pre-commit gitleaks hook in place
-- [ ] 02 §2.5 Spec Kit installed (pinned release + git extension); `/speckit` shows all 10 commands; committed
-- [ ] 02 §2.6 CLAUDE.md committed
+- [x] 01 read; `/model` output noted (which models your plan shows)
+- [x] 02 §2.1 local tooling installed + sanity checks pass (node v24.x, pnpm 11.x, fnm hook in `~/.zshrc`)
+- [x] 02 §2.2 Claude Code on Pro login; permission prompts ON
+- [x] 02 §2.3–2.4 bootstrap commit pushed (LICENSE, skeleton, guide in-repo, README stub, CONTRIBUTING, manual-config-log started)
+- [x] 02 §2.4 GitHub-side switches done **and logged** (secret scanning, push protection, priv. vuln. reporting, Issues+Discussions, fork-PR approval, 2FA both accounts, optional interaction limits)
+- [x] 02 §2.4 throwaway pre-commit gitleaks hook in place
+- [x] 02 §2.5 Spec Kit installed (pinned release + git extension); `/speckit` shows all 10 commands; committed
+- [x] 02 §2.6 CLAUDE.md committed
 - [ ] 02 §2.9 read — the keep-current ritual (recurs at every milestone kickoff + after long pauses)
 - [ ] 03 read end-to-end once (§F is the lifecycle you'll live in)
 
