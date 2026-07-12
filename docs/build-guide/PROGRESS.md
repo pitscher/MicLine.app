@@ -20,12 +20,12 @@
 - [x] 02 §2.4 throwaway pre-commit gitleaks hook in place
 - [x] 02 §2.5 Spec Kit installed (pinned release + git extension); `/speckit` shows all 10 commands; committed
 - [x] 02 §2.6 CLAUDE.md committed
-- [ ] 02 §2.9 read — the keep-current ritual (recurs at every milestone kickoff + after long pauses)
-- [ ] 03 read end-to-end once (§F is the lifecycle you'll live in)
+- [x] 02 §2.9 read — the keep-current ritual (recurs at every milestone kickoff + after long pauses)
+- [x] 03 read end-to-end once (§F is the lifecycle you'll live in)
 
 ## Phases 1–4 — Product definition ([file 04](04-product-definition.md))
 
-- [ ] P1 brainstorm complete → **Gate 1** passed → `docs: product definition v1` committed
+- [x] P1 brainstorm complete → **Gate 1** passed → `docs: product definition v1` committed
 - [ ] P2 tech context → **Gate 2** passed → committed *(tech-decisions.md is provenance-only from here)*
 - [ ] P3 constitution → **Gate 3** passed → committed
 - [ ] P4 milestone cut challenged + map & epics → **Gate 4** passed → committed
