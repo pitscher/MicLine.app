@@ -1,6 +1,6 @@
 # MicLine.app — Product Brief
 
-> Provenance: P1 product-definition interview, 2026-07-06 · **P2 final product interview, 2026-07-12** (operator + Claude, per docs/build-guide/04-product-definition.md). Status: **v2 — final product foundation for the tech interview**. Companion documents: [feature-inventory.md](feature-inventory.md), [decision-log.md](decision-log.md). Technical decisions live in docs/inputs/tech-decisions.md until the tech interview supersedes it with docs/engineering/tech-context.md. Document language rule: English throughout; German terms appear only in the term sheet.
+> Provenance: P1 product-definition interview, 2026-07-06 · **P2 final product interview, 2026-07-12** (operator + Claude, per docs/build-guide/04-product-definition.md) · **P3 milestone restructuring and release versioning, 2026-07-12**. Status: **Revision 3 — milestone- and release-aligned product foundation for the tech interview**. Companion documents: [feature-inventory.md](feature-inventory.md), [decision-log.md](decision-log.md). Technical decisions live in docs/inputs/tech-decisions.md until the tech interview supersedes it with docs/engineering/tech-context.md. Document language rule: English throughout; German terms appear only in the term sheet.
 
 ## One-liner
 
@@ -24,7 +24,7 @@ Open source is **not** a marketing pillar: the running SaaS must not link or ref
 
 ## What MicLine is not
 
-- Not a livestream tool: no OBS overlays, no YouTube/Twitch chat ingestion (out of design scope for M1/M2).
+- Not a livestream tool: no OBS overlays, no YouTube/Twitch chat ingestion (out of scope through the current `v1.0.0` plan).
 - Not a classroom suite: classrooms work but are not marketed to.
 - Not an engagement platform: no polls/quizzes/reactions/decks.
 - Not a white-label product, not team/seat-based B2B software.
@@ -35,8 +35,8 @@ Open source is **not** a marketing pillar: the running SaaS must not link or ref
 - **Primary:** in-room professional and community events, meetup-to-conference scale — meetups, panels, conference sessions, town halls, all-hands. Roughly 30–500 people in a room.
 - **Supported context (P2):** online and hybrid meetings via URL join — same product, no integrations.
 - **Tolerated, not targeted:** classrooms, workshops.
-- **Out of scope (M1/M2):** livestreams/webinars at broadcast scale.
-- **Buyer (eventually, M3-if-ever):** the individual moderator (prosumer, self-serve). B2B is "a bigger invite code sold manually over email" — never teams, seats, or org accounts in the data model.
+- **Out of scope through `v1.0.0`:** livestreams/webinars at broadcast scale.
+- **Buyer (eventually, M13 / provisional `v1.1.0`):** the individual moderator (prosumer, self-serve). B2B is "a bigger invite code sold manually over email" — never teams, seats, or org accounts in the data model.
 - A conference with parallel tracks = separate events, one per room/session. No umbrella/series concept.
 
 ## Personas
@@ -58,9 +58,9 @@ Open source is **not** a marketing pillar: the running SaaS must not link or ref
 - Settings freeze once the event is live (scheduling fields keep their ±24 h window; live controls such as announcements, intake close, and hide board are not settings).
 - After the end: participants see a polite end screen ("join another event" path); the moderator sees an on-screen recap with an explicit content-deletion countdown; **event content is deleted 3 days after the end** (see Data lifecycle).
 
-### The line — M1: Open line
+### The line — M3 / `v0.3.0`: Open line
 
-- Mode **Open line** ("first come, first served"): a submitted question is appended directly to the public FIFO line. No pool, no reordering, no upvotes in M1.
+- Mode **Open line** ("first come, first served"): a submitted question is appended directly to the public FIFO line. No pool, no reordering, no upvotes in M3 / `v0.3.0`.
 - **Position stability is an open-line guarantee: your position only ever improves.** (Curated mode explicitly trades this guarantee for visible human ordering.)
 - **One active waiting item per participant** — fixed platform rule, no per-event setting. Answered, skipped, or withdrawn frees the slot; then the participant may submit again. Enforcement is **session-scoped** (anonymous session cookie); the leave-and-rejoin residual is accepted as best-effort — device fingerprinting and IP-identity binding are **rejected** (venue-NAT blindness, fingerprint-collision false positives, consent/TDDDG exposure, pillar conflict). Marketing copy claims exactly "enforced per session", no more.
 - **Every line item requires written text** (platform bounds 1–280 characters; per-event moderator-configurable min/max within those bounds). No text-free "request to speak" item type (parked).
@@ -68,9 +68,9 @@ Open source is **not** a marketing pillar: the running SaaS must not link or ref
 - Moderator ground control: mark the top question **answered** (next is pulled automatically) or **skip** any item. **Skip removes the question text from all public surfaces immediately**; a minimal stub (attribution + "skipped") remains in the participant line; the projector board never shows skipped items; the owner keeps an honest "skipped" status chip. Both actions have a ~10 s single-level undo.
 - Participants can **withdraw** their own not-yet-called question (slot frees instantly) and can **leave** the event (session reset; already-asked questions keep their original attribution).
 - Position cues on the participant surface: sticky **"You're #N"** banner → **"You're up soon"** (approaching the top) → full-screen **"You're up!"**.
-- No intake-closed state in M1: the event lifecycle is scheduled → live → ended (event-full and unknown-code are join screens, not lifecycle states). M1 workaround: announcement + manual end. Intake close ships in M2A.
+- No intake-closed state in M3 / `v0.3.0`: the event lifecycle is scheduled → live → ended (event-full and unknown-code are join screens, not lifecycle states). M3 workaround: announcement + manual end. Intake close ships in M5 / `v0.5.0`.
 
-### The line — M2B: Curated line
+### The line — M9 / `v0.9.0`: Curated line
 
 - Pool → moderator selects, orders, drag-reorders into the line; return-to-pool exists; skip works in both zones with the same stub semantics.
 - **Pool visibility is a per-event creation setting:** a hidden pool auto-disables upvotes; a visible pool lets the moderator enable/disable upvotes. Both freeze at start. The owner **always** sees their own "in pool" chip regardless of visibility.
@@ -78,7 +78,7 @@ Open source is **not** a marketing pillar: the running SaaS must not link or ref
 - **Upvotes advise the human, never reorder the line.** Pool items only; nameless in both name modes; deduped per session (best-effort). Line items carry no vote UI and display no counts on participant surfaces or the board (the console may show counts to the moderator). No votes anywhere in open mode.
 - **Review mode** (available in either line mode): submissions are held privately until approved. Open+review: approval **appends to the line at approval time** (approval order = line order; never retro-insertion above committed items). Curated+review: approval releases into the pool. Declined submissions: owner sees an honest "declined" chip with an **optional short moderator reason**; nobody else ever sees the item existed; declines are reversible until event end; retained until purge. With a hidden pool, review's participant-facing value is the explicit decline flow.
 - **Duplicate merge** (pool-only): the moderator selects several pool items and picks a **primary**; the primary's text represents the group with a small "×N" badge (the badge travels with the primary into the line); merged items fold away publicly, their owners' chips show "merged" and inherit the primary's outcome; votes combine with one-voice-per-participant dedupe (best-effort); unmerge is possible until the group is consumed. When a merged question is called, the **primary's submitter** gets the mic. No merge machinery in open mode (the review tray declines duplicates there).
-- **Per-event "max open submissions per participant"** in curated mode (counts active pool+line items; answered/skipped/withdrawn/declined/merged all free the slot). Default and range at M2B kickoff.
+- **Per-event "max open submissions per participant"** in curated mode (counts active pool+line items; answered/skipped/withdrawn/declined/merged all free the slot). Default and range at M9 kickoff.
 - **Co-moderators** (gateable): event-scoped helpers for review/curation. No hard dependency with review mode — solo review stays possible, with a consequence hint at creation ("on = you're the bottleneck").
 
 ### Announcements
@@ -93,26 +93,26 @@ Per-event moderator choice at creation:
 - **Nicknames (automatic)** — default. Every participant gets a stable, funny, localized pseudonym ("Curious Capybara"); the moderator can call it to the mic without anyone revealing identity.
 - **Real names (required)** — participants are prompted for a name before their **first submission** (viewing stays zero-gate); the name is unverified, accepted as-is, and locked for the event. Typo escape hatch: leave + rejoin (with an explicit "you'll appear as ⟨Name⟩ for the whole event" confirm step).
 
-Upvotes (M2B) are nameless in both modes.
+Upvotes (M9 / `v0.9.0`) are nameless in both modes.
 
 ### Joining
 
 - Methods (all simultaneously valid, same 6-char code): **QR code** (share panel + projector board), **short URL** `micline.app/e/⟨CODE⟩`, **code box on the landing page**.
 - **Zero-gate:** scanning lands directly on the live board. No account, no name prompt, no cookie banner, no CAPTCHA on entry (invisible Turnstile runs on first submission only). Anonymous session cookie, no PII.
 - Pre-start: minimal lobby ("starts at ⟨time⟩"). Full event: clean "this event is full" screen (no waitlist). Ended/unknown code: polite notice with re-entry path.
-- Optional moderator-configured **pre-join primer** (M1: plain text; M2B: markdown-lite). Per-event acknowledgment choice: **skippable** vs **required explicit confirmation** — and in the required mode the moderator can **customize the confirmation statement** (plain text, short platform-capped; localized default "I understand."). Purpose: a poke to actually read, explicitly not bulletproof. **The acknowledgment is a gate, not a record:** MicLine never stores who confirmed what, and it is not legal proof of consent — if recorded consent is needed, MicLine is the wrong tool.
-- In M2B the primer becomes **re-openable in-event** (ⓘ sheet on the participant surface) — same content, no separate information panel. The primer never renders on the projector board.
-- **All moderator-authored text renders inert** (primer, announcements, decline reasons, hide-board message, confirmation statements): URL-shaped text is never clickable or auto-linked; no images in moderator content. The M2B branding logo is the only image in the product (narrow, entitlement-gated, accountable).
+- Optional moderator-configured **pre-join primer** (M3 / `v0.3.0`: plain text; M10 / `v0.10.0`: markdown-lite). Per-event acknowledgment choice: **skippable** vs **required explicit confirmation** — and in the required mode the moderator can **customize the confirmation statement** (plain text, short platform-capped; localized default "I understand."). Purpose: a poke to actually read, explicitly not bulletproof. **The acknowledgment is a gate, not a record:** MicLine never stores who confirmed what, and it is not legal proof of consent — if recorded consent is needed, MicLine is the wrong tool.
+- In M10 / `v0.10.0` the primer becomes **re-openable in-event** (ⓘ sheet on the participant surface) — same content, no separate information panel. The primer never renders on the projector board.
+- **All moderator-authored text renders inert** (primer, announcements, decline reasons, hide-board message, confirmation statements): URL-shaped text is never clickable or auto-linked; no images in moderator content. The M11 / `v0.11.0` branding logo is the only image in the product (narrow, entitlement-gated, accountable).
 
 ### Accounts (moderators only)
 
 - **Magic-link auth**: email is an identifier, never a credential. One email, one click, ~30-day session; unlimited events within it. No passwords, no profiles.
 - Stored: email + optional display name + country (from Cloudflare request geolocation, for anonymous aggregate stats only). Nothing else, ever.
-- **Self-service account deletion from M1.** If a live event is running, the flow requires ending it first (one tap away); scheduled events are listed in a quantified consequence preview and die with the account. The deletion UI is self-sufficiently final: loading state → explicit "all your data has been purged" confirmation. **No confirmation email follows** — the UI is the confirmation.
+- **Self-service account deletion from the first public release, M4 / `v0.4.0`.** If a live event is running, the flow requires ending it first (one tap away); scheduled events are listed in a quantified consequence preview and die with the account. The deletion UI is self-sufficiently final: loading state → explicit "all your data has been purged" confirmation. **No confirmation email follows** — the UI is the confirmation.
 - Auto-purge after **1 month of inactivity** (no warning email — anti-spam stance) unless the account has a future event scheduled or a non-empty invite-code wallet. The auth screen carries a hint for returning-but-purged moderators.
 - **No email-change flow** in current scope: delete + re-register (parked; the non-empty-wallet case is the known pain point).
 
-### Entitlements & invite codes (M2A)
+### Entitlements & invite codes — M8 / `v0.8.0`
 
 - **One entitlement seam:** anything gated is checked through a single capability interface. Grants come from the baseline, invite codes (vouchers), admin action — and possibly billing later, which would be *just another grantor* writing identical grant rows.
 - **Free baseline (lockdown off):** every shipped feature, free. Fair-use limits: **100 participants/event**, **1 active + 1 planned event** per moderator. Invite codes raise limits (platform ceiling 1,000 participants/event) and unlock gateable capabilities.
@@ -122,28 +122,28 @@ Upvotes (M2B) are nameless in both modes.
 
 ## Surfaces
 
-| Surface | Essence | Milestone |
+| Surface | Essence | Delivery |
 |---|---|---|
-| **Landing page** | Speaks to moderators (hero: the line pillar; 3-step how-it-works; create CTA), yet prominently funnels lost participants to join by code. Honest privacy block. Clean; depth lives in sub-pages. No pricing page, no repo link, no SLA disclaimers on the hero. | M1 (F007), beauty pass M4 |
-| **Join flow** | QR/URL/code → board, zero-gate. Lobby / full / ended / unknown-code states. Optional primer with acknowledgment modes. | M1 (F005) |
-| **Participant surface** | Device-agnostic (phone-first, dark-hall-first design center): Now speaking, full line with positions, own-question status chips, You're-#N → up-soon → You're-up cues, announcement banner, ask/withdraw/leave. M2B adds the pool zone (collapsible per viewer), upvotes, ⓘ primer sheet. | M1 (F005), M2B additions |
-| **Projector board** | Read-only big-screen route behind its **own unguessable capability URL** (never exposes event ID or join code; moderator can **regenerate the link**). Join QR + code always visible, Now/Up-next huge, top of line, announcement area, fullscreen toggle. Never shows skipped items, timestamps, or vote counts. Can be **hidden** by the moderator (M2A): neutral customizable message, no line content, no QR while hidden. Per-viewer language and pool-collapse settings persist per device until event end. | M1 (F005), M2A hide, M4 overhaul |
-| **Moderator console** | One screen, phone-capable: header (title, share panel, live participant count, end button), the line with answered/skip + undo, announcement composer, primer preview. M2A adds live controls (intake close, hide board, regenerate board link) and the follow-up flag; M2B adds pool/review tray, filters, search, bulk verbs (merge, bulk decline), submission timestamps and per-submitter counts. | M1 (F004), M2A/M2B additions |
-| **Admin UI** | `/admin` behind a **dedicated mandatory auth wall** (one dedicated layer; mechanism decided in the tech interview; emergency reset always possible via the Cloudflare account). Oversight (search, god view incl. live states like board-hidden/intake-closed, force-end, soft-delete, ban, GDPR delete), metrics wall, global stats, platform controls, invite-code management, feedback-email setting. **Every admin control shows a quantified, timestamped consequence preview and defines its reverse action — nothing ever requires a redeploy to undo.** | M2A |
-| **Transactional email** | See email inventory below. | M1/M2A |
+| **Landing page** | Speaks to moderators (hero: the line pillar; 3-step how-it-works; create CTA), yet prominently funnels lost participants to join by code. Honest privacy block. Clean; depth lives in sub-pages. No pricing page, no repo link, no SLA disclaimers on the hero. | Public baseline M4 / `v0.4.0`; visual overhaul M11 / `v0.11.0` |
+| **Join flow** | QR/URL/code → board, zero-gate. Lobby / full / ended / unknown-code states. Optional primer with acknowledgment modes. | Runtime M3 / `v0.3.0`; public hardening and locale completion M4 / `v0.4.0`; markdown-lite primer M10 / `v0.10.0` |
+| **Participant surface** | Device-agnostic (phone-first, dark-hall-first design center): Now speaking, full line with positions, own-question status chips, You're-#N → up-soon → You're-up cues, announcement banner, ask/withdraw/leave. M9 adds the pool zone (collapsible per viewer), upvotes, review outcomes, and merged states; M10 adds the re-openable ⓘ primer sheet. | M3 / `v0.3.0`; M9 / `v0.9.0`; M10 / `v0.10.0`; visual overhaul M11 / `v0.11.0` |
+| **Projector board** | Read-only big-screen route behind its **own unguessable capability URL** (never exposes event ID or join code; moderator can **regenerate the link**). Join QR + code always visible, Now/Up-next huge, top of line, announcement area, fullscreen toggle. Never shows skipped items, timestamps, or vote counts. Can be **hidden** by the moderator: neutral customizable message, no line content, no QR while hidden. Per-viewer language and pool-collapse settings persist per device until event end. | Minimal board M3 / `v0.3.0`; hide and link regeneration M5 / `v0.5.0`; pool zone M9 / `v0.9.0`; overhaul and appearance M11 / `v0.11.0` |
+| **Moderator console** | One screen, phone-capable: header (title, share panel, live participant count, end button), the line with answered/skip + undo, announcement composer, primer preview. M5 adds intake close, hide board, regenerate board link, and follow-up flag; M9 adds pool/review tray, filters, search, bulk verbs, submission timestamps and per-submitter counts. | M3 / `v0.3.0`; M5 / `v0.5.0`; M9 / `v0.9.0`; visual overhaul M11 / `v0.11.0` |
+| **Admin UI** | `/admin` behind a **dedicated mandatory auth wall** (one dedicated layer; mechanism decided in the tech interview; emergency reset always possible via the Cloudflare account). Normal oversight includes search, god view, force-end, soft-delete, ban, GDPR delete, metrics, global stats, service notices, platform controls, feedback-email setting, and quantified consequence previews. M7 adds emergency stop and delete-all-data; M8 adds invite-code and lockdown management. | Normal control plane M6 / `v0.6.0`; emergency controls M7 / `v0.7.0`; entitlements and lockdown M8 / `v0.8.0`; visual overhaul M11 / `v0.11.0` |
+| **Transactional email** | See email inventory below. | M2 / `v0.2.0`, M4 / `v0.4.0`, M6 / `v0.6.0`, M7 / `v0.7.0` |
 
 ## Transactional email — the complete inventory
 
-| # | Trigger | Recipient | Milestone |
-|---|---|---|---|
-| E-1 | Magic-link login request | Moderator | M1 |
-| E-2 | Feedback-box submission (delivery) | Operator (FEEDBACK_EMAIL) | M1 |
-| E-3 | Admin force-ends an event (+ optional admin message) | Affected moderator | M2A |
-| E-4 | Emergency stop activated (reason, implications, next steps; announces E-4b) | Moderators with running / scheduled / recently-ended events | M2A |
-| E-4b | Emergency export delivery (all formats, ~24 h link, not-the-normal-process note, responsibility line) | Same cohort with exportable content | M2A |
-| E-5 | Emergency stop reversed (resume; states purge-grace deadlines and late-open outcomes) | Same cohort | M2A |
+| # | Trigger | Recipient | Milestone | Target version |
+|---|---|---|---|---:|
+| E-1 | Magic-link login request | Moderator | M2 | `v0.2.0` |
+| E-2 | Feedback-box submission (delivery) | Operator (FEEDBACK_EMAIL) | M4 | `v0.4.0` |
+| E-3 | Admin force-ends an event (+ optional admin message) | Affected moderator | M6 | `v0.6.0` |
+| E-4 | Emergency stop activated (reason, implications, next steps; announces E-4b) | Moderators with running / scheduled / recently-ended events | M7 | `v0.7.0` |
+| E-4b | Emergency export delivery (all formats, ~24 h link, not-the-normal-process note, responsibility line) | Same cohort with exportable content | M7 | `v0.7.0` |
+| E-5 | Emergency stop reversed (resume; states purge-grace deadlines and late-open outcomes) | Same cohort | M7 | `v0.7.0` |
 
-**Principles:** transactional only, moderator's locale, short, zero marketing. Any new email type requires a product decision. **Deliberately no email for:** inactivity purge, 3-day content purge, account-deletion confirmation (the UI is the confirmation), event creation/reminders, auto-end, login alerts, grant expiry/code redemption (in-product transparency), service notices, bans (banned addresses silently stop receiving magic links — anti-enumeration-consistent), soft-deletes (in-product "removed by administration" state instead), export readiness, breach notification (M5 runbook procedure: admin export + external send). Co-moderator invitations are link-based, not email. M3 would bring its own legally mandated billing email set.
+**Principles:** transactional only, moderator's locale, short, zero marketing. Any new email type requires a product decision. **Deliberately no email for:** inactivity purge, 3-day content purge, account-deletion confirmation (the UI is the confirmation), event creation/reminders, auto-end, login alerts, grant expiry/code redemption (in-product transparency), service notices, bans (banned addresses silently stop receiving magic links — anti-enumeration-consistent), soft-deletes (in-product "removed by administration" state instead), export readiness, breach notification (M12 / `v1.0.0` runbook procedure: admin export + external send). Co-moderator invitations are link-based, not email. M13 would bring its own legally mandated billing email set.
 
 ## Product principles
 
@@ -172,12 +172,12 @@ Upvotes (M2B) are nameless in both modes.
 | Question length (platform) | 1–280 chars | — | trim, collapse whitespace, strip control chars |
 | Question length (per event) | within 1–280 | — | moderator-configurable min/max at creation |
 | Active items per participant (open line) | 1 | — | fixed platform rule, session-scoped |
-| Open submissions per participant (curated) | default at M2B kickoff | per-event setting | counts active pool+line items |
+| Open submissions per participant (curated) | default at M9 kickoff | per-event setting | counts active pool+line items |
 | Announcement display lifetime | ~60 s (direction) | — | uniform auto-expiry, all surfaces |
 | Confirmation statement / hide-board message / decline reason | short caps | — | exact values at spec time |
 | Emergency export link validity | ~24 h | — | platform config value |
 | Post-resume purge grace | 24 h | — | overdue purges after emergency-stop reversal |
-| Monthly cost target | ~€20 busy month | — | lockdown = cost brake; M5 alert-only budget threshold |
+| Monthly cost target | ~€20 busy month | — | lockdown = cost brake; M12 / `v1.0.0` alert-only budget threshold |
 
 All such values live in a central, code-change-free platform configuration (mechanism decided in the tech interview), alongside a **global log-level control** (debug ↔ critical), freely adjustable by the operator.
 
@@ -195,18 +195,18 @@ All such values live in a central, code-change-free platform configuration (mech
 | Participant data | none beyond the anonymous session cookie (which also carries participant UI language and per-device display preferences); nothing to delete |
 | Exported files (CSV/JSON/HTML snapshot) | **outside MicLine's deletion domain** — the moderator's responsibility, stated honestly at export time and on the privacy page |
 
-GDPR posture: Impressum + honest privacy page from day one; no third-party analytics/trackers; self-service delete (M1); M5 adds the operator compliance pack (lightweight ROPA, breach-response runbook incl. the delete-all-data control and the Art.-34 notification procedure, Cloudflare DPA check).
+GDPR posture: Impressum + honest privacy page and self-service deletion from the first public release, M4 / `v0.4.0`; no third-party analytics/trackers; M12 / `v1.0.0` adds the operator compliance pack (lightweight ROPA, breach-response runbook incl. the delete-all-data control and the Art.-34 notification procedure, Cloudflare DPA check).
 
-## Design direction (M4 seed — captured, not designed)
+## Design direction (M11 / `v0.11.0` seed — captured, not designed)
 
 - **Adjectives:** calm · clear · even-handed · trustworthy · quietly confident. Playfulness only in participant micro-moments (pseudonyms, "You're up!"); console and admin stay all-business.
 - **North-star reference: Luma** — uncluttered, instantly comprehensible, invites exploration, colors well used on a dark background. Anti-patterns: overloaded pages, too much text, register-modal ambushes. Anti-reference: Slido (and generic purple-gradient SaaS).
-- **Dark mode default** (participant + board designed dark-first; board high-contrast, readable from the back row); light mode supported. Logo/colors: greenfield, M4 brainstorm.
-- Board gets user-adjustable appearance (contrast, text/line sizing) in M4; responsive from projector to TV to phone. M4 also decides the **board sound cue** (optional moderator-configured sound on board devices when the line advances; board-side mute; MicLine-provided sound set; browser autoplay-unlock constraint noted).
+- **Dark mode default** (participant + board designed dark-first; board high-contrast, readable from the back row); light mode supported. Logo/colors: greenfield, M11 kickoff brainstorm.
+- Board gets user-adjustable appearance (contrast, text/line sizing) in M11 / `v0.11.0`; responsive from projector to TV to phone. M11 also decides the **board sound cue** (optional moderator-configured sound on board devices when the line advances; board-side mute; MicLine-provided sound set; browser autoplay-unlock constraint noted).
 
 ## Language & tone
 
-- Locales at launch: **en + de**. German uses **Du** by default; a **`de (formal)`** catalog (Sie) becomes selectable as *event language* in M2B, affecting participant surfaces + board only — the moderator's own UI stays Du.
+- Locales at the first public release, M4 / `v0.4.0`: **en + de**. German uses **Du** by default; a **`de (formal)`** catalog (Sie) becomes selectable as *event language* in M10 / `v0.10.0`, affecting participant surfaces + board only — the moderator's own UI stays Du.
 - **Locale derivation (P2, supersedes the P1 model):** all of this governs UI chrome only — user-generated content is never translated.
 
 | Surface | Default derived from | Adjustable | Persisted |
@@ -226,8 +226,8 @@ GDPR posture: Impressum + honest privacy page from day one; no third-party analy
 |---|---|---|
 | Container a moderator creates | event | Event |
 | The queue | the line | die Reihe |
-| M1 mode | Open line (first come, first served) | Offene Reihe |
-| M2B mode | Curated line | Kuratierte Reihe |
+| Open-line mode (introduced M3 / `v0.3.0`) | Open line (first come, first served) | Offene Reihe |
+| Curated mode (introduced M9 / `v0.9.0`) | Curated line | Kuratierte Reihe |
 | "You're up!" | You're up! | Du bist an der Reihe! |
 | Removed by moderator | skipped | übersprungen |
 | Name modes | Nicknames (automatic) / Real names (required) | Spitznamen (automatisch) / Klarnamen (erforderlich) |
@@ -248,20 +248,45 @@ Untranslated new terms (intake close participant copy, review approve/decline ve
 - **Best effort, no SLA, no pager** — placement rules: stated in terms + FAQ as what MicLine *does* ("built to reconnect gracefully; run with care by a small operator; no guaranteed availability"); never on the landing hero; never in-product during a live event. The FAQ carries the honest outage entry and points at the emergency machinery as the answer.
 - **Submission & reconnect acceptance criteria (binding on the realtime spec):** ① no silent loss — a submission is durably saved and visible, or explicitly reported failed; ② retries never create duplicates; ③ explicit save states (sending / saved as #N / failed, tap to retry); ④ automatic recovery — identity, own items, chips, and position restore after reload/reconnect with no user action; "please refresh" is never the designed path.
 - **Canonical failure states (closed list):** delayed save · failed save with retry · participant "reconnecting — the line continues" banner · stale-board chip (the unattended board self-describes lag) · event full · unknown/expired code — plus the state-takeover rule (principle 12) and the moderator-console set (reconnecting, action-failed-retry, admin-ended notice, emergency notice). Exact wording at spec time.
-- **Degraded modes are M5-only**, designed after load-test evidence. Metrics visibility ladder: participants none, ever · moderators in-event product stats only (live participant count) · admin metrics wall · raw infrastructure operator-only.
-- **Emergency stop model (M2A):** total stop — the platform freezes (events, participant surfaces, boards, console, moderator auth, creation, registration, all scheduled jobs including purges) with exactly three exceptions: static notice pages, the admin UI (reversal must never require a redeploy), and the expiring export-download endpoint. Sequence: freeze instantly → generate snapshot exports for affected events (running + ended-within-purge-window) → E-4 then E-4b emails. The trigger modal contains the export choice (**default ON**, "skip if you suspect data compromise"), a quantified impact preview ("X events: X running, X scheduled, X in export window"), and a computation timestamp. Scheduled events never open during a stop; on reversal they open late if their window is still current, otherwise they auto-end. Overdue purges run 24 h after resume; E-5 states the deadlines. Participants and boards show a calm emergency-ended screen — the sole participant-visible platform-initiated ending.
+- **Degraded modes are M12 / `v1.0.0` scope only**, designed after load-test evidence. Metrics visibility ladder: participants none, ever · moderators in-event product stats only (live participant count) · admin metrics wall · raw infrastructure operator-only.
+- **Emergency stop model (M7 / `v0.7.0`):** total stop — the platform freezes (events, participant surfaces, boards, console, moderator auth, creation, registration, all scheduled jobs including purges) with exactly three exceptions: static notice pages, the admin UI (reversal must never require a redeploy), and the expiring export-download endpoint. Sequence: freeze instantly → generate snapshot exports for affected events (running + ended-within-purge-window) → E-4 then E-4b emails. The trigger modal contains the export choice (**default ON**, "skip if you suspect data compromise"), a quantified impact preview ("X events: X running, X scheduled, X in export window"), and a computation timestamp. Scheduled events never open during a stop; on reversal they open late if their window is still current, otherwise they auto-end. Overdue purges run 24 h after resume; E-5 states the deadlines. Participants and boards show a calm emergency-ended screen — the sole participant-visible platform-initiated ending.
 - **Emergency stop ≠ delete all data:** the stop is reversible quiescence; delete-all-data is the separate GDPR/breach nuke (step-up auth, typed confirmation — which the emergency stop now also requires — honest irreversibility labeling).
 
-## Milestone frame (input to P4)
+## Milestone and release frame
 
-Execution order **M1 → M2A → M2B → M4 → M5 → M3-if-ever**.
+### SemVer policy
 
-- **M1 — Core product:** F000–F007, lean FIFO cut with the P2 semantic refinements (one-active-item, skip-stub, announcement lifetime, acknowledgment modes, min/max length, up-soon cue, locale model, failure states, deletion guard, log-level flag). No new surfaces added by P2.
-- **M2A — Control plane & data:** entitlement engine → **recap & export** (CSV/JSON/HTML snapshot; the emergency machinery consumes it) → admin UI incl. the full emergency-stop model, force-end comms, emails E-3…E-5 → invite codes + lockdown; moderator live-safety controls (intake close, hide board, regenerate board link) and the follow-up flag slot in anywhere.
-- **M2B — Stand-out modes (force-rank):** curated line (pool visibility, merge, limits, per-viewer pool toggles) → upvotes → review mode (decline reasons) → co-moderators — with console filters/search/bulk riding along — then speaker timer → duplicate/templates → rich announcements & primer (in-event ⓘ) → vanity slugs → branding (spec'd here, executes after M4). Parallel tracks: TMS, `de (formal)`.
-- **M4 — UI overhaul:** design system first, then the four surfaces (presentation only); board appearance controls; board sound cue; logo & color identity.
-- **M5 — Longevity:** observability, cost model (+ alert-only budget threshold), retention enforcement, constitution audit & load test, rebuild runbook (incl. Cloudflare-native emergency levers, admin-reset procedure, Art.-34 notification procedure), compliance pack.
-- **M3-if-ever — Monetization (parked):** billing as just another grantor; German-operator legal pack; compensation & communication policy for drastic admin controls toward paying customers; legally mandated billing emails.
+Each milestone completion becomes a releasable MicLine version. Development builds may use `-alpha.N`, `-beta.N`, and `-rc.N`; patch releases such as `v0.4.1` fix defects without adding milestone scope. Parked ideas remain unversioned until explicitly unparked. `v1.0.0` is reserved for the complete product, operational controls, measured reliability, recovery, and compliance foundation. M13's `v1.1.0` is provisional and may move if other post-`v1.0.0` releases intervene.
+
+| Milestone | Target version | Outcome |
+|---|---:|---|
+| **M1 — Deployable foundation** | `v0.1.0` | Secure deployable shell: delivery pipeline, config, logging, i18n plumbing, security boundaries, and foundational tests. No usable event product yet. |
+| **M2 — Moderator identity and event setup** | `v0.2.0` | Magic-link identity, minimal accounts, event creation/scheduling, my-events, join code/URL/QR, and board capability URL. |
+| **M3 — Open-line event runtime** | `v0.3.0` | Complete internal FIFO event runtime across participant, moderator, realtime, and minimal projector-board surfaces. |
+| **M4 — Public-beta readiness** | `v0.4.0` | Enforced retention and deletion, failure-state completeness, abuse controls, production en/de, public/legal pages, and first responsible public beta. |
+| **M5 — Moderator control and data portability** | `v0.5.0` | Intake close, board hiding, board-link regeneration, follow-up flags, complete recap and CSV/JSON/HTML exports. |
+| **M6 — Operator control plane** | `v0.6.0` | Protected normal administration: oversight, abuse handling, force-end, deletion, metrics, statistics, notices, controls, and consequence previews. |
+| **M7 — Emergency operations and recovery** | `v0.7.0` | Total emergency stop, emergency exports/emails, job suspension/resumption, purge grace, emergency screens, and delete-all-data procedure. |
+| **M8 — Entitlements, invite codes and lockdown** | `v0.8.0` | Entitlement seam, wallet, vouchers, grants, limits, revocation, transparency, and invite-only registration/event creation. |
+| **M9 — Curated moderation** | `v0.9.0` | Curated pool/line, upvotes, review, declines, duplicate merge, submission limits, filters/search/bulk, pool collapse, and co-moderation. |
+| **M10 — Extended event toolkit** | `v0.10.0` | Timer, duplicate/templates, markdown-lite and in-event primer, vanity slugs, formal German, and rented TMS pipeline. |
+| **M11 — Design system, identity and experience overhaul** | `v0.11.0` | Design system and identity across all surfaces, board controls/sound, and event branding. |
+| **M12 — Operational maturity and compliance** | `v1.0.0` | Observability, measured cost model, budget alerts, load testing, audits, rebuild/recovery runbooks, retention verification, and compliance pack. |
+| **M13 — Monetization, if ever** | *provisional `v1.1.0`* | Parked billing-as-grantor and German legal/tax package, including compensation and legally required billing communications. |
+
+### Release gates
+
+- **After M3 / `v0.3.0`:** internal end-to-end alpha.
+- **After M4 / `v0.4.0`:** first responsible public beta.
+- **After M8 / `v0.8.0`:** operationally controlled public service.
+- **After M9 / `v0.9.0`:** differentiated MicLine product.
+- **After M12 / `v1.0.0`:** first production-mature release.
+
+### Cross-cutting delivery rules
+
+Security, privacy, data minimization, accessibility, localization, state-machine correctness, and the spec→plan→tasks loop are continuous acceptance criteria, not later hardening work. The architectural entitlement seam is anticipated before M8 even though the user-facing entitlement system ships there. Baseline retention enforcement ships before the public beta in M4; M12 verifies and operationalizes it rather than introducing it. Event branding has one implementation home in M11.
+
+References to F000–F007 and `docs/build-guide/06-m1-plan.md` remain useful provenance, but that former single-M1 bundle is now distributed across M1–M4. Until the build guide is regenerated or reconciled after the tech interview, the Feature Inventory is the authority for milestone ownership and target versions.
 
 ## Final product boundaries
 

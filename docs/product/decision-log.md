@@ -1,6 +1,8 @@
 # MicLine.app — Decision Log
 
-> Provenance: P1 interview 2026-07-06 · **P2 final product interview 2026-07-12**. Format per entry: decision — why — rejected alternatives. Flags: **[ASSUMED]** = Claude's call under interview rules (veto anytime) · **[OPEN]** = deferred, owner noted · **[PARKED]** = deliberately shelved · **[REJECTED]** = decided against · **[SUPERSEDED]** / **[AMENDED]** = changed by a later decision (pointer given). Unflagged = confirmed by the operator. Sections A–H are the P1 log with P2 annotations; sections P2-1…P2-11 are the P2 interview. The consolidated open-questions and scheduled-decisions registry is at the end.
+> Provenance: P1 interview 2026-07-06 · **P2 final product interview 2026-07-12** · **P3 milestone restructuring and release versioning 2026-07-12**. Format per entry: decision — why — rejected alternatives. Flags: **[ASSUMED]** = Claude's call under interview rules (veto anytime) · **[OPEN]** = deferred, owner noted · **[PARKED]** = deliberately shelved · **[REJECTED]** = decided against · **[SUPERSEDED]** / **[AMENDED]** = changed by a later decision (pointer given). Unflagged = confirmed by the operator. Sections A–H are the P1 log with P2 annotations; sections P2-1…P2-11 are the P2 interview; section P3 records the approved milestone and SemVer restructuring. The consolidated current open-questions and scheduled-decisions registry is at the end.
+
+> **Historical milestone-label note:** Milestone references inside the preserved P1 and P2 entries (including M1, M2A, M2B, M3, M4, and M5) describe the plan as it existed when those decisions were made. P3 supersedes their delivery ownership and numbering; the current Feature Inventory is authoritative for milestones and target versions.
 
 ## A — Audience & positioning (P1)
 
@@ -184,33 +186,103 @@
 
 ## P2-11 — Milestones, process, terminology
 
-- **T10-1 · M2 split into M2A "Control plane & data" and M2B "Stand-out modes" [supersedes the single-M2 plan].** Execution order: **M1 → M2A → M2B → M4 → M5 → M3-if-ever.** M2A: entitlement engine → recap & export (emergency machinery consumes it) → admin UI incl. full emergency model → invite codes + lockdown; live-safety controls (intake close, hide board, regenerate board link) and follow-up flag slot in anywhere. M2B: force-rank curated → upvotes → review → co-mods (+ filters/search/bulk riding along) → timer → templates → rich content → vanity → branding (executes after M4); parallel: TMS, de (formal). Why the split: M2 was carrying two milestones (platform control vs product modes); each half is a shippable increment — after M2A the platform is publicly defensible (cost brake, abuse tools, emergency machinery, data honesty), after M2B it stands out. Rejected: pushing features to M4/M5 (would corrupt their identities: M4 = presentation only, M5 = longevity); renumbering M3/M4/M5 (doc churn).
-- **T10-2 · Tech foundation is F000/build-guide scope, not a product milestone (no M0).** Binding tech-interview requirement: fully and precisely outline the Cloudflare + GitHub (Actions) setup as the first implementation topic; revisit and adjust the foundation once a bare-minimum deployable product exists.
+- **T10-1 · M2 split into M2A "Control plane & data" and M2B "Stand-out modes" [SUPERSEDED P3 → P3-1].** Execution order: **M1 → M2A → M2B → M4 → M5 → M3-if-ever.** M2A: entitlement engine → recap & export (emergency machinery consumes it) → admin UI incl. full emergency model → invite codes + lockdown; live-safety controls (intake close, hide board, regenerate board link) and follow-up flag slot in anywhere. M2B: force-rank curated → upvotes → review → co-mods (+ filters/search/bulk riding along) → timer → templates → rich content → vanity → branding (executes after M4); parallel: TMS, de (formal). Why the split: M2 was carrying two milestones (platform control vs product modes); each half is a shippable increment — after M2A the platform is publicly defensible (cost brake, abuse tools, emergency machinery, data honesty), after M2B it stands out. Rejected: pushing features to M4/M5 (would corrupt their identities: M4 = presentation only, M5 = longevity); renumbering M3/M4/M5 (doc churn). **P3 preserves the reasoning and all scope but replaces this delivery sequence with M1–M13 and explicit target versions.**
+- **T10-2 · Tech foundation is F000/build-guide scope, not a product milestone (no M0) [AMENDED P3 → P3-2].** Binding tech-interview requirement: fully and precisely outline the Cloudflare + GitHub (Actions) setup as the first implementation topic; revisit and adjust the foundation once a bare-minimum deployable product exists. **P3 retains the no-M0 decision but makes deployable foundation the explicit M1 / `v0.1.0`; F000–F007 remain legacy provenance and no longer control milestone sequencing.**
 - **T10-3 · Terminology rule:** English documents use English terms ("announcement", "the line"); German appears only in the term sheet's DE column.
 - **T10-4 · Global log-level control (FND-06, M1):** deployment-wide, debug ↔ critical, freely operator-adjustable; details at tech interview.
-- **T10-5 · Quality gates passed at freeze:** no presentation/session model; no participant accounts or access gates (zero-gate intact); no M0/M6; M1 unchanged in surface count; M2 semantics precise; 3-day retention intact; aggregates separate; open questions minimal with owners.
+- **T10-5 · Quality gates passed at freeze [AMENDED P3 → P3-8]:** no presentation/session model; no participant accounts or access gates (zero-gate intact); no M0/M6; M1 unchanged in surface count; M2 semantics precise; 3-day retention intact; aggregates separate; open questions minimal with owners. **P3 preserves every substantive gate. The historical “no M6” statement applied to the frozen P2 numbering only and is superseded by the approved M6 operator-control-plane milestone.**
 
 ---
 
-## Open questions & scheduled decisions (consolidated, post-P2)
+# P3 — Milestone restructuring and release versioning (2026-07-12)
+
+## P3-1 — Approved milestone lineup
+
+- **P3-1 · The current execution order is M1 → M2 → M3 → M4 → M5 → M6 → M7 → M8 → M9 → M10 → M11 → M12 → M13-if-ever.** The approved names and release targets are:
+  - **M1 — Deployable foundation · `v0.1.0`**
+  - **M2 — Moderator identity and event setup · `v0.2.0`**
+  - **M3 — Open-line event runtime · `v0.3.0`**
+  - **M4 — Public-beta readiness · `v0.4.0`**
+  - **M5 — Moderator control and data portability · `v0.5.0`**
+  - **M6 — Operator control plane · `v0.6.0`**
+  - **M7 — Emergency operations and recovery · `v0.7.0`**
+  - **M8 — Entitlements, invite codes and lockdown · `v0.8.0`**
+  - **M9 — Curated moderation · `v0.9.0`**
+  - **M10 — Extended event toolkit · `v0.10.0`**
+  - **M11 — Design system, identity and experience overhaul · `v0.11.0`**
+  - **M12 — Operational maturity and compliance · `v1.0.0`**
+  - **M13 — Monetization, if ever · provisional `v1.1.0`**
+- Why: the former M1, M2A, and M2B each mixed several distinct delivery outcomes; the new structure produces independently understandable releases and exposes hidden dependencies before the tech interview. Rejected: retaining the old lineup merely to avoid document churn.
+
+## P3-2 — Foundation and legacy build-plan ownership
+
+- **P3-2 · No M0 remains an active decision; deployable foundation is now the explicit M1 / `v0.1.0`.** The tech interview still starts by fully outlining the Cloudflare + GitHub Actions setup and revisits that foundation after the M3 / `v0.3.0` end-to-end alpha exists.
+- References to F000–F007 and `docs/build-guide/06-m1-plan.md` remain as provenance. The former single-M1 bundle is now distributed across M1–M4; until that build guide is regenerated or reconciled, the Feature Inventory is authoritative for milestone ownership and release sequencing.
+
+## P3-3 — Work-item and version assignment
+
+- **P3-3 · All 93 milestone-assigned Feature Inventory rows have exactly one canonical owning milestone and target version.** Stable IDs, names, status flags, product semantics, and rejection/parking rationale are preserved. Fourteen parked ideas and ten rejected ideas remain unversioned.
+- Features that gain later behavior keep one canonical introduction version and receive explicit “extended in” references rather than duplicate IDs. This applies to FND-04, MOD-03, EVT-07, AUTH-04, PRT-08, ADM-07, ADM-11, and OPS-03.
+- The six approved transactional email types are versioned with their owning releases: E-1 at M2 / `v0.2.0`; E-2 at M4 / `v0.4.0`; E-3 at M6 / `v0.6.0`; E-4, E-4b, and E-5 at M7 / `v0.7.0`.
+
+## P3-4 — SemVer policy
+
+- **P3-4 · Each milestone completion is a releasable MicLine SemVer version.** Development builds may use `-alpha.N`, `-beta.N`, and `-rc.N`; patch releases fix defects without adding milestone scope. Parked ideas receive no version until explicitly unparked; rejected ideas never receive a version unless formally reopened.
+- MicLine remains pre-`1.0.0` through M11. **M12 / `v1.0.0` is the first production-mature release**, after the full product, visual system, operational controls, measured reliability, recovery, and compliance foundations exist.
+- M13's `v1.1.0` is provisional and may move if other post-`v1.0.0` releases intervene before monetization is activated.
+
+## P3-5 — Release gates
+
+- **After M3 / `v0.3.0`:** internal end-to-end alpha.
+- **After M4 / `v0.4.0`:** first responsible public beta.
+- **After M8 / `v0.8.0`:** operationally controlled public service.
+- **After M9 / `v0.9.0`:** differentiated MicLine product.
+- **After M12 / `v1.0.0`:** first production-mature release.
+- Security, privacy, data minimization, accessibility, localization, state-machine correctness, and spec-driven change remain continuous acceptance criteria rather than later hardening phases.
+
+## P3-6 — Retention sequencing correction
+
+- **P3-6 · Baseline retention enforcement moves to M4 / `v0.4.0`, before the first public beta.** EVT-07 owns the product promise and visible behavior; OPS-03 owns automated purge machinery across every applicable lifetime. M7 adds emergency-stop pause/resume behavior; M12 verifies, monitors, load-tests, and documents the already-running enforcement.
+- Why: a public release cannot truthfully promise three-day content deletion and one-month inactive-account deletion while deferring the enforcement jobs to a later longevity milestone. Rejected: leaving purge automation in M12 and relying on manual deletion during public beta.
+
+## P3-7 — Branding ownership correction
+
+- **P3-7 · STD-10 Event branding moves entirely to M11 / `v0.11.0`.** It is specified and implemented with the design system instead of being nominally assigned to an earlier product-mode milestone and executed later. Its gateable entitlement status and narrow accountable-uploader model are unchanged.
+
+## P3-8 — Documentation and provenance rules
+
+- **P3-8 · Historical P1/P2 milestone decisions remain in this log and are annotated as superseded or amended rather than rewritten as though P3 always existed.** Current-state documents use only the P3 lineup.
+- The Product Brief's former document label “v2” becomes **Revision 3** so document revision cannot be confused with MicLine software SemVer.
+- “From day one” and “at launch” become **from the first public release, M4 / `v0.4.0`** where the capability moved out of the internal alpha sequence. This changes delivery wording, not the product commitment.
+- No product boundary, behavior, privacy rule, lifetime, feature status, parked condition, rejected rationale, or open decision was changed by P3.
+
+---
+
+## Open questions & scheduled decisions (consolidated, current after P3)
 
 ### Genuinely open (few, with owner + consequence)
 
 | # | Question | Owner / when | Consequence if unresolved |
 |---|---|---|---|
-| OQ1 | Admin-wall mechanism: Cloudflare Access vs TOTP vs passkey (criteria: pricing, limits, exit cost; CF-account reset mandatory) | Tech interview / M2A admin spec | /admin ships without its dedicated wall — blocked |
-| OQ6 | Revisit product limits (participants, events, ceiling) against measured cost & purpose | After tech phase / P4 | Limits stay at P1 guesses |
-| OQ7 | Magic-link auth flow details (operator wants depth) | F002 spec/clarify | Auth spec incomplete |
-| OQ8 | Central platform-config + feature-flag mechanism | Tech interview | Config values have no home |
-| OQ9 | Logo & color identity | M4 kickoff | Wordmark placeholder persists |
-| OQ10 | Admin UI v2 features | Parked (PRK-08) | None |
+| OQ1 | Admin-wall mechanism: Cloudflare Access vs TOTP vs passkey; criteria remain pricing, limits, exit cost, and mandatory Cloudflare-account reset | Tech interview / M6 specification | `/admin` cannot ship behind its dedicated wall — M6 blocked |
+| OQ6 | Revisit participant/event limits and the 1,000 ceiling against measured cost, architecture, and product purpose | After tech phase, before the M4 public-beta gate | Limits stay at P1 estimates |
+| OQ7 | Magic-link authentication-flow details; operator requested depth | M2 specification / legacy F002 clarify | M2 authentication specification incomplete |
+| OQ8 | Central platform-config and feature-flag mechanism | Tech interview / M1 | Config values and platform flags have no authoritative home |
+| OQ9 | Logo and color identity | M11 kickoff | Wordmark placeholder persists |
+| OQ10 | Admin UI v2 features | Parked (PRK-08), beyond M6 scope | None |
 
-Closed in P2: **OQ2** (review semantics → T4-2) · **OQ5** (export rank → T7-1). Halved: **OQ1** (wall decided; mechanism open). Unchanged by design: OQ3 (invite-code UX → M2A kickoff) · OQ4 (TMS → M2B kickoff).
+Closed in P2: **OQ2** (review semantics → T4-2) · **OQ5** (export rank → T7-1). OQ1 remains half-closed: the dedicated wall is decided, only its mechanism is open. OQ3 and OQ4 remain scheduled decisions rather than genuine open questions.
 
-### Scheduled decisions (owned, dated — not open questions)
+### Scheduled decisions (owned — not open questions)
 
-- **M2A kickoff:** invite-code UX details (OQ3: format, QR sharing, custom message, redemption display, generation UX, clock defaults) · final export-format list · emergency-copy wording set (E-4/E-4b/E-5, force-end notices, emergency-ended screen).
-- **M2B kickoff:** cross-surface filter matrix (incl. filter-by-submitter; transparency guardrail applies) · curated defaults (pool visible, upvotes on — assumed) · per-participant submission limit default/range · markdown-lite subset · pool-collapse defaults (direction: collapsed on board) · co-moderator link-invite mechanism · TMS replaces-or-feeds Lunaria (OQ4).
-- **M4 kickoff:** logo & colors (OQ9) · board sound cue build decision (DSN-05).
-- **Tech interview (binding inputs):** complete Cloudflare + GitHub setup outline first (T10-2) · admin-wall mechanism + CF-reset (OQ1) · board capability-URL token design (no event ID/join code, no enumeration) · config/feature-flag mechanism (OQ8) · log-level implementation (FND-06) · email-template registry (react.email evaluation) · magic-link depth (OQ7) · rate-limit keys incl. rescheduling · emergency-stop download-endpoint isolation.
-- **Spec time:** exact failure-state and emergency copy · confirmation-statement/hide-message/decline-reason caps · announcement lifetime value · register-variant edge (`de` device + `de (formal)` event) · dual-surface viewer edge · board autoplay-unlock for the sound cue (M4) · intake-close display details · review verb wording (approve/decline) + DE terms.
+- **M2 specification:** magic-link flow depth (OQ7), anti-enumeration details, session behavior, and the central email-template registry's first use.
+- **M5 kickoff:** final export-format list and the final user-facing name for Line snapshot (HTML).
+- **M6 specification:** admin-wall integration details after the tech decision; force-end wording, optional admin message, normal admin consequence previews, reversals, and the service-notice UI.
+- **M7 specification:** emergency-copy set (E-4/E-4b/E-5 and emergency-ended screens), trigger-modal wording, export choice, download-endpoint isolation, scheduled-event resumption copy, and delete-all-data runbook linkage.
+- **M8 kickoff:** invite-code UX details (OQ3: format, QR sharing, custom message, redemption display, generation UX, redeem-by/grant-validity defaults, god-voucher presentation) and the invite-only admin control.
+- **M9 kickoff:** cross-surface filter matrix incl. filter-by-submitter; transparency guardrail; curated defaults (pool visible, upvotes on — assumed); per-participant submission-limit default/range; pool-collapse defaults (direction: collapsed on the board); co-moderator link-invite mechanism.
+- **M10 kickoff:** markdown-lite subset; TMS replaces-or-feeds Lunaria (OQ4); formal-German register-variant implementation.
+- **M11 kickoff:** logo and colors (OQ9); board sound-cue build decision (DSN-05); browser autoplay-unlock handling; complete visual-system brief.
+- **M12 evidence gate:** degraded modes only after load-test evidence; measured cost formulas and alert threshold; retention-enforcement verification; operator-burden/constitution audit; rebuild-from-zero and compliance evidence.
+- **Tech interview (binding inputs):** complete Cloudflare + GitHub setup first (T10-2 / P3-2) · admin-wall mechanism + Cloudflare reset (OQ1) · board capability-token design (no event ID/join code, no enumeration) · config/feature-flag mechanism (OQ8) · global log-level implementation (FND-06) · email-template registry and react.email evaluation · magic-link architecture (OQ7) · rate-limit keys incl. rescheduling · emergency export-download isolation · persistence and scheduled-purge architecture.
+- **Spec time:** exact failure-state copy · confirmation-statement/hide-message/decline-reason caps · announcement lifetime value · register-variant edge (`de` device + `de (formal)` event) · dual-surface viewer edge · intake-close display details · review approve/decline wording and German terms.
