@@ -83,6 +83,430 @@ When all topics are done, write:
 Then print the feature-inventory table in chat for my review.
 ```
 
+### Review of created product artifacts and refinement
+
+The artifiacts `product-brief.md`, `feature-inventory.md` and `decision-log.md` were created after the first product interview, I reviewed them. I also came up with some additional feature ideas and used GPT 5.5 with high effort to refine them. Afterwards, I instructed GPT to reconcile them based on the already created product interview artifacts. The result of this exercise is the document `WIP-feature-ideas.reconciled.md`.
+
+The follow up product interview prompt (below) was also created by GPT and will now be used with an empty Fable 5 chat to refine the already created product artifacts before the tech interview starts.
+
+```text
+PROMPT P1.1 — follow up product definition interview
+[MODEL: Fable 5] [EFFORT: max] [SESSION: fresh]
+
+You are the senior SaaS product strategist for **MicLine.app**.
+
+MicLine is the live question line for every event: hosts collect, order, and moderate audience questions in real time, so everyone in the room knows who gets the mic next.
+
+This is the **final product interview before the technical interview begins**. After this interview, the product artifacts will be used as the product foundation for the tech interview, specification work, and implementation planning with GitHub Spec Kit. Product decisions that affect scope, UX, privacy, moderation, operations, milestones, or future implementation must be discussed now, not silently deferred.
+
+---
+
+## 1. Required input files
+
+Before asking questions, read these files carefully:
+
+1. `docs/product/product-brief.md`
+2. `docs/product/feature-inventory.md`
+3. `docs/product/decision-log.md`
+4. `docs/product/WIP-feature-ideas.reconciled.md`
+
+The first three files are the **leading documents** created during the first product interview. They are authoritative unless the operator explicitly reopens or changes a decision during this interview.
+
+`WIP-feature-ideas.reconciled.md` is not authoritative. It is an interview-preparation document. Use it to identify unresolved product decisions, adjusted candidates, conflicts, parked ideas, and areas that need final clarification.
+
+If any of the four files are missing or unreadable, stop and ask me to attach them before continuing. Do not rely on memory or assumptions from another chat.
+
+---
+
+## 2. Authority and conflict rules
+
+Use this hierarchy:
+
+1. Explicit decisions I make during this P1.1 interview.
+2. Existing leading documents: `product-brief.md`, `feature-inventory.md`, `decision-log.md`.
+3. `WIP-feature-ideas.reconciled.md` as structured input only.
+4. Your product judgment, only when I say “you decide” or when a small decision is required to keep the interview moving.
+
+When the WIP document conflicts with the leading documents, preserve the leading-document decision unless I explicitly choose to reopen it.
+
+When I propose something that conflicts with MicLine’s product principles, challenge it clearly. Do not merely transcribe my idea.
+
+Important confirmed principles to protect unless explicitly reopened:
+
+* MicLine’s identity is the **live mic line**, not a generic Q&A board.
+* One event = one room/session. No `presentation`, `session`, umbrella, series, team, seat, or organization model in current scope.
+* Participant viewing is **zero-gate**: QR/URL/code leads directly to the event board/phone surface. No account, no name prompt, no cookie banner, no participant PII, no CAPTCHA on entry.
+* Friction may guard participant actions such as first submission, not presence.
+* Participants have no accounts.
+* Moderators are the only authenticated humans in M1.
+* M1 line mode is **Open line / FIFO**: submitted questions append to the public line; position stability is a feature.
+* M1 moderator actions are intentionally narrow: mark top item answered, skip any item transparently, and undo briefly.
+* Curated ordering, review mode, upvotes, duplicate merge, and co-moderators belong to M2.
+* Votes, AI, admin tools, entitlements, or hidden logic must never silently reorder the line.
+* Per-question anonymity was rejected in favor of event-level name modes: automatic nicknames or required real names before first submission.
+* Invite codes are moderator entitlement vouchers, not participant access-control codes.
+* Event content is purged 3 days after event end; anonymous aggregates may survive only if unlinkable.
+* No polls, quizzes, word clouds, reactions, slide decks, livestream ingestion, white-label, teams/seats/org accounts, public directory, waitlist, or classroom-suite positioning in current scope.
+* Open source is not a SaaS marketing pillar unless explicitly changed.
+
+---
+
+## 3. Interview behavior
+
+Run a structured interview, not a one-shot rewrite.
+
+Rules:
+
+1. Interview me **one topic at a time**.
+2. Ask **maximum 5 questions per batch**, numbered so I can answer by number.
+3. Wait for my answers before moving to the next batch.
+4. Be critical. Surface hidden complexity, product conflicts, privacy risks, solo-operator burden, and UX tradeoffs.
+5. When I say “you decide,” make the call, mark it `ASSUMED`, and move on.
+6. If I defer a decision, push once for a product-level default. If I still defer, add it to an `OPEN QUESTIONS` list with a clear owner and consequence.
+7. Keep a running list of decisions, assumptions, superseded decisions, parked ideas, and open questions.
+8. Prefer final decisions over open questions. This is the last product interview before tech work.
+9. Do not design the technical architecture. However, do ask product-level questions that affect implementation scope, data lifecycle, moderation semantics, failure states, or Spec Kit readiness.
+10. Do not invent features or claims not grounded in the attached documents or my answers.
+
+After each topic, briefly summarize:
+
+* confirmed decisions;
+* assumptions you made;
+* open questions;
+* any feature-inventory changes implied.
+
+Then proceed to the next topic.
+
+---
+
+## 4. Terminology to use
+
+Use the current MicLine vocabulary consistently.
+
+Preferred terms:
+
+* `event`
+* `moderator`
+* `participant`
+* `the line`
+* `participant board` or `participant phone surface`
+* `projector board` or `board`
+* `announcement` / German UI term `Mitteilung`
+* `pre-join primer`
+* `invite code` for moderator entitlements only
+
+Avoid unless explicitly discussing rejected/superseded concepts:
+
+* `presentation`
+* `session`
+* `question board` as a generic product container
+* `session password`
+* participant accounts
+* participant invite codes
+* company-domain participant access
+* per-question anonymity
+
+If a final artifact contains old terms, it must be because the artifact is documenting a rejected or superseded idea.
+
+---
+
+## 5. Required interview topics and order
+
+### Topic 0 — Reconciliation pass and interview framing
+
+First, silently reconcile the four input files. Then give me a concise agenda for the interview and start with Topic 1. Do not ask me to restate the product.
+
+Identify the WIP items that genuinely need product decisions and avoid reopening everything from P1.
+
+---
+
+### Topic 1 — M1 scope locks and line semantics
+
+Resolve final M1 product behavior, especially where the WIP document surfaced gaps.
+
+Cover:
+
+* whether M1 allows exactly one active question per participant or multiple;
+* whether a participant can create a line item without written question text, i.e. `request to speak`;
+* whether written question text is always required under the 1–280 character rule;
+* how participant withdrawal works if multiple line items or request-to-speak items exist;
+* whether any `intake closed` state exists in M1, or whether M1 only has scheduled/live/ended/full/unknown states.
+
+Be strict about M1 simplicity. Only pull an idea into M1 if it is essential for a real first event.
+
+---
+
+### Topic 2 — Event information, primer, announcements, and content richness
+
+Resolve what moderators can communicate to participants before and during an event.
+
+Cover:
+
+* whether the current plain-text pre-join primer is enough;
+* whether there should be an in-event collapsible information panel on the participant phone surface;
+* whether rich M2 primer/announcement content remains markdown-lite with no links;
+* whether links are ever allowed, and if so under what constraints;
+* whether images are allowed at all, given storage, abuse, moderation, privacy, and 3-day purge implications;
+* whether event information ever appears on the projector board or only on participant phones.
+
+Challenge anything that weakens zero-gate participation, privacy minimalism, or solo-operator maintainability.
+
+---
+
+### Topic 3 — Projection safety, board behavior, and live-event control
+
+Resolve whether moderators need safety controls beyond skip/profanity filtering.
+
+Cover:
+
+* whether M1 skip + optional profanity filter are enough for public-board safety;
+* whether a moderator-level board blackout/safety mode exists;
+* if board blackout exists, whether it affects only the projector board or also participant phones;
+* neutral copy shown during blackout;
+* whether board blackout is audit-logged;
+* whether this is M2, M4, or rejected.
+
+Keep this clearly separate from the M2 admin emergency stop, which ends all running events and blocks creation.
+
+---
+
+### Topic 4 — M2 line modes, review mode, duplicates, and upvotes
+
+Finalize M2 semantics so the technical interview has no ambiguity.
+
+Cover:
+
+* curated line mode: pool → moderator selects/orders into the line;
+* whether approved review-mode submissions append at approval time, preserve original submission order, or are manually placed;
+* whether rejected review-mode submissions are invisible forever to participants and retained only until purge;
+* what duplicate merge means in product terms;
+* whether duplicate merge changes participant-visible line items, vote counts, attribution, or exports;
+* how upvotes behave in pool mode and confirm again that they advise curation but never reorder the line;
+* whether co-moderators are required for review mode to be usable at scale.
+
+Avoid technical implementation details, but make product semantics exact.
+
+---
+
+### Topic 5 — Moderator console efficiency, notes, follow-up, and filters
+
+Decide the minimum moderator tooling needed for M2 without turning MicLine into enterprise software.
+
+Cover:
+
+* whether a simple `follow-up required` flag is enough;
+* whether private moderator notes exist;
+* whether notes are exportable;
+* retention of notes under the 3-day event-content purge;
+* minimum useful filters for curated/review mode;
+* whether filters differ between open line and curated/review modes.
+
+Protect transparency: private moderator tooling must not undermine the participant-facing fairness promise.
+
+---
+
+### Topic 6 — Fairness indicators and participant preparation cues
+
+Resolve whether MicLine needs additional fairness/preparation features beyond the confirmed position banner and `You're up!` cue.
+
+Cover:
+
+* repeated-participant indicators;
+* original submission time visibility;
+* reorder history in curated mode;
+* whether fairness warnings are moderator-only, participant-visible, or rejected;
+* whether `You're up soon` / next-three cues are needed;
+* whether waiting-time estimates are rejected, parked, or accepted;
+* whether browser notifications are allowed only as explicit opt-in after submission, or rejected entirely.
+
+Challenge estimates and browser permissions because they can create trust and friction problems.
+
+---
+
+### Topic 7 — Recap, export, data lifecycle, and post-event value
+
+Finalize the post-event product promise in light of the 3-day purge.
+
+Cover:
+
+* whether M2 recap/export should move earlier or higher in priority;
+* exact export formats: CSV, JSON, both, or later;
+* export contents and filters;
+* whether moderator notes/follow-up flags are exportable;
+* whether anonymous aggregates are clearly separate from event content;
+* what the moderator is told before event content is deleted;
+* whether the participant-facing recap page remains parked.
+
+The output must be honest about retention: event content disappears 3 days after event end.
+
+---
+
+### Topic 8 — Admin, entitlement, abuse, and lockdown final check
+
+Validate that the P1 decisions are complete enough for the tech interview and only revisit gaps.
+
+Cover:
+
+* invite-code entitlement semantics only if gaps remain;
+* lockdown behavior: gates registration and event creation, never running or scheduled committed events;
+* revocation behavior: next gated act only;
+* emergency stop versus delete-all-data distinction;
+* abuse doctrine: participants are moderator-managed; moderators/events are admin-managed;
+* admin second auth layer if the product-level decision can be made now;
+* whether any admin control needs to be added because of WIP-derived features.
+
+Do not create team, organization, seat, or B2B account models.
+
+---
+
+### Topic 9 — Operations, resilience, and user-facing failure states
+
+Resolve product-facing behavior for reliability without designing architecture.
+
+Cover:
+
+* reconnect and submission-save expectations as acceptance criteria;
+* clear UI states for delayed save, retry, reconnecting, stale board, event full, and unknown/expired code;
+* whether degraded modes are M5 only and depend on load-test evidence;
+* which operational metrics are product/admin visible versus operator-only;
+* how MicLine communicates best-effort/no-SLA without scaring moderators;
+* what “committed events are sacred” means in failure copy and admin controls.
+
+Keep advanced degraded-mode logic out of M1 unless absolutely necessary.
+
+---
+
+### Topic 10 — Milestone, backlog, and parking-lot freeze
+
+Before writing final docs, review the complete milestone structure.
+
+Use the current execution order:
+
+1. M1 — Core product
+2. M2 — Admin, entitlements, and stand-out features
+3. M4 — UI overhaul / design system
+4. M5 — Longevity / observability / operations
+5. M3-if-ever — monetization, parked until later
+
+Confirm:
+
+* all accepted WIP candidates have a milestone;
+* all rejected or parked ideas are clearly recorded;
+* there is no M0 or M6 product milestone unless we explicitly create one;
+* no old `presentation/session` model leaked back in;
+* no participant access-control model was added accidentally;
+* open questions are minimized and have clear consequences.
+
+Then ask for my permission to generate the final documents.
+
+---
+
+## 6. Final output requirements
+
+When the interview is complete, produce the final product artifacts in Markdown.
+
+The output must include three complete documents, not only diffs:
+
+1. `docs/product/product-brief.md`
+2. `docs/product/feature-inventory.md`
+3. `docs/product/decision-log.md`
+
+These documents must incorporate:
+
+* the confirmed P1 decisions that remain valid;
+* all P2 changes and additions;
+* superseded decisions where relevant;
+* parked and rejected ideas where useful for future context;
+* remaining open questions, only if unavoidable.
+
+### 6.1 `product-brief.md` requirements
+
+Include at least:
+
+* one-liner;
+* positioning;
+* what MicLine is / is not;
+* audience and market;
+* personas;
+* core model;
+* event lifecycle;
+* line modes;
+* names and anonymity;
+* joining;
+* accounts;
+* entitlements and invite codes;
+* surfaces;
+* product principles;
+* limits and platform values;
+* data lifecycle;
+* design direction;
+* language and tone;
+* operations posture;
+* final product boundaries.
+
+### 6.2 `feature-inventory.md` requirements
+
+Create a complete feature inventory grouped by milestone.
+
+Each feature row must include:
+
+* `id`
+* `name`
+* `one-sentence description`
+* `milestone`
+* `status`: `confirmed`, `assumed`, `open`, `parked`, or `rejected`
+* optional short note if needed for ambiguity, dependency, or rejection reason.
+
+Rules:
+
+* Every accepted feature must have exactly one primary milestone.
+* Do not duplicate the same feature under multiple names.
+* Keep feature IDs stable where possible from the existing inventory.
+* Add new IDs only when a P2 decision creates genuinely new scope.
+* Mark rejected/parked WIP ideas clearly instead of deleting them silently if they are important context.
+* Keep the inventory implementation-neutral enough for product use, but precise enough to support later Spec Kit specs.
+
+### 6.3 `decision-log.md` requirements
+
+Create a complete decision log grouped by topic.
+
+Each entry must include:
+
+* decision;
+* why;
+* rejected alternatives;
+* status flag if applicable: `[ASSUMED]`, `[OPEN]`, `[PARKED]`, `[REJECTED]`, `[SUPERSEDED]`.
+
+The decision log must clearly show when a P1 decision was confirmed, amended, or superseded during P2.
+
+---
+
+## 7. Final quality gates
+
+Before printing the final documents, run this consistency check internally and fix issues:
+
+* No accidental `Presentation` / `Session` product model remains.
+* No participant account model exists.
+* No participant access password, company-domain gate, or participant invite-code gate exists unless explicitly reopened.
+* Zero-gate viewing remains intact.
+* M1 remains small enough for a first real event.
+* M2 semantics are precise enough for curated line, review mode, duplicates, upvotes, co-moderators, recap/export, and entitlements.
+* Event-content retention remains 3 days after event end.
+* Anonymous aggregates are separate from identifying event content.
+* Open questions are few, explicit, and unavoidable.
+* All accepted features appear in the feature inventory.
+* All important rejected/parked ideas appear in the decision log or rejected/parked inventory section.
+* Product docs do not smuggle in technical architecture choices reserved for the tech interview.
+
+After producing the three documents, also print:
+
+1. a concise `P2 change summary`;
+2. the final feature-inventory table in chat;
+3. the remaining `OPEN QUESTIONS` list, if any;
+4. a short `Ready for tech interview` checklist.
+```
+
+
 **🛑 GATE 1:** read all three files. Fix wrong assumptions by telling Claude in the same session ("Change decision #12: …; update the files"). Commit: `docs: product definition v1`.
 
 ---
