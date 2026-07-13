@@ -1,4 +1,4 @@
-> **MicLine Build Guide — Part 8 of 10** · [◀ M2–M5 playbooks](07-m2-to-m5.md) · [⌂ Index](README.md) · [Troubleshooting, cheat sheet, assumptions ▶](09-troubleshooting.md)
+> **MicLine Build Guide — Part 8 of 10** · [◀ M5–M13 playbooks](07-m5-to-m13.md) · [⌂ Index](README.md) · [Troubleshooting, cheat sheet, assumptions ▶](09-troubleshooting.md)
 
 **In this part:** The reference: technique table, context & cost discipline, the AGENTS.md and plugin verdicts, and the Pro-limit workflow including the € escape-hatch math.
 **Prerequisites:** None — skim after file 02, reread whenever sessions feel expensive. · **Your time:** ~15–20 min skim; a lifetime as a reference. *(your active attention; Claude runtime and limit pauses excluded)*
@@ -9,15 +9,15 @@
 |---|---|---|
 | **/model** | [file 01](01-model-strategy.md) routing | Switch anytime, even mid-session |
 | **/effort** | Reasoning depth ("ultrathink") | `low/medium/high/xhigh` persist across sessions; `max` = deepest, current session only (the menu's `ultracode` = xhigh plus auto-orchestrated workflows, also session-only — not used in this guide's routing). Marked per prompt in this guide |
-| **Plan Mode** | Exploration you want guaranteed read-only: "how does X currently work", pre-refactor analysis in M5 | Shift+Tab to toggle. Not needed inside /speckit.\* steps (they're already artifact-first) |
+| **Plan Mode** | Exploration you want guaranteed read-only: "how does X currently work", pre-refactor analysis in M12 | Shift+Tab to toggle. Not needed inside /speckit.\* steps (they're already artifact-first) |
 | **/clear** | Between every step marked `[SESSION: fresh]` | Cheaper + better than compacting; all state is in files |
 | **/context** | Long sessions (P1 interview, F003 implement) | If context is bloated → write state to files → /clear → resume |
 | **Subagents (Task/Explore)** | "Research current Cloudflare docs for X while keeping my context clean" — plans for F002/F003 benefit | Ask: `Use a subagent to read ⟨llms.txt pages⟩ and report back only the API signatures we need` |
-| **Paste images** | M4 visual iteration; debugging UI states | Drag/paste screenshots into the prompt |
-| **Claude Design** | M4 visual work only — design system + surface explorations ([file 07 §9.3](07-m2-to-m5.md)) | claude.ai → Design; `/design` + `/design-sync` inside Claude Code. Shares your Pro usage limits — budget it; re-verify capabilities at M4 (research preview) |
+| **Paste images** | M11 visual iteration; debugging UI states | Drag/paste screenshots into the prompt |
+| **Claude Design** | M11 visual work only — design system + surface explorations ([file 07 §9.7](07-m5-to-m13.md)) | claude.ai → Design; `/design` + `/design-sync` inside Claude Code. Shares your Pro usage limits — budget it; re-verify capabilities at M11 (research preview) |
 | **`claude --continue` / `--resume`** | Reopen the most recent / a chosen past session after a limit pause | From the repo dir |
 | **Hooks** | Already used: pre-commit gitleaks (git hook, simpler than a Claude hook and covers non-Claude commits too) | Add Claude-side hooks only if you later find a repeated failure mode |
-| **MCP servers / plugins** | Not needed for this workflow — the CLAUDE.md llms.txt fetch protocol covers Cloudflare docs. Revisit in M5 if you want live account introspection (Cloudflare publishes official MCP servers) | `claude mcp add …` when the need is real, not before |
+| **MCP servers / plugins** | Not needed for this workflow — the CLAUDE.md llms.txt fetch protocol covers Cloudflare docs. Revisit in M12 if you want live account introspection (Cloudflare publishes official MCP servers) | `claude mcp add …` when the need is real, not before |
 | **CLAUDE.md** | Standing rules ([file 02 §2.6](02-setup.md)) | Keep it short; move anything long into docs/ and link it. `/speckit.plan` appends stack context — leave its section intact |
 | **/speckit templates** | If a template keeps producing something you dislike | Override per-project in `.specify/templates/overrides/` instead of fighting it in prompts |
 | **Git worktrees / parallel sessions** | **Don't** (Pro limits + solo review). Revisit only if you move to Max | — |
@@ -48,7 +48,7 @@ Claude Code has a plugin system, and the Anthropic-curated **official marketplac
 | **typescript-lsp** (official marketplace, code-intelligence) | ✅ install at F000 | Feeds Claude live type errors/references from the real language server the moment it edits a file — in a strict-TS monorepo this catches mistakes before `tsc` runs, saving red commits and the tokens spent fixing them. Prereq binary: `npm i -g typescript-language-server typescript`. |
 | **pr-review-toolkit** (Anthropic-authored, in the `anthropics/claude-code` marketplace) | ◻︎ optional at GATE D | Multi-agent PR review (tests, error handling, type design, simplification) with confidence scoring — a structured upgrade to the P5g hostile-review prompt. Cost caveat: multiple agents = multiple model runs, so use it on the risky PRs (F002/F003), not every merge. Add its marketplace once: `/plugin marketplace add anthropics/claude-code`. |
 | GitHub integration plugin | ✖ skip | Redundant: the `gh` CLI already gives Claude everything (issues, PRs, releases) at zero standing-context cost. |
-| Everything else (security linters, frontend/design skills, service integrations) | ✖ skip for now | Revisit design-oriented skills at the M4 kickoff and nothing earlier; add a plugin only after feeling the same pain twice. |
+| Everything else (security linters, frontend/design skills, service integrations) | ✖ skip for now | Revisit design-oriented skills at the M11 kickoff and nothing earlier; add a plugin only after feeling the same pain twice. |
 
 **Claude Code GitHub Action (`@claude` reviewing PRs in CI):** exists and is Anthropic-official, but it authenticates outside your interactive session — before ever enabling it, verify on the current Claude Code docs whether it can run on subscription auth or requires API pay-as-you-go billing, and what a review run costs. Given your "Pro subscription only" preference and that you personally review every PR at GATE D anyway, the default is **skip**.
 
@@ -62,9 +62,9 @@ Claude Code has a plugin system, and the Anthropic-curated **official marketplac
 - Weekly-limit weeks: shift to zero-Claude work — §2.7 manual steps, GATE reviews, manual smoke testing, reading `tech-context.md`. The workflow is designed so waiting never loses state.
 - Escalation valve: usage credits (Settings → Usage) let you buy Fable/extra capacity per-token without leaving the subscription. Use deliberately (e.g., one Fable `max` pass on the F003 plan post-July-7), with a monthly cap set.
 
-**€ math for the escape hatch (why prompts don't carry price tags).** This guide deliberately does *not* stamp a € estimate on every prompt: token consumption swings 5–10× with context size and session history, so per-prompt figures would be false precision that ages badly. Instead, price any prompt live in 30 seconds — Claude Code shows the session's token counts (`/usage` / statusline) — with: **cost = in-tokens × in-rate + out-tokens × out-rate**, per MTok: Sonnet 5 **$2 / $10** (intro to Aug 31, then $3/$15) · Opus 4.8 **$5 / $25** · Fable 5 **$10 / $50**; cache reads are ~90% off, and long sessions are *mostly* cache reads. Worked examples: a Fable `max` planning pass reading ~150k / writing ~20k ≈ 0.15×$10 + 0.02×$50 = **$2.50**; an Opus implement phase, ~400k in (largely cached) / 40k out ≈ **$2–4 effective**; a routine Sonnet task ≈ **$0.10–0.50**. Rule of thumb worth having before July-7 anxiety strikes: your *entire* M1 planning stack, run on metered Fable, would land around **$15–30** — annoying, not ruinous.
+**€ math for the escape hatch (why prompts don't carry price tags).** This guide deliberately does *not* stamp a € estimate on every prompt: token consumption swings 5–10× with context size and session history, so per-prompt figures would be false precision that ages badly. Instead, price any prompt live in 30 seconds — Claude Code shows the session's token counts (`/usage` / statusline) — with: **cost = in-tokens × in-rate + out-tokens × out-rate**, per MTok: Sonnet 5 **$2 / $10** (intro to Aug 31, then $3/$15) · Opus 4.8 **$5 / $25** · Fable 5 **$10 / $50**; cache reads are ~90% off, and long sessions are *mostly* cache reads. Worked examples: a Fable `max` planning pass reading ~150k / writing ~20k ≈ 0.15×$10 + 0.02×$50 = **$2.50**; an Opus implement phase, ~400k in (largely cached) / 40k out ≈ **$2–4 effective**; a routine Sonnet task ≈ **$0.10–0.50**. Rule of thumb worth having before July-7 anxiety strikes: your *entire* M1–M4 planning stack (the file-04 phases plus the early specify/plan passes), run on metered Fable, would land around **$15–30** — annoying, not ruinous.
 
 
 **Next:** bookmark [09-troubleshooting.md](09-troubleshooting.md). **Carry forward:** files are memory; `/effort` markings are ceilings; price prompts live, don't guess.
 ---
-[◀ M2–M5 playbooks](07-m2-to-m5.md) · [⌂ Index](README.md) · [Troubleshooting, cheat sheet, assumptions ▶](09-troubleshooting.md)
+[◀ M5–M13 playbooks](07-m5-to-m13.md) · [⌂ Index](README.md) · [Troubleshooting, cheat sheet, assumptions ▶](09-troubleshooting.md)

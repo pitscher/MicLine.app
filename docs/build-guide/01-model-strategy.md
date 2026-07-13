@@ -12,15 +12,17 @@
 - **Opus 4.8** is the strongest non-Fable model. Availability in Claude Code's `/model` picker can vary by plan — check yours ([file 02](02-setup.md), step 2.2.4). If it's selectable on your Pro plan, use it per the routing table; if not, Sonnet 5 at `/effort high`/`xhigh` is the escalation path, and Opus via usage credits is the emergency option.
 - Fable 5 drains your limit noticeably faster than other models — don't route routine work through it just because it's included.
 
+> **2026-07-13 note (final-review pass):** July 7 has passed. Route by what `/model` actually offers ([file 02 §2.2](02-setup.md) step 4): if Fable 5 appears on your plan, the Fable rows below still apply; if not, use the right-hand column and the substitution rule under the routing table. The remaining P2–P4 prompt headers name Fable as the *ideal* — substitute per this table when it isn't available; [file 08 §D](08-claude-code-reference.md) prices the metered fallback.
+
 **Consequence — the Fable window plan (July 4–7):** planning artifacts are durable; code is regenerable. Spend the window on artifacts, not code.
 
 | Do **before July 7** with Fable 5 | Do **after July 7** with Opus 4.8 / Sonnet 5 |
 |---|---|
 | Product brainstorm (P1 — [file 04](04-product-definition.md)) | All `/speckit.implement` runs |
 | Establish tech context (P2 — file 04) | Remaining specify/clarify/plan for later features |
-| Constitution (P3 — file 04) | Everything in M2–M5 |
-| Milestone map + epic briefs (P4 — file 04) | |
-| `/speckit.specify` + `clarify` + `plan` + `analyze` for as many M1 features as the window allows, in the F-number order of [file 06](06-m1-plan.md) | |
+| Constitution (P3 — file 04) | Everything in M2–M13 |
+| Epic briefs M5–M13 (P4 — file 04) | |
+| `/speckit.specify` + `clarify` + `plan` + `analyze` for as many early work packages as the window allows, in the [file 06](06-m1-to-m4-plan.md) order | |
 
 **Standing model routing table** (used throughout; "Opus 4.8" = substitute "Sonnet 5 @ effort xhigh" if Opus isn't in your picker):
 

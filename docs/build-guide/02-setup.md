@@ -45,7 +45,7 @@ Do **not** install wrangler globally; it becomes a repo devDependency in F000 (r
 
 ### 2.3 License — decision made: AGPL-3.0
 
-You chose AGPL-3.0. It's the right fit for a public-repo SaaS: unlike GPLv3, it closes the network-use loophole — anyone who hosts a modified MicLine must publish their modifications, which is the strongest deterrent open source offers against clone-and-compete hosting. Two rules keep your future options open (not legal advice): (a) as **sole author** you may relicense or dual-license at any time — this freedom ends the moment you merge an outside contribution, so if PRs ever arrive, require a CLA or decline them; (b) the German operator duties you flagged (Impressum/DDG, VAT, AGB, Widerruf) attach to *running/selling the service*, not to the code license — they stay parked with M3 ([file 07 §9.2](07-m2-to-m5.md)).
+You chose AGPL-3.0. It's the right fit for a public-repo SaaS: unlike GPLv3, it closes the network-use loophole — anyone who hosts a modified MicLine must publish their modifications, which is the strongest deterrent open source offers against clone-and-compete hosting. Two rules keep your future options open (not legal advice): (a) as **sole author** you may relicense or dual-license at any time — this freedom ends the moment you merge an outside contribution, so if PRs ever arrive, require a CLA or decline them; (b) the German operator duties you flagged (Impressum/DDG, VAT, AGB, Widerruf) attach to *running/selling the service*, not to the code license — they stay parked with M13 ([file 07 §9.9](07-m5-to-m13.md)).
 
 Execution happens in the bootstrap commit below (the repo is empty, so you *add* the license rather than replace one).
 
@@ -101,14 +101,14 @@ MicLine is built spec-first by a solo maintainer; see docs/build-guide/ for the 
 EOF
 
 # 7) The manual-config log — start the habit NOW (this file later writes your
-#    M5 "rebuild from zero" runbook for you; one line per manual click-step)
+#    M12 "rebuild from zero" runbook for you; one line per manual click-step)
 mkdir -p docs/runbooks
 cat > docs/runbooks/manual-config-log.md <<'EOF'
 # Manual configuration log
 
 Every step performed by hand in a web UI (GitHub settings, Cloudflare dashboard) gets ONE line here,
 newest last: `YYYY-MM-DD · system · exact path · what was set`. This is the raw material for the
-future docs/runbooks/rebuild-from-zero.md (M5). If it's not logged, it can't be rebuilt.
+future docs/runbooks/rebuild-from-zero.md (M12). If it's not logged, it can't be rebuilt.
 EOF
 ```
 
@@ -117,7 +117,7 @@ EOF
 Now the **GitHub-side switches** (repo → Settings, before first push — and log each in `docs/runbooks/manual-config-log.md`):
 
 1. *Code security* → enable **Secret scanning**, **Push protection**, and **Private vulnerability reporting** (all free on public repos).
-2. *General → Features* → enable **Issues** and **Discussions** (Discussions stays quiet until the M1 launch; enabling now costs nothing).
+2. *General → Features* → enable **Issues** and **Discussions** (Discussions stays quiet until the M4 / `v0.4.0` public beta; enabling now costs nothing).
 3. *Actions → General → Fork pull request workflows* → select the strictest approval option (**require approval for all outside collaborators**). Why: a stranger's PR must never run workflows unreviewed — and note that fork PRs can't read your secrets anyway, because those live in Environments.
 4. Your **account** (not the repo): enable **2FA** on GitHub *and* Cloudflare now if you haven't — a hardware key or passkey ideally. Every control in this guide is downstream of these two accounts.
 5. Optional "do not disturb": *Settings → Moderation options → Interaction limits* → **Limit to prior contributors** (max 6 months, renewable). Strangers then can't open issues/PRs/comments while you're heads-down building; lift it at launch. This is the honest answer to "how do I stop random people interfering" — a public repo can't forbid participation permanently, but branch protection means nobody but you can ever *merge*, templates + this limit keep the noise near zero, and [file 03 §A/§G](03-github-operations.md) covers the rest.
@@ -167,7 +167,7 @@ Create this by hand (Spec Kit's `/speckit.plan` later appends stack context auto
 - Spec-driven: no feature code without a `specs/⟨NNN⟩-*/` spec+plan+tasks. If asked to code outside that flow, push back and point to the loop.
 
 ## Ground truth documents
-- Product: docs/product/product-brief.md, docs/product/feature-inventory.md, docs/product/milestone-map.md
+- Product: docs/product/product-brief.md, docs/product/decision-log.md, docs/product/feature-inventory.md (authoritative for milestones M1–M13 + target versions)
 - Engineering: docs/engineering/tech-context.md  ← read before ANY /speckit.plan or implementation work
 - Process: docs/build-guide/ (how this project is built; current position: docs/build-guide/PROGRESS.md)
 - Inputs (reference only): docs/inputs/
@@ -195,9 +195,9 @@ Good news first: you already own `micline.app` and the zone is in your Cloudflar
 | Row | When | What (exact paths) | Where |
 |---|---|---|---|
 | 1 | **End of F000** (its exit checklist tells you) | (a) **Workers Paid** ~$5/mo: Dashboard → *Compute (Workers & Pages)* → *Plans* → upgrade — required for production Durable Objects + Email Service sending. (b) **CI API token**: dash → profile icon → *My Profile* → *API Tokens* → *Create Token* → start from the "Edit Cloudflare Workers" template, then add permissions **D1: Edit** and **Workers KV Storage: Edit**; copy it once. (c) **Account ID**: shown in the dashboard sidebar of any zone. (d) **GitHub Environments**: repo → *Settings* → *Environments* → create `dev` (no protection rules) and `production` (tick **Required reviewers**, add yourself) → inside **each**, add secrets `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID`. Environment-scoped, never repo-wide, never in the tree. | dash.cloudflare.com · GitHub → Settings → Environments |
-| 2 | Before F002 (auth) | **Email Service: onboard sending domain** — Dashboard → *Compute* → *Email Service* → *Email Sending* → *Onboard Domain* → `micline.app`. Cloudflare auto-creates MX/SPF/DKIM/DMARC (on a `cf-bounce` subdomain + `_dmarc`); verification usually 5–15 min. One onboarding covers both environments (both send from `@micline.app`). | dash.cloudflare.com |
-| 3 | Before F002 | **Turnstile**: create one widget listing both hostnames `micline.app` and `dev.micline.app`; note the site key (public — a wrangler var) and secret key (→ per-environment Wrangler secret + local `.dev.vars` only). Local dev uses Turnstile's documented **test keys**. | dash.cloudflare.com → Turnstile |
-| 4 | Before F002 | Runtime secrets, per environment: `pnpm wrangler secret put SESSION_SECRET --env dev` (and `--env production`), same for `TURNSTILE_SECRET_KEY`. Generate values with `openssl rand -base64 32`; paste into the prompt, never into a file. | terminal |
+| 2 | Before F002 (M2 auth) | **Email Service: onboard sending domain** — Dashboard → *Compute* → *Email Service* → *Email Sending* → *Onboard Domain* → `micline.app`. Cloudflare auto-creates MX/SPF/DKIM/DMARC (on a `cf-bounce` subdomain + `_dmarc`); verification usually 5–15 min. One onboarding covers both environments (both send from `@micline.app`). | dash.cloudflare.com |
+| 3 | Before F006 (M4 bot defense) | **Turnstile**: create one widget listing both hostnames `micline.app` and `dev.micline.app`; note the site key (public — a wrangler var) and secret key (→ per-environment Wrangler secret + local `.dev.vars` only). Local dev uses Turnstile's documented **test keys**. | dash.cloudflare.com → Turnstile |
+| 4 | `SESSION_SECRET` before F002 (M2) · `TURNSTILE_SECRET_KEY` before F006 (M4) | Runtime secrets, per environment: `pnpm wrangler secret put SESSION_SECRET --env dev` (and `--env production`), same for `TURNSTILE_SECRET_KEY` once row 3 is done. Generate values with `openssl rand -base64 32`; paste into the prompt, never into a file. | terminal |
 
 > 💡 **Nice to know —** Azure→Cloudflare translation for your mental model: Workers ≈ Azure Functions (consumption) + Front Door edge in one · **Durable Objects ≈ Durable Entities / Service Fabric reliable actors** (single-threaded, stateful, addressable — the key concept for F003) · D1 ≈ managed serverless SQLite ("small Azure SQL") · KV ≈ Table Storage/Redis-ish eventually-consistent cache · R2 ≈ Blob Storage · Queues ≈ Storage Queues.
 
@@ -206,11 +206,11 @@ Good news first: you already own `micline.app` and the zone is in your Cloudflar
 The whole Cloudflare setup must be recreatable from nothing but this repository — say the account gets wiped. That requirement is met **without Terraform**, deliberately, through four layers:
 
 1. **`wrangler.jsonc` is the IaC** for everything a Worker owns: both environments, worker names, custom-domain routes (which auto-create DNS), Durable Object classes + migrations, D1/KV **bindings**, vars. It's committed, reviewed, and applied by the deploy workflows — declarative config, versioned in git.
-2. **Resource creation is two documented CLI commands per environment.** D1 databases and KV namespaces are *created* (not just bound) via `pnpm wrangler d1 create …` / `pnpm wrangler kv namespace create …`; F000 commits these as a copy-pasteable **resource-bootstrap block** ([file 06](06-m1-plan.md) F000 bundle 2), including where each returned id goes in `wrangler.jsonc`. Recreate = run the block, paste ids, push.
+2. **Resource creation is two documented CLI commands per environment.** D1 databases and KV namespaces are *created* (not just bound) via `pnpm wrangler d1 create …` / `pnpm wrangler kv namespace create …`; F000 commits these as a copy-pasteable **resource-bootstrap block** ([file 06](06-m1-to-m4-plan.md) F000 bundle 2), including where each returned id goes in `wrangler.jsonc`. Recreate = run the block, paste ids, push.
 3. **Secrets are never IaC** — by design (Constitution Article I). The rebuild runbook lists *which* secrets exist and the generation command (`openssl rand -base64 32`), never values.
-4. **The residual console-only clicks are exactly the §2.7 rows** (Workers Paid, API token, email-domain onboarding, Turnstile widget, GitHub Environments) — each logged in `manual-config-log.md`, which M5 compiles into `docs/runbooks/rebuild-from-zero.md` and optionally *proves* against a scratch account ([file 07 §9.4](07-m2-to-m5.md)).
+4. **The residual console-only clicks are exactly the §2.7 rows** (Workers Paid, API token, email-domain onboarding, Turnstile widget, GitHub Environments) — each logged in `manual-config-log.md`, which M12 compiles into `docs/runbooks/rebuild-from-zero.md` and optionally *proves* against a scratch account ([file 07 §9.8](07-m5-to-m13.md)).
 
-> 💡 **Nice to know —** why not Terraform/Pulumi now? Cloudflare has providers for both, but for a solo Workers-first stack they'd add a state file to protect, drift between provider and Wrangler views of the same resources, and coverage gaps on the newest products — cost without benefit while the console-only surface is five logged rows. The decision has a re-open trigger: at M5, count the runbook's remaining manual lines; if it's grown beyond a handful, evaluate the providers **then**, against their current coverage ([file 10 §C](10-whats-next.md)). Until then, wrangler.jsonc + the bootstrap block + the runbook *are* the IaC.
+> 💡 **Nice to know —** why not Terraform/Pulumi now? Cloudflare has providers for both, but for a solo Workers-first stack they'd add a state file to protect, drift between provider and Wrangler views of the same resources, and coverage gaps on the newest products — cost without benefit while the console-only surface is five logged rows. The decision has a re-open trigger: at M12, count the runbook's remaining manual lines; if it's grown beyond a handful, evaluate the providers **then**, against their current coverage ([file 10 §C](10-whats-next.md)). Until then, wrangler.jsonc + the bootstrap block + the runbook *are* the IaC.
 
 ### 2.9 Keeping the toolchain current — the recurring ritual (every milestone kickoff, and after any pause longer than a few weeks)
 

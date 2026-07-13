@@ -15,16 +15,16 @@ This file is the **design** that F000 implements and that every later feature fl
 |---|---|---|---|
 | **Issues + PR templates** | Every feature/bug starts life as an issue (feature_request.yml, bug_report.yml, config.yml pointing questions to Discussions, blank issues off); the PR template enforces purpose + `Closes #issue` + self-review checklist + an **AI-assisted change** disclosure checkbox | F000 | ✅ core |
 | **Labels** | `type:feature` `type:fix` `type:docs` `type:chore` `type:security` + `area:*` — they drive auto release notes (§D) | after Gate 4 (block below) | ✅ core |
-| **Milestones** | M1–M5 as GitHub Milestones; every issue/PR assigned to one → progress bars for free | after Gate 4 (block below) | ✅ core |
+| **Milestones** | M1–M13 as GitHub Milestones (M13 marked parked); every issue/PR assigned to one → progress bars for free | after Gate 4 (block below) | ✅ core |
 | **Projects (v2)** | ONE public board "MicLine Roadmap", grouped by Milestone, status Planned/In progress/Shipped → the public "what's planned". Turn on its **built-in workflows** (auto-add new issues, auto-set Done when the issue closes) so the board maintains itself — you never move cards | after Gate 4, via web UI (2 min), link in README | ✅ core |
-| **Releases** | Versioned changelog + the PRD deploy trigger (§D) | F000 config, first used at M1 gate | ✅ core |
+| **Releases** | Versioned changelog + the PRD deploy trigger (§D) | F000 config, first used at the M1 / `v0.1.0` gate | ✅ core |
 | **Actions** | CI quality gates + both deploy pipelines (§C) — free & unlimited on public standard runners | F000 | ✅ core |
 | **Environments** (`dev`, `production`) | Scoped secrets + required-reviewer approval on `production` — free on public repos | [file 02 §2.7](02-setup.md) row 1 | ✅ core |
 | **Branch protection / rulesets** | main requires PR + the five green checks + linear history; no force-push/deletion | end of F000 | ✅ core |
 | **Dependabot** | npm + actions updates, grouped weekly so solo-you isn't spammed | F000 | ✅ core |
 | **CodeQL** (default setup) | Static security analysis, free on public repos | F000 | ✅ core |
 | **Secret scanning + push protection + private vulnerability reporting** | The public-repo safety net + a responsible-disclosure channel (pairs with `SECURITY.md`) | §2.4 | ✅ core |
-| **Discussions** | User-facing Q&A/feedback/announcements once live — keeps Issues for actual work | enabled in §2.4, activated at M1 launch | ✅ core |
+| **Discussions** | User-facing Q&A/feedback/announcements once live — keeps Issues for actual work | enabled in §2.4, activated at the M4 / `v0.4.0` public beta | ✅ core |
 | **Deployments view** | Free byproduct of Environments: repo sidebar shows exactly what's on DEV/PRD right now | automatic | ✅ free |
 | **README badges** | CI status, latest release, license — public health signals | F000 | ✅ |
 | **CONTRIBUTING.md** | The repo's ground rules for humans *and* Claude (one concern per PR, conventional commits, translation-PR rule, CLA note) — created in bootstrap | [file 02 §2.4](02-setup.md) | ✅ core |
@@ -32,19 +32,32 @@ This file is the **design** that F000 implements and that every later feature fl
 | **Actions fork-PR approval** | Outside contributors' workflow runs wait for your click; fork PRs can never read secrets anyway (Environment-scoped) | 02 §2.4 step 3 | ✅ core |
 | CODEOWNERS | Review routing — pointless with one human | — | ✖ skip |
 | Wiki | Docs already live versioned in `docs/` | — | ✖ skip |
-| GitHub Pages | For the *product*: skip — micline.app is the site. For internal tooling dashboards (the optional Lunaria translation board, [file 06](06-m1-plan.md)): fine | optional loop | ✖ product · ◻︎ tooling |
+| GitHub Pages | For the *product*: skip — micline.app is the site. For internal tooling dashboards (the Lunaria translation board, FND-05 — [file 06](06-m1-to-m4-plan.md)): fine | FND-05 loop | ✖ product · ◻︎ tooling |
 | Sponsors | Revisit if the repo gains an audience | — | ◻︎ later |
 
 Milestone/label setup block (run once, after Gate 4 — [file 04](04-product-definition.md) points here):
 
 ```bash
-for m in "M1 Core product" "M2 Stand-out + operations" "M3 Monetization (parked)" "M4 UI overhaul" "M5 Longevity"; do
+for m in \
+  "M1 Deployable foundation (v0.1.0)" \
+  "M2 Moderator identity and event setup (v0.2.0)" \
+  "M3 Open-line event runtime (v0.3.0)" \
+  "M4 Public-beta readiness (v0.4.0)" \
+  "M5 Moderator control and data portability (v0.5.0)" \
+  "M6 Operator control plane (v0.6.0)" \
+  "M7 Emergency operations and recovery (v0.7.0)" \
+  "M8 Entitlements, invite codes and lockdown (v0.8.0)" \
+  "M9 Curated moderation (v0.9.0)" \
+  "M10 Extended event toolkit (v0.10.0)" \
+  "M11 Design system, identity and experience overhaul (v0.11.0)" \
+  "M12 Operational maturity and compliance (v1.0.0)" \
+  "M13 Monetization, if ever (parked, provisional v1.1.0)"; do
   gh api repos/{owner}/{repo}/milestones -f title="$m"; done
 for l in "type:feature#0e8a16" "type:fix#d73a4a" "type:docs#0075ca" "type:chore#cfd3d7" "type:security#b60205"; do
   gh label create "${l%%#*}" --color "${l##*#}" --force; done
 ```
 
-The five titles above are the guide's working set — if Gate 4 renamed or re-cut milestones, substitute the titles from your `milestone-map.md` here.
+The thirteen titles above are the approved P3 lineup — `docs/product/feature-inventory.md` is their authority. If a later product decision ever re-cuts milestones (a decision-log matter, not a whim), substitute the new titles here and rename the GitHub Milestones to match.
 
 **Agent-ready by construction.** You asked how the repo stays safe for AI agents — yours today, possibly others' later — without them spamming it or contributing unstructured. The answer is that the controls above already *are* the agent guardrails; no separate "AI policy" layer is needed: templates + blank-issues-off shape every entry point; **branch protection means no agent (or human) but you can ever merge**; fork-workflow approval means a stranger's agent can't even run CI without your click; CONTRIBUTING's issue-first, one-concern, and AI-disclosure rules ([file 02 §2.4](02-setup.md)) bind agents through their operators; CLAUDE.md + the constitution's Article VIII channel any spec-respecting agent into the [file 05](05-feature-loop.md) loop; gitleaks + push protection catch what any of them leak. A worked reference for this "AI-first repo" shape is **EmDash** (github.com/emdash-cms/emdash): AGENTS.md as the agent source of truth with CLAUDE.md symlinked to it, agent-readable commands, and a PR template whose AI-disclosure checkbox we adopt in F000. While you're solo, plain CLAUDE.md is the right call ([file 08 §B](08-claude-code-reference.md)); the day you open the repo, run the checklist in [file 10 §D](10-whats-next.md) — including the EmDash symlink move.
 
@@ -74,7 +87,7 @@ Consequences worth internalizing: `main` **is** DEV — merging a PR ships it to
 
 **Yes — GitHub Releases with semver tags is the right mechanism**, and better than the alternatives for your goals, because one primitive covers four needs at once: (1) an immutable, human-readable **changelog** at `github.com/…/releases` — exactly your "people can check what current features are available"; (2) the **PRD deploy trigger** — publishing a release *is* shipping, so the changelog can never lie about what's deployed; (3) **auto-generated notes** — `.github/release.yml` categorizes merged PRs by their `type:*` labels, so notes write themselves and you only humanize the summary; (4) **traceability** — every prod incident maps to "which release", every release to its PRs, every PR to its spec and issue. (What it does *not* cover is "what's planned" — that's the public Project board + Milestones from §A. Together they answer both halves of your requirement.)
 
-Semver policy for an app (simpler than library semver): **MAJOR** = a milestone completes or users must relearn something (M2 done → `v2.0.0`) · **MINOR** = new user-visible feature(s) (`v1.1.0`) · **PATCH** = fixes only (`v1.0.1`). Release cadence is yours: batch several merged features into one MINOR, or ship each — DEV absorbs merges either way; PRD moves only on publish.
+SemVer policy (decision log P3-4 — the release plan *is* the milestone plan): **each milestone completion is a releasable MicLine version with a fixed target** — `v0.1.0` (M1) through `v0.11.0` (M11), **`v1.0.0` reserved for M12**, the first production-mature release; M13's `v1.1.0` is provisional and moves if other post-`v1.0.0` releases land first. **PATCH** releases (`v0.4.1`) fix defects only, never add milestone scope. Mid-milestone increments you want on PRD before the milestone completes ship as **prereleases of its target** (`-alpha.N` / `-beta.N` / `-rc.N`, e.g. `v0.5.0-beta.1` — publishing a prerelease triggers the same PRD pipeline). Parked ideas stay unversioned until explicitly unparked. Release cadence within a milestone is yours — DEV absorbs merges either way; PRD moves only on publish; the version *names* are not.
 
 `.github/release.yml` (F000 creates it):
 
@@ -91,9 +104,9 @@ changelog:
       labels: ["type:chore", "type:docs"]
 ```
 
-Cutting a release, end to end: `gh release create v1.1.0 --generate-notes --title "…"` → GitHub drafts categorized notes → you edit in a 2-line human summary → **Publish** → `deploy-prd.yml` starts → the run pauses on the `production` environment → Actions → *Review pending deployments* → approve → migrate + deploy run → the Deployments sidebar and the release page now agree about reality.
+Cutting a release, end to end: `gh release create v0.5.0 --generate-notes --title "…"` → GitHub drafts categorized notes → you edit in a 2-line human summary → **Publish** → `deploy-prd.yml` starts → the run pauses on the `production` environment → Actions → *Review pending deployments* → approve → migrate + deploy run → the Deployments sidebar and the release page now agree about reality.
 
-**Releasing without disturbing live events (zero-downtime, by design).** Workers deploys swap code at the edge without dropping in-flight HTTP requests, so page loads and API calls never notice a release. The one real seam is **WebSockets**: a production deploy restarts the Durable Objects, so every open socket drops once and reconnects — which is exactly why F004/F005 mandate auto-reconnect + fresh-snapshot logic. That logic is a *release-safety feature*, not just venue-Wi-Fi polish; and because each event's state lives in the DO's SQLite storage, it survives the restart — nobody loses their place in line, participants see at worst a one-second "reconnecting" flicker. Two rules keep this true forever: (1) **migrations are expand-first** — add columns/tables, ship code that tolerates both shapes, remove old shapes in a later release; never a schema change that code-from-one-release-ago can't read, because clients reconnect into new code mid-event. (2) **The approval pause is your timing gate**: before clicking approve, glance at whether a big event is live (an M2 admin metric; until then, judgment + quiet hours) and wait an hour if so. A *hard* "block release while anyone is online" gate is deliberately **not** built: events can run at any hour worldwide, so such a gate degrades into either "never ship" or a habit of overriding it — the human pause + reconnect-safe design is strictly better. If you ever outgrow this, Workers supports **gradual version rollouts** (percentage-based canary) — file that under M5, not now.
+**Releasing without disturbing live events (zero-downtime, by design).** Workers deploys swap code at the edge without dropping in-flight HTTP requests, so page loads and API calls never notice a release. The one real seam is **WebSockets**: a production deploy restarts the Durable Objects, so every open socket drops once and reconnects — which is exactly why F004/F005 mandate auto-reconnect + fresh-snapshot logic. That logic is a *release-safety feature*, not just venue-Wi-Fi polish; and because each event's state lives in the DO's SQLite storage, it survives the restart — nobody loses their place in line, participants see at worst a one-second "reconnecting" flicker. Two rules keep this true forever: (1) **migrations are expand-first** — add columns/tables, ship code that tolerates both shapes, remove old shapes in a later release; never a schema change that code-from-one-release-ago can't read, because clients reconnect into new code mid-event. (2) **The approval pause is your timing gate**: before clicking approve, glance at whether a big event is live (an M6 admin metric; until then, judgment + quiet hours) and wait an hour if so. A *hard* "block release while anyone is online" gate is deliberately **not** built: events can run at any hour worldwide, so such a gate degrades into either "never ship" or a habit of overriding it — the human pause + reconnect-safe design is strictly better (and "committed events are sacred" is a product principle: releases must never kill a running event). If you ever outgrow this, Workers supports **gradual version rollouts** (percentage-based canary) — file that under M12, not now.
 
 ### E · Public visibility (what users and visitors see)
 

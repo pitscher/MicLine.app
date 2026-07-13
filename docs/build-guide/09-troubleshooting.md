@@ -22,6 +22,7 @@
 | Hit limit mid-step | [file 08 §D](08-claude-code-reference.md) safe-stop; artifacts on disk mean nothing is lost |
 | `deploy-dev.yml` red right after F000 | Expected until [file 02 §2.7](02-setup.md) row 1 is done (Cloudflare secrets in the GitHub `dev` environment) — then re-run the workflow |
 | Published a Release but PRD didn't deploy | The workflow triggers on `release: published` (not draft/created); and check whether the Actions run is *waiting* for the `production` environment approval |
+| Bad release live on PRD | Fix-forward is the designed path ([03 §B](03-github-operations.md)): fix → main → verify DEV → publish a PATCH release. If PRD is unusable and the fix isn't quick: publish a PATCH release created from the last good tag's commit (`gh release create v0.N.M --target ⟨last-good-commit⟩`) — deploy-prd ships the *tagged* commit ([06 §8.1](06-m1-to-m4-plan.md) F000 bundle 3), and expand-first migrations ([03 §D](03-github-operations.md)) keep old code safe against the newer schema. Never patch PRD by hand; log whatever you did |
 | Can't find where to approve a PRD deploy | Repo → Actions → the deploy-prd run → yellow "Review pending deployments" banner → tick `production` → Approve and deploy |
 | Plugin "not found in any marketplace" | `/plugin marketplace update claude-plugins-official` (or `add anthropics/claude-plugins-official`), retry |
 | Finder shows the repo folder as an application | Cosmetic: macOS treats any `*.app` directory as a bundle. Clone into a different local name — `gh repo clone pitscher/MicLine.app micline` ([file 02 §2.4](02-setup.md)); git and the remote are unaffected |
@@ -40,9 +41,9 @@ The repo is built so its own artifacts *are* the state — recovery is a short c
 4. **The re-entry prompt** — fresh session, strongest available model, `/effort high`:
 
    ```text
-   Read docs/build-guide/PROGRESS.md, docs/product/milestone-map.md,
-   docs/product/feature-inventory.md, the last 15 commits, all open issues
-   and PRs, and any specs/⟨NNN⟩ directory whose branch is unmerged.
+   Read docs/build-guide/PROGRESS.md, docs/product/feature-inventory.md
+   (the milestone + target-version authority), the last 15 commits, all open
+   issues and PRs, and any specs/⟨NNN⟩ directory whose branch is unmerged.
    Summarize: (1) what is live (latest release), (2) what sits on DEV but
    is unreleased, (3) any half-finished feature — propose /speckit.converge
    for it, (4) whether PROGRESS.md matches this reality (name mismatches),
@@ -56,25 +57,25 @@ The repo is built so its own artifacts *are* the state — recovery is a short c
 | Phase | You run | Model / effort | Output | Gate |
 |---|---|---|---|---|
 | Setup | [file 02](02-setup.md) steps + [file 03](03-github-operations.md) read-through | — | tooling, guardrails, spec-kit, CLAUDE.md, env design | — |
-| Brainstorm | P1 | Fable · max | product-brief, feature-inventory, decision-log | G1 |
-| Tech context | P2 | Fable · high | constitution-input, tech-context, briefs | G2 |
+| Brainstorm | P1 (+ P1.1 follow-up) | Fable · max | product-brief, feature-inventory, decision-log | G1 |
+| Tech context | P2 (tech interview) | Fable · high | constitution-input, tech-context, M1–M4 briefs | G2 |
 | Constitution | P3 (`/speckit.constitution`) | Fable · max | constitution.md | G3 |
-| Milestones | P4 | Fable · high | milestone-map, 4 epic briefs | G4 |
+| Epic briefs | P4 | Fable · high | 9 epic briefs (M5–M13) + demands check | G4 |
 | Per feature | issue → P5a→P5g (`specify→clarify→plan→checklist→tasks→analyze→[issues]→implement→converge`) | file 01 table | specs/⟨NNN⟩/*, code, PR → auto-deploys DEV | G-A/B/C/D |
 | Chore/config | [05 §7.12](05-feature-loop.md) lane: PR + `type:chore`, or UI click + manual-config-log line | Sonnet · low–med | small PR, or one log line | G-D if PR |
-| Ship to PRD | `gh release create vX.Y.Z --generate-notes` → approve `production` env in the Actions run | you | Release notes = changelog; PRD deploy | approval click |
-| Release | M1 gate list ([file 06](06-m1-plan.md)) | you | v1.0.0 live | — |
-| M2–M5 | [file 07](07-m2-to-m5.md) kickoff ritual → loop | strongest · max for kickoff | new briefs → loops | per-loop |
+| Ship to PRD | `gh release create v0.⟨N⟩.0 --generate-notes` → approve `production` env in the Actions run | you | Release notes = changelog; PRD deploy | approval click |
+| Milestone release | per-milestone gate ([file 06](06-m1-to-m4-plan.md) for M1–M4; [file 07](07-m5-to-m13.md) after) | you | the milestone's target version live (`v0.1.0`…`v1.0.0`) | — |
+| M5–M13 | [file 07](07-m5-to-m13.md) kickoff ritual → loop | strongest · max for kickoff | new briefs → loops | per-loop |
 
 ## Assumptions log (flag if wrong)
 
 1. Repo is **public**, single-repo, license **AGPL-3.0** (your decision, executed in [file 02 §2.3](02-setup.md)). Sole-author caveat: accepting outside contributions without a CLA freezes your relicensing freedom.
-2. M1 feature cut = F000–F007 as in §8; pricing page dropped from M1 (M3 parked).
-3. `users.role`, entitlement seam, audit log, soft-delete, structured logs, and centralized design tokens are pulled into M1 as forward-compat demands (per P4) even though their UIs land in M2/M4/M5.
-4. Facts pinned as of **2026-07-04** (re-checked and toolchain-corrected 2026-07-05): Fable-on-Pro window ends July 7; Sonnet 5 is the Pro default; Spec Kit v0.12.x commands/flags as documented above (0.12.4 at verification); local toolchain = Node 24 (Active LTS) + pnpm 11, pinned in-repo via `.node-version`/`packageManager`, corepack-free; Cloudflare Email Service binding/behavior as summarized in P2. All are re-verified by the workflow itself (P5c doc-fetch rule) at use time.
-5. i18n is first-class from F000 (Lingui, `en`+`de`, strings-through-macros enforced by the build); the translation *pipeline* (TMS) is a parked M2 candidate; the optional Lunaria status board ([file 06](06-m1-plan.md)) may precede it.
-6. Execution order across milestones is M1 → M2 → M4 → M5 → M3-last-if-ever.
-7. Every manual GitHub/Cloudflare click gets one line in `docs/runbooks/manual-config-log.md` — raw material for the M5 rebuild-from-zero runbook.
+2. Milestone lineup = the approved P3 set **M1–M13** with fixed target versions (`v0.1.0`…`v0.11.0`, `v1.0.0` at M12; M13 parked, provisional `v1.1.0`); `docs/product/feature-inventory.md` is the authority. The M1–M4 work-package cut (legacy F000–F007 + provisional F008–F013, [file 06 §8.0](06-m1-to-m4-plan.md)) is finalized at Gate 2. No pricing page before M13.
+3. `users.role`, entitlement seam, audit log, soft-delete, structured logs, and centralized design tokens are pulled into M1 as forward-compat demands even though their consuming UIs land in M6/M8/M11/M12.
+4. Facts pinned as of **2026-07-04** (re-checked and toolchain-corrected 2026-07-05; milestone references reconciled 2026-07-12): Fable-on-Pro window ends July 7; Sonnet 5 is the Pro default; Spec Kit v0.12.x commands/flags as documented above (0.12.4 at verification); local toolchain = Node 24 (Active LTS) + pnpm 11, pinned in-repo via `.node-version`/`packageManager`, corepack-free; Cloudflare Email Service binding/behavior as summarized in P2. All are re-verified by the workflow itself (P5c doc-fetch rule) at use time. **2026-07-13 (final-review pass):** the July-7 window has passed — route by whatever `/model` actually offers ([file 01](01-model-strategy.md) dated note); all other pinned facts unchanged.
+5. i18n is first-class from F000 (Lingui, `en`+`de`, strings-through-macros enforced by the build); the Lunaria status board is a confirmed M4 feature (FND-05, [file 06 §8.4](06-m1-to-m4-plan.md), may run earlier); the rented TMS pipeline is a confirmed M10 feature (STD-11) that replaces-or-feeds it — decided at the M10 kickoff.
+6. Execution order across milestones is sequential: M1 → M2 → … → M12; M13 runs only if ever.
+7. Every manual GitHub/Cloudflare click gets one line in `docs/runbooks/manual-config-log.md` — raw material for the M12 rebuild-from-zero runbook.
 8. Repo is `github.com/pitscher/MicLine.app`, cloned locally as `micline` (Finder-bundle workaround).
 9. DEV/PRD implemented as Wrangler environments (`--env dev` / `--env production`) with fully separate worker/D1/KV resources; shipping = publishing a GitHub Release ([file 03](03-github-operations.md)). The required-reviewer gate on `production` is free because the repo is public.
 10. This guide is published in-repo at `docs/build-guide/` with the point-in-time disclaimer in its README.
@@ -84,6 +85,6 @@ The repo is built so its own artifacts *are* the state — recovery is a short c
 14. Non-code changes follow the [file 05 §7.12](05-feature-loop.md) lanes; anything not expressible in the repo gets a `manual-config-log.md` line. Infrastructure is recreatable from the repo alone via wrangler.jsonc + F000's resource-bootstrap block + the runbook (no Terraform for now — [file 02 §2.8](02-setup.md)).
 
 
-**Next:** [10-whats-next.md](10-whats-next.md) waits for you after the M1 gate; day to day, [05-feature-loop.md](05-feature-loop.md) is where life happens. **Carry forward:** after any pause, PROGRESS.md first, then the re-entry protocol; if an assumption is wrong, fix it at the matching gate.
+**Next:** [10-whats-next.md](10-whats-next.md) waits for you after the M4 public-beta gate; day to day, [05-feature-loop.md](05-feature-loop.md) is where life happens. **Carry forward:** after any pause, PROGRESS.md first, then the re-entry protocol; if an assumption is wrong, fix it at the matching gate.
 ---
 [◀ Claude Code reference: context, cost, plugins](08-claude-code-reference.md) · [⌂ Index](README.md) · [What's next ▶](10-whats-next.md)

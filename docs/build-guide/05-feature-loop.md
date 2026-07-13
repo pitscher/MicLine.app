@@ -1,4 +1,4 @@
-> **MicLine Build Guide — Part 5 of 10** · [◀ Product definition (brainstorm → constitution → milestones)](04-product-definition.md) · [⌂ Index](README.md) · [M1 execution plan ▶](06-m1-plan.md)
+> **MicLine Build Guide — Part 5 of 10** · [◀ Product definition (interviews → tech context → constitution → epics)](04-product-definition.md) · [⌂ Index](README.md) · [M1–M4 execution plan ▶](06-m1-to-m4-plan.md)
 
 **In this part:** The loop every feature runs: 10 steps, how Claude drives GitHub for you, the three testing rings that protect `main`(=DEV), how to work each gate (incl. the reusable PG critic prompt), the post-launch bugfix lane, and the lighter lanes for config-only changes (§7.12).
 **Prerequisites:** Gates 1–4 passed · milestones + labels created ([03 §A](03-github-operations.md) block). · **Your time:** ~25 min read; thereafter each feature costs roughly 1–3 h of your attention spread across its loop. *(your active attention; Claude runtime and limit pauses excluded)*
@@ -156,9 +156,9 @@ Do NOT edit anything. Output: (1) issues ranked by severity, (2) questions a
 careful reader would ask, (3) what's missing. Be specific. No praise.
 ```
 
-You triage the findings, then hand the accepted ones to the working session ("Apply findings 1, 3 and 4: ⟨paste⟩"). Per gate type: **Gates 1–3 and A** (documents) — PG as-is. **Gate B** (plan) — PG *plus* your own DevOps read; this is the layer you're professionally qualified to judge. **Gate C** — the analyze output already *is* the critique; you only approve fixes. **Gate D** (PR) — read the diff on GitHub yourself; P5g (and optionally pr-review-toolkit) already played critic. **UI gates** (checklist steps, all of M4) — screenshot the screen (⌘⇧4), annotate it in Preview/Markup, paste the image straight into Claude Code with your change requests: annotated pixels beat paragraphs for design feedback.
+You triage the findings, then hand the accepted ones to the working session ("Apply findings 1, 3 and 4: ⟨paste⟩"). Per gate type: **Gates 1–3 and A** (documents) — PG as-is. **Gate B** (plan) — PG *plus* your own DevOps read; this is the layer you're professionally qualified to judge. **Gate C** — the analyze output already *is* the critique; you only approve fixes. **Gate D** (PR) — read the diff on GitHub yourself; P5g (and optionally pr-review-toolkit) already played critic. **UI gates** (checklist steps, all of M11) — screenshot the screen (⌘⇧4), annotate it in Preview/Markup, paste the image straight into Claude Code with your change requests: annotated pixels beat paragraphs for design feedback.
 
-> 💡 **Nice to know —** there's no Anthropic "document critique" product to install — a fresh session with PG *is* the mechanism for text artifacts. For *visual* work, however, **Claude Design** does exist (Anthropic Labs research preview since April 2026, included with Pro, and it syncs with Claude Code): it's deliberately held back until the M4 design milestone, where [file 07 §9.3](07-m2-to-m5.md) covers when and how to evaluate it. During M1–M2, the screenshot loop above is faster and costs nothing extra.
+> 💡 **Nice to know —** there's no Anthropic "document critique" product to install — a fresh session with PG *is* the mechanism for text artifacts. For *visual* work, however, **Claude Design** does exist (Anthropic Labs research preview since April 2026, included with Pro, and it syncs with Claude Code): it's deliberately held back until the M11 design milestone, where [file 07 §9.7](07-m5-to-m13.md) covers when and how to evaluate it. Until then, the screenshot loop above is faster and costs nothing extra.
 
 ### 7.11 The bugfix lane (post-launch)
 
@@ -170,15 +170,15 @@ Your question "how does Spec Kit handle changes that live only on the Cloudflare
 
 | Lane | For | How it runs | Governance |
 |---|---|---|---|
-| **Chore lane** (repo-tracked, no product behavior) | Workflow/CI tweaks, issue/PR templates, lint config, dependency bumps Dependabot missed, docs, `wrangler.jsonc` edits, repo tooling (e.g. the optional Lunaria loop, [file 06](06-m1-plan.md)) | Optional issue → branch → change → PR labeled `type:chore`/`type:docs` → Gate D → merge. No spec/plan/tasks — Article VIII governs *feature behavior*, and these have none | Still through CI + PR, **never** straight to `main`; the merge auto-deploys DEV like everything else |
-| **GitHub-side only** (no repo artifact possible) | A repo Setting, enabling a feature, Project-board config, interaction limits | Do it in the web UI (or via `gh`), then **one line in `docs/runbooks/manual-config-log.md`** | The log line *is* the artifact — it's what makes the M5 rebuild runbook true |
-| **Cloudflare-side only** (no repo artifact possible) | Dashboard switches, secret rotation (`wrangler secret put`), Turnstile widget edits, plan changes | Same: hand + log line. But first ask: *can* this live in `wrangler.jsonc` or a documented CLI line instead? If yes, that's the chore lane — the IaC posture ([file 02 §2.8](02-setup.md)) prefers it | Log line, plus the runbook check at M5 |
+| **Chore lane** (repo-tracked, no product behavior) | Workflow/CI tweaks, issue/PR templates, lint config, dependency bumps Dependabot missed, docs, `wrangler.jsonc` edits, repo tooling adjustments (the Lunaria loop itself runs as a light feature loop — [file 06 §8.4](06-m1-to-m4-plan.md)) | Optional issue → branch → change → PR labeled `type:chore`/`type:docs` → Gate D → merge. No spec/plan/tasks — Article VIII governs *feature behavior*, and these have none | Still through CI + PR, **never** straight to `main`; the merge auto-deploys DEV like everything else |
+| **GitHub-side only** (no repo artifact possible) | A repo Setting, enabling a feature, Project-board config, interaction limits | Do it in the web UI (or via `gh`), then **one line in `docs/runbooks/manual-config-log.md`** | The log line *is* the artifact — it's what makes the M12 rebuild runbook true |
+| **Cloudflare-side only** (no repo artifact possible) | Dashboard switches, secret rotation (`wrangler secret put`), Turnstile widget edits, plan changes | Same: hand + log line. But first ask: *can* this live in `wrangler.jsonc` or a documented CLI line instead? If yes, that's the chore lane — the IaC posture ([file 02 §2.8](02-setup.md)) prefers it | Log line, plus the runbook check at M12 |
 
 **Mixed changes** — a feature whose plan requires console clicks (F000 and F002 are the models) — need no special lane: the spec/plan covers the repo parts, and the manual steps become explicit **exit-checklist items**, each ending in a log line, so `/speckit.implement` never silently "does" something only you can do. If a chore starts sprouting acceptance criteria or user-visible behavior mid-flight, stop: it just became a feature — brief + full loop.
 
 ---
 
 
-**Next:** [06-m1-plan.md](06-m1-plan.md) — run this loop on F000. **Carry forward:** the PG pattern; fresh session per step; you steer specs and plans, not diffs.
+**Next:** [06-m1-to-m4-plan.md](06-m1-to-m4-plan.md) — run this loop on F000. **Carry forward:** the PG pattern; fresh session per step; you steer specs and plans, not diffs.
 ---
-[◀ Product definition (brainstorm → constitution → milestones)](04-product-definition.md) · [⌂ Index](README.md) · [M1 execution plan ▶](06-m1-plan.md)
+[◀ Product definition (interviews → tech context → constitution → epics)](04-product-definition.md) · [⌂ Index](README.md) · [M1–M4 execution plan ▶](06-m1-to-m4-plan.md)
