@@ -2,7 +2,7 @@
 
 Every step performed by hand in a web UI (GitHub settings, Cloudflare dashboard) gets ONE line here,
 newest last: `YYYY-MM-DD · system · exact path · what was set`. This is the raw material for the
-future docs/runbooks/rebuild-from-zero.md (M5). If it's not logged, it can't be rebuilt.
+future docs/runbooks/rebuild-from-zero.md (M12). If it's not logged, it can't be rebuilt.
 
 `2026-07-05 · GitHub repo · Settings → Advanced Security → Secret Protection · click "Enable" (enabled by default)`
 
