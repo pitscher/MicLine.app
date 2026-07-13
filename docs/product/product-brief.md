@@ -1,6 +1,6 @@
 # MicLine.app — Product Brief
 
-> Provenance: P1 product-definition interview, 2026-07-06 · **P2 final product interview, 2026-07-12** (operator + Claude, per docs/build-guide/04-product-definition.md) · **P3 milestone restructuring and release versioning, 2026-07-12**. Status: **Revision 3 — milestone- and release-aligned product foundation for the tech interview**. Companion documents: [feature-inventory.md](feature-inventory.md), [decision-log.md](decision-log.md). Technical decisions live in docs/inputs/tech-decisions.md until the tech interview supersedes it with docs/engineering/tech-context.md. Document language rule: English throughout; German terms appear only in the term sheet.
+> Provenance: P1 product-definition interview, 2026-07-06 · **P2 final product interview, 2026-07-12** (operator + Claude, per docs/build-guide/04-product-definition.md) · **P3 milestone restructuring and release versioning, 2026-07-12** · **FR final pre-tech-interview review, 2026-07-13** (skeptical senior-product review pass; findings, operator decisions, and corrections recorded in decision-log §FR). Status: **Revision 4 — final-reviewed product foundation for the tech interview**. Companion documents: [feature-inventory.md](feature-inventory.md), [decision-log.md](decision-log.md). Technical decisions live in docs/inputs/tech-decisions.md until the tech interview supersedes it with docs/engineering/tech-context.md. Document language rule: English throughout; German terms appear only in the term sheet.
 
 ## One-liner
 
@@ -15,7 +15,7 @@ MicLine's identity is the **live mic line**, not another Q&A board. The queue or
 ### Pillars, in order
 
 1. **The line** — a fair, transparent "everyone sees who's next". This is a category claim no incumbent (Slido, Mentimeter, Pigeonhole, Vevox) makes. First come, first served, positions visible to all.
-2. **Zero friction** — QR scan, no account, no app install, no cookie banner. Participants are never asked for personal data.
+2. **Zero friction** — QR scan, no account, no app install, no cookie banner. Participants are never asked for personal data to watch; the sole exception on the way to the mic is the real-names name prompt before a first submission (stored only in event content, dies with it).
 3. **Privacy** — GDPR-clean by construction, EU-based operator, no trackers on any surface, radical data minimalism with short, honest retention.
 
 **Simplicity** is a design principle rather than a marketing pillar: MicLine does one job — no polls, quizzes, word clouds, or slide decks, ever.
@@ -51,7 +51,7 @@ Open source is **not** a marketing pillar: the running SaaS must not link or ref
 
 ### Event lifecycle
 
-- A moderator creates an event **up to 48 h ahead** (configurable platform value). Until its start time it is **Scheduled**: visible only to the moderator, freely configurable.
+- A moderator creates an event **up to 14 days ahead** (operator-configurable platform value; default raised from 48 h by FR-3). Until its start time it is **Scheduled**: visible only to the moderator, freely configurable.
 - **Start and end date+time are required.** At start time the event opens automatically: participants can join, the line is live.
 - Start and end are each adjustable within **±24 h of their originally configured values** — **any number of times within that window** (no count cap; the anchor to original values prevents drift). Rescheduling is a rate-limited action. Bigger moves require delete + recreate (anti-abuse guardrail; note: recreation mints a new join code).
 - The moderator ends the event manually; a forgotten event **auto-ends at end_time + 24 h**. A live event is never killed by the platform for policy/config reasons — *committed events are sacred* (sole exceptions: the moderator's own end action, an admin force-end, the admin emergency stop; self-service account deletion requires ending a running event first).
@@ -76,7 +76,7 @@ Open source is **not** a marketing pillar: the running SaaS must not link or ref
 - **Pool visibility is a per-event creation setting:** a hidden pool auto-disables upvotes; a visible pool lets the moderator enable/disable upvotes. Both freeze at start. The owner **always** sees their own "in pool" chip regardless of visibility.
 - Participant-side pool ordering: most-voted first when upvotes are on, newest first when off. The moderator's console sorts the pool freely.
 - **Upvotes advise the human, never reorder the line.** Pool items only; nameless in both name modes; deduped per session (best-effort). Line items carry no vote UI and display no counts on participant surfaces or the board (the console may show counts to the moderator). No votes anywhere in open mode.
-- **Review mode** (available in either line mode): submissions are held privately until approved. Open+review: approval **appends to the line at approval time** (approval order = line order; never retro-insertion above committed items). Curated+review: approval releases into the pool. Declined submissions: owner sees an honest "declined" chip with an **optional short moderator reason**; nobody else ever sees the item existed; declines are reversible until event end; retained until purge. With a hidden pool, review's participant-facing value is the explicit decline flow.
+- **Review mode** (available in either line mode): submissions are held privately until approved. Open+review: approval **appends to the line at approval time** (approval order = line order; never retro-insertion above committed items). Curated+review: approval releases into the pool. Declined submissions: owner sees an honest "declined" chip with an **optional short moderator reason**; never shown to other participants or the board (the moderator — and co-moderators — see it, and every export contains it); declines are reversible until event end; retained until purge. With a hidden pool, review's participant-facing value is the explicit decline flow.
 - **Duplicate merge** (pool-only): the moderator selects several pool items and picks a **primary**; the primary's text represents the group with a small "×N" badge (the badge travels with the primary into the line); merged items fold away publicly, their owners' chips show "merged" and inherit the primary's outcome; votes combine with one-voice-per-participant dedupe (best-effort); unmerge is possible until the group is consumed. When a merged question is called, the **primary's submitter** gets the mic. No merge machinery in open mode (the review tray declines duplicates there).
 - **Per-event "max open submissions per participant"** in curated mode (counts active pool+line items; answered/skipped/withdrawn/declined/merged all free the slot). Default and range at M9 kickoff.
 - **Co-moderators** (gateable): event-scoped helpers for review/curation. No hard dependency with review mode — solo review stays possible, with a consequence hint at creation ("on = you're the bottleneck").
@@ -107,7 +107,7 @@ Upvotes (M9 / `v0.9.0`) are nameless in both modes.
 ### Accounts (moderators only)
 
 - **Magic-link auth**: email is an identifier, never a credential. One email, one click, ~30-day session; unlimited events within it. No passwords, no profiles.
-- Stored: email + optional display name + country (from Cloudflare request geolocation, for anonymous aggregate stats only). Nothing else, ever.
+- Stored: email + optional display name + country (from Cloudflare request geolocation, for anonymous aggregate stats only) + the persisted console language — plus unavoidable operational state (session, role, soft-delete marker; from M8 / `v0.8.0` the invite-code wallet and grants). No profiles, no tracking data, nothing else.
 - **Self-service account deletion from the first public release, M4 / `v0.4.0`.** If a live event is running, the flow requires ending it first (one tap away); scheduled events are listed in a quantified consequence preview and die with the account. The deletion UI is self-sufficiently final: loading state → explicit "all your data has been purged" confirmation. **No confirmation email follows** — the UI is the confirmation.
 - Auto-purge after **1 month of inactivity** (no warning email — anti-spam stance) unless the account has a future event scheduled or a non-empty invite-code wallet. The auth screen carries a hint for returning-but-purged moderators.
 - **No email-change flow** in current scope: delete + re-register (parked; the non-empty-wallet case is the known pain point).
@@ -137,7 +137,7 @@ Upvotes (M9 / `v0.9.0`) are nameless in both modes.
 | # | Trigger | Recipient | Milestone | Target version |
 |---|---|---|---|---:|
 | E-1 | Magic-link login request | Moderator | M2 | `v0.2.0` |
-| E-2 | Feedback-box submission (delivery) | Operator (FEEDBACK_EMAIL) | M4 | `v0.4.0` |
+| E-2 | Moderator feedback-box submission (delivery) | Operator (FEEDBACK_EMAIL) | M4 | `v0.4.0` |
 | E-3 | Admin force-ends an event (+ optional admin message) | Affected moderator | M6 | `v0.6.0` |
 | E-4 | Emergency stop activated (reason, implications, next steps; announces E-4b) | Moderators with running / scheduled / recently-ended events | M7 | `v0.7.0` |
 | E-4b | Emergency export delivery (all formats, ~24 h link, not-the-normal-process note, responsibility line) | Same cohort with exportable content | M7 | `v0.7.0` |
@@ -165,9 +165,9 @@ Upvotes (M9 / `v0.9.0`) are nameless in both modes.
 
 | Value | Baseline | Raisable to | Note |
 |---|---|---|---|
-| Participants per event | 100 | 1,000 (platform ceiling) | design/load-test envelope ~500; revisit after tech phase |
+| Participants per event | 100 | 1,000 (platform ceiling) | counted as **concurrent presence** — active sessions; leave/disconnect frees the slot (staleness semantics at tech interview; FR-2); design/load-test envelope ~500; revisit after tech phase |
 | Events per moderator | 1 active + 1 planned | via invite code | ended events unlimited (history purges anyway) |
-| Create-ahead window | 48 h | — | configurable platform value |
+| Create-ahead window | 14 days | — | operator-configurable platform value (FR-3; raised from 48 h) |
 | Reschedule window | ±24 h around original start/end | — | unlimited count within window; rate-limited action; beyond: delete + recreate |
 | Question length (platform) | 1–280 chars | — | trim, collapse whitespace, strip control chars |
 | Question length (per event) | within 1–280 | — | moderator-configurable min/max at creation |
@@ -189,7 +189,7 @@ All such values live in a central, code-change-free platform configuration (mech
 | Moderator session | ~30 days |
 | Event content (questions, names/pseudonyms, decline reasons, flags) | until **3 days after event end**, then purged (in-product countdown; no reminder email; purge jobs pause during an emergency stop, overdue purges run 24 h after resume) |
 | Event row + stats | with the account |
-| Moderator account (email, display name, country) | until self-deletion or **1 month inactivity** (carve-outs: future event scheduled; non-empty wallet) |
+| Moderator account (email, display name, country, console language) | until self-deletion or **1 month inactivity** (carve-outs: future event scheduled; non-empty wallet) |
 | Anonymous aggregates (counts, durations, country) | indefinitely — unlinkable by construction |
 | Audit log (privileged admin/entitlement actions only — never moderator in-event actions) | 12 months |
 | Participant data | none beyond the anonymous session cookie (which also carries participant UI language and per-device display preferences); nothing to delete |
@@ -286,7 +286,7 @@ Each milestone completion becomes a releasable MicLine version. Development buil
 
 Security, privacy, data minimization, accessibility, localization, state-machine correctness, and the spec→plan→tasks loop are continuous acceptance criteria, not later hardening work. The architectural entitlement seam is anticipated before M8 even though the user-facing entitlement system ships there. Baseline retention enforcement ships before the public beta in M4; M12 verifies and operationalizes it rather than introducing it. Event branding has one implementation home in M11.
 
-References to F000–F007 and `docs/build-guide/06-m1-plan.md` remain useful provenance, but that former single-M1 bundle is now distributed across M1–M4. Until the build guide is regenerated or reconciled after the tech interview, the Feature Inventory is the authority for milestone ownership and target versions.
+References to F000–F007 remain useful provenance: that former single-M1 bundle is now distributed across M1–M4, and the build guide was reconciled to this lineup on 2026-07-12 (its execution plan now lives at `docs/build-guide/06-m1-to-m4-plan.md`, with F000–F007 kept as engineering work-package IDs mapped onto M1–M4). The Feature Inventory remains the authority for milestone ownership and target versions; the build guide defers to it.
 
 ## Final product boundaries
 

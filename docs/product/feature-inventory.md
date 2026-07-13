@@ -1,6 +1,6 @@
 # MicLine.app — Feature Inventory
 
-> Provenance: P1 interview 2026-07-06 · **P2 final product interview 2026-07-12** · **P3 milestone restructuring and release versioning 2026-07-12**. Status values: **confirmed** (explicit interview decision) · **assumed** (Claude's call under interview rules, veto anytime) · **open** (deferred, owner noted) · **parked** (deliberately shelved) · **rejected** (decided against; kept for context). Current delivery order: **M1 → M2 → M3 → M4 → M5 → M6 → M7 → M8 → M9 → M10 → M11 → M12 → M13-if-ever**. Stable feature IDs and all P1/P2 scope are preserved; P3 changes sequencing, milestone ownership, and target versions only.
+> Provenance: P1 interview 2026-07-06 · **P2 final product interview 2026-07-12** · **P3 milestone restructuring and release versioning 2026-07-12** · **FR final pre-tech-interview review 2026-07-13** (decision-log §FR: public-beta risk acceptance, concurrent-presence capacity model, 14-day create-ahead default, precision corrections). Status values: **confirmed** (explicit interview decision) · **assumed** (Claude's call under interview rules, veto anytime) · **open** (deferred, owner noted) · **parked** (deliberately shelved) · **rejected** (decided against; kept for context). Current delivery order: **M1 → M2 → M3 → M4 → M5 → M6 → M7 → M8 → M9 → M10 → M11 → M12 → M13-if-ever**. Stable feature IDs and all P1/P2 scope are preserved; P3 changes sequencing, milestone ownership, and target versions only.
 
 ## Release-version policy
 
@@ -32,7 +32,7 @@ Each completed milestone is a releasable MicLine version. Development builds may
 
 ### Legacy build-plan cross-references
 
-References to F000–F007 and `docs/build-guide/06-m1-plan.md` are retained as provenance. That legacy plan described the former single-M1 implementation bundle, which is now distributed across M1–M4. Until regenerated or reconciled after the tech interview, it must not be treated as the current milestone authority; this inventory controls product scope and sequence.
+References to F000–F007 are retained as provenance. That legacy plan described the former single-M1 implementation bundle, which is now distributed across M1–M4. The build guide was reconciled to the P3 lineup on 2026-07-12: its execution plan now lives at `docs/build-guide/06-m1-to-m4-plan.md`, keeping F000–F007 as engineering work-package IDs mapped onto M1–M4. This inventory controls product scope and sequence; the build guide defers to it for milestone ownership and target versions.
 
 ## M1 — Deployable foundation
 
@@ -58,7 +58,7 @@ A moderator can authenticate, maintain the deliberately minimal account, create 
 |---|---|---|---|---:|---|
 | AUTH-01 | Magic-link auth | Email-only moderator auth (E-1): hashed single-use token (15 min), ~30-day session cookie, anti-enumeration; banned addresses silently stop receiving links (F002). | M2 | `v0.2.0` | confirmed |
 | AUTH-02 | Durable-minimal accounts | Stored: email, optional display name, country (CF geolocation, aggregates only), persisted console language; nothing else. | M2 | `v0.2.0` | confirmed |
-| EVT-01 | Event creation | Create up to 48 h ahead (configurable); required: title, start & end date+time; optional: private description, primer (+ acknowledgment mode + custom confirmation statement); settings: language, name mode, profanity filter, per-event min/max question length within platform 1–280 (F001). | M2 | `v0.2.0` | confirmed |
+| EVT-01 | Event creation | Create up to 14 days ahead (operator-configurable platform value; FR-3); required: title, start & end date+time; optional: private description, primer (+ acknowledgment mode + custom confirmation statement); settings: language, name mode, profanity filter, per-event min/max question length within platform 1–280 (F001). | M2 | `v0.2.0` | confirmed |
 | EVT-02 | Event scheduling lifecycle | Scheduled → auto-opens at start → ended manually or auto-end at end_time+24 h; start/end each adjustable ±24 h around original values, unlimited count within window (rate-limited action); bigger moves = delete + recreate (new join code). | M2 | `v0.2.0` | confirmed |
 | EVT-03 | Settings freeze | Event settings immutable once live (scheduling fields keep their ±24 h window; live controls — announcements, and from M5 / `v0.5.0` intake close / hide board / hide-message — are not settings). | M2 | `v0.2.0` | confirmed |
 | EVT-04 | Join codes & share panel | 6-char Crockford code, `/e/⟨CODE⟩` URL, QR; share panel in console (F001). | M2 | `v0.2.0` | confirmed |
@@ -85,7 +85,7 @@ MicLine can run a complete internal FIFO event: participants join without a gate
 | PRT-03 | Name modes | Per-event: Nicknames (automatic, localized funny pseudonyms, default) or Real names (required before first submission, locked for the event, unverified). | M3 | `v0.3.0` | confirmed |
 | PRT-04 | Name confirm & leave/rejoin | Explicit "you'll appear as ⟨Name⟩" confirm; Leave-event resets session (questions keep old attribution; Turnstile re-runs). | M3 | `v0.3.0` | confirmed |
 | PRT-05 | Pre-join primer & acknowledgment | Optional plain-text briefing before joining; per-event choice: skippable vs required explicit confirmation with moderator-customizable statement (plain text, capped; localized default "I understand."). Acknowledgment is a gate, not a record — nothing stored per participant, not legal proof. | M3 | `v0.3.0` | confirmed |
-| PRT-06 | Join-state screens | Lobby ("starts at ⟨time⟩"), event-full (no waitlist), ended, unknown/expired code. | M3 | `v0.3.0` | confirmed |
+| PRT-06 | Join-state screens | Lobby ("starts at ⟨time⟩"), event-full (no waitlist; the cap counts **concurrent presence** — active sessions, leave/disconnect frees the slot — FR-2), ended, unknown/expired code. | M3 | `v0.3.0` | confirmed |
 | PRT-07 | Own-question status | Chips: in line #N / answered / skipped (M9 / `v0.9.0` adds: in pool / declined / merged); withdrawn disappears. | M3 | `v0.3.0` | confirmed |
 | BRD-01 | Projector board (minimal) | Read-only big-screen route behind its own unguessable capability URL (never exposes event ID or join code): QR + code corner, Now/Up-next huge, top of line, announcement area, fullscreen toggle; one layout, no settings; never shows skipped items, timestamps, or vote counts. | M3 | `v0.3.0` | confirmed |
 | MOD-01 | Moderator console | One phone-capable screen: header (title, share panel, live participant count, end button), the line with actions, announcement composer (F004). | M3 | `v0.3.0` | confirmed |
@@ -99,6 +99,8 @@ MicLine can run a complete internal FIFO event: participants join without a gate
 
 The internal alpha becomes responsible to expose to real users. Retention and deletion are enforced, abuse controls and failure states are complete, English and German are production-ready, and the public/legal and operational baseline exists.
 
+> **FR risk acceptance (2026-07-13, FR-1):** the public beta knowingly opens without the event-count cap (enforcement stays at ENT-02 / M8) and without an operator lever that ends a running event (force-end/ban arrive M6, emergency stop M7). Levers during this window: rate limits (SAFE-02), the creation kill-switch and maintenance banner (FND-04).
+
 | id | name | description | milestone | target version | status |
 |---|---|---|---|---:|---|
 | FND-05 | Translation status tracking | Lunaria dashboard/PR-comments loop (EmDash pattern), non-gating tooling loop after F001. | M4 | `v0.4.0` | confirmed |
@@ -108,7 +110,7 @@ The internal alpha becomes responsible to expose to real users. Retention and de
 | AUTH-03 | Self-service account deletion | "Delete my account and data" from the first public release, M4 / `v0.4.0` (GDPR Art. 17). Running event must be ended first; scheduled events listed in quantified consequence preview; UI is self-sufficiently final ("all your data has been purged"), no confirmation email. | M4 | `v0.4.0` | confirmed |
 | AUTH-04 | Inactivity auto-purge | Account purged after 1 month inactivity, no warning email; carve-outs: future event scheduled, plus a non-empty wallet once M8 / `v0.8.0` ships; re-registration hint on auth screen. | M4 | `v0.4.0` | confirmed |
 | PRT-08 | Failure states & state-takeover | Canonical closed list: delayed save, failed save + retry, "reconnecting — the line continues" banner, stale-board chip, event full, unknown code. Races resolve into the new canonical state with calm feedback, never raw errors. Console set: reconnecting, action-failed-retry, admin-ended notice, emergency notice. Tone: calm, honest, no error codes on participant surfaces. Device-agnostic ("participant surface", not phone). | M4 | `v0.4.0` | confirmed |
-| MOD-04 | Feedback funnel (minimal) | Optional post-event feedback box; delivered by email (E-2) to FEEDBACK_EMAIL (Wrangler secret in M4 / `v0.4.0`; admin-UI setting in M6 / `v0.6.0`). | M4 | `v0.4.0` | confirmed |
+| MOD-04 | Feedback funnel (minimal) | Optional post-event feedback box for the moderator (moderator-only surface; FR-4); delivered by email (E-2) to FEEDBACK_EMAIL (Wrangler secret in M4 / `v0.4.0`; admin-UI setting in M6 / `v0.6.0`). | M4 | `v0.4.0` | confirmed |
 | SAFE-01 | Bot defense | Invisible Turnstile on: auth request, event creation, first submission per participant session. | M4 | `v0.4.0` | confirmed |
 | SAFE-02 | Rate limiting | Per-action limits keyed ip/uid/sid (Workers binding or KV fallback); rescheduling is a rate-limited action. | M4 | `v0.4.0` | confirmed |
 | MKT-01 | Landing page | Moderator-pitch hero (line pillar), 3-step how-it-works, create CTA, prominent join-code box, honest privacy block, visual line mock; clean — depth in sub-pages; no pricing, no repo link, no SLA disclaimers on the hero. | M4 | `v0.4.0` | confirmed |
@@ -168,7 +170,7 @@ The entitlement engine, vouchers, wallet, capability and limit grants, revocatio
 | id | name | description | milestone | target version | status |
 |---|---|---|---|---:|---|
 | ENT-01 | Entitlement engine | Single `can(actor, capability, ctx)` seam; grants table with source (baseline/invite-code/admin/billing-future), scope, expiry, revocation; audit-logged. | M8 | `v0.8.0` | confirmed |
-| ENT-02 | Free baseline | All features free (lockdown off); limits 100 participants/event, 1 active + 1 planned event. Never-gated: core Q&A mechanics + all P2 moderator tools (intake close, hide board, regenerate board link, pool settings/limits, decline reasons, follow-up flag, filters/search/bulk, recap/export). Gateable: co-mods, branding, vanity slugs, limit raises, registration. | M8 | `v0.8.0` | confirmed |
+| ENT-02 | Free baseline | All features free (lockdown off); limits 100 participants/event, 1 active + 1 planned event. Never-gated: core Q&A mechanics + all P2 moderator tools (intake close, hide board, regenerate board link, pool settings/limits, decline reasons, follow-up flag, filters/search/bulk, recap/export). Gateable: co-mods, branding, vanity slugs, limit raises, registration. Cap enforcement begins here — the earlier public-beta window without it is an accepted risk (FR-1). | M8 | `v0.8.0` | confirmed |
 | ENT-03 | Invite codes (vouchers) | Bundles {may_register? + grants + limit raises + validity} redeemed into account wallet; multi-use via max_redemptions; two clocks (redeem-by, grant validity); god-voucher preset; design details (format, QR, custom message, generation UX, clock defaults) at M8 kickoff. | M8 | `v0.8.0` | confirmed |
 | ENT-04 | Revocation semantics | Kill unredeemed code or revoke redeemed grant; effect at next gated act; never touches running events; rescheduling committed events is never a gated act. | M8 | `v0.8.0` | confirmed |
 | ENT-05 | Invite-only mode (lockdown) | Gates new registration and new event creation (incl. duplicate-event) behind invite codes; existing events run/start normally; doubles as cost brake. | M8 | `v0.8.0` | confirmed |
@@ -185,7 +187,7 @@ MicLine gains the curated pool and line, upvotes, review and decline flows, dupl
 | STD-01 | Curated line mode | Pool → moderator selects/orders/drag-reorders into the line; return-to-pool; skip-stub everywhere; duplicate merge (pool-only: moderator picks primary, ×N badge travels with it, merged items inherit primary's outcome, votes combine deduped, unmerge until consumed, primary's submitter gets the mic). Pool visibility per-event setting (hidden auto-disables upvotes); owner always sees own chip. Per-event max open submissions per participant (pool+line; terminal states free the slot). Defaults (pool visible, upvotes on) assumed — finalize at M9 kickoff. | M9 | `v0.9.0` | confirmed |
 | STD-02 | Upvotes + pool sort | Participants upvote pool questions (nameless, session-deduped best-effort); participant pool sort votes-desc (or newest when off); votes advise curation, never reorder the line; no vote UI/counts on line items on participant surfaces or board; requires visible pool. | M9 | `v0.9.0` | confirmed |
 | STD-03 | Review mode (pre-moderation) | Submissions need approval before becoming public, in either mode; open+review appends at approval time (approval order = line order); curated+review releases into pool; declined = owner-visible chip + optional short moderator reason (plain text, capped, inert), reversible until event end, never public, retained until purge; consequence hints at creation; no co-mod dependency. | M9 | `v0.9.0` | confirmed |
-| STD-04 | Co-moderators | Invite helpers to review/curate simultaneously (event-scoped role); gateable; invitations link-based (no platform email) — mechanism at M9 kickoff. | M9 | `v0.9.0` | confirmed |
+| STD-04 | Co-moderators | Invite helpers to review/curate simultaneously (event-scoped role); gateable; invitations link-based (no platform email) — mechanism incl. link revocation and a co-moderator powers matrix at M9 kickoff (FR-5). | M9 | `v0.9.0` | confirmed |
 | MOD-09 | Console filters, search & bulk verbs | Minimal set: pool sort (votes/newest/oldest), review-tray views (pending/approved/declined), flagged-only view, per-submitter counts + submission timestamps (console-only), text search over pool/line/declined, multi-select with exactly two bulk verbs (merge, bulk decline — no bulk-approve). Full cross-surface filter matrix (incl. filter-by-submitter, participant/board display filters) at M9 kickoff with transparency guardrail: full line is always the default view; the board keeps one canonical layout. | M9 | `v0.9.0` | confirmed |
 | PRT-09 | Per-viewer pool collapse | Participants and board viewers can collapse/expand the pool zone per device (persisted until event end); the line itself is never hideable; defaults (direction: pool collapsed on the board) at M9 kickoff. | M9 | `v0.9.0` | confirmed |
 
@@ -231,7 +233,7 @@ Measured observability, cost modelling, budget alerts, load testing, operational
 | OPS-02 | Cost model | Per-event/per-month formulas from measured usage; feeds admin € projection; ~€20/month busy-month target; alert-only budget threshold (notify, never auto-flip). | M12 | `v1.0.0` | confirmed |
 | OPS-04 | Constitution audit & load test | Operator-burden audit → refactor backlog; scripted-client load test of the DO path (~500 participants); degraded modes designed only after this evidence. | M12 | `v1.0.0` | confirmed |
 | OPS-05 | Rebuild-from-zero runbook | From nothing but the repo to a live PRD; re-opens the IaC question with data; documents Cloudflare-native emergency levers (WAF, Turnstile mode escalation) and the admin-wall reset procedure. | M12 | `v1.0.0` | confirmed |
-| OPS-06 | Compliance pack | Lightweight ROPA, breach-response runbook (72 h duty, delete-all-data as last resort, Art.-34 notification procedure — moderators are the only stored data subjects — via admin export + external send), Cloudflare DPA check. | M12 | `v1.0.0` | confirmed |
+| OPS-06 | Compliance pack | Lightweight ROPA, breach-response runbook (72 h duty, delete-all-data as last resort, Art.-34 notification procedure via admin export + external send — moderator accounts are the only *durable* data subjects, but transient event content within its 3-day window can contain participant personal data (real-names mode) and is in breach-assessment scope — FR-4), Cloudflare DPA check. | M12 | `v1.0.0` | confirmed |
 
 ## M13 — Monetization, if ever (PARKED)
 
@@ -258,6 +260,8 @@ These features have one canonical introduction milestone and stable ID, while la
 | ADM-07 | M6 / `v0.6.0` | Invite-only-mode control activates in M8 / `v0.8.0` |
 | ADM-11 | M6 / `v0.6.0` | Matrix extends to emergency controls in M7 / `v0.7.0` and entitlement controls in M8 / `v0.8.0` |
 | OPS-03 | M4 / `v0.4.0` | Emergency scheduling behavior in M7 / `v0.7.0`; verification and monitoring audit in M12 / `v1.0.0` |
+| AUTH-01 | M2 / `v0.2.0` | Silent-ban behavior becomes operative with ADM-03 ban tooling in M6 / `v0.6.0` (FR-4) |
+| PRT-04 | M3 / `v0.3.0` | Turnstile re-run on leave/rejoin activates with SAFE-01 in M4 / `v0.4.0` (FR-4) |
 
 ## Parked ideas (no milestone or target version; each with an unparking condition)
 
