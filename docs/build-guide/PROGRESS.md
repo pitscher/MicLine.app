@@ -33,7 +33,7 @@
 - [x] Build guide reconciled to the M1–M13 lineup (2026-07-12)
 - [x] FR final pre-tech-interview review (2026-07-13) — skeptical senior-product pass; risk acceptances, capacity model, 14-day create-ahead default + truthfulness corrections applied (decision-log §FR)
 - [x] Build-guide critical review (2026-07-13) — same pass over docs/build-guide; FR-sync (files 04/06/07), stale-window note (01/09), rollback row + tag-deploy rule (09/06), M4-gate FR-6 step (06 + this file)
-- [ ] **Gate 1 (final):** read all three product artifacts end-to-end post-revamp → commit `docs: product definition v1 finalized`
+- [x] **Gate 1 (final):** read all three product artifacts end-to-end post-revamp → commit `docs: product definition v1 finalized`
 - [ ] P2 tech interview → **Gate 2** passed → committed *(tech-decisions.md is provenance-only from here; work-package cut F000–F013 finalized here)*
 - [ ] P3 constitution → **Gate 3** passed → committed
 - [ ] P4 epic briefs M5–M13 + forward-compat demands → **Gate 4** passed → committed
