@@ -685,7 +685,7 @@ I read the created `docs/engineering/tech-context.md`, took notes and used the p
 ```text
 You are a senior SaaS and Cloudflare expert. Scan this repo to fully understand the product MicLine.app
 Important sections of the docs are:
-- docs/build-guide (we are currently at 04-product-definition.md -> §4 Phase 2 — Establish the tech context (the tech interview)
+- docs/build-guide (we are currently at 04-product-definition.md -> §4 Phase 2 — Establish the tech context (the tech interview))
 - docs/product/*
 - docs/engineering/tech-context.md
 
@@ -719,7 +719,7 @@ I instructed Claude code and Fable 5 with max effort to evaluate some more featu
 ```text
 You are a senior SaaS and Cloudflare expert. Scan this repo to fully understand the product MicLine.app
 Important sections of the docs are:
-- docs/build-guide (we are currently at 04-product-definition.md -> §4 Phase 2 — Establish the tech context (the tech interview)
+- docs/build-guide (we are currently at 04-product-definition.md -> §4 Phase 2 — Establish the tech context (the tech interview))
 - docs/product/*
 - docs/engineering/tech-context.md
 
@@ -749,6 +749,1957 @@ At the end of this review you carefully scan your work once more to check if any
 ```
 
 Outcomes (2026-07-15, every note operator-evaluated — product record: decision-log **§AF**; technical record: tech-context **§24**): all ten notes accepted, two of them as amendments to previously closed decisions. **AF-7** the admin wall becomes dual-mode (`ADMIN_PASSWORD` quick-start with a signed 5-day session, or Cloudflare Access — recommended and always winning; fails closed with setup instructions when unconfigured) **and the wall is now the admin auth**: the operator's review surfaced that magic-link login has no place on `/admin` — the admin is not a product user, `users.role` was dropped, and the control plane no longer depends on MicLine's own email pipeline (amends OQ1's 2026-07-14 closure and D1/T8-1). **AF-9** self-hosting ratified as a repo-side path at M12 (new **OPS-07**: Deploy-to-Cloudflare button + C3 `--template` scaffold — deliberately no own npm package — + SELF_HOSTING guide; forward-compat demands binding on M1–M4). Further: **AF-8** `/health` endpoint (new **FND-07**, M1/F008, deploy-time var); **AF-2** voucher email lock (locked ⇒ single-use, M8); **AF-3** three-store admin-stats model with the keyless `ops_counters` catalog written from each signal's first milestone; **AF-5/AF-6** SEO checklist + default-deny `X-Robots-Tag` indexing (F000 baseline, F007 allowlists marketing on PRD); **AF-1** hardening addenda (export injection rules for M5, body-size caps, CSRF stance, bidi strip, Referrer-Policy); **AF-4** the intake funnel ([file 05 §7.0](05-feature-loop.md)); **AF-10** the documentation map at `docs/README.md`. The product brief is now **Revision 5**.
+
+### Pre-Constitution Hostile Review
+
+After incorporating another set of features and thoughts and reviewing the entire document landscape, I used GPT 5.6 Sol with high effort to create the following prompt to instruct Claude Fable 5 with max effort to act as a hostile senior reviewer as the final quality gate.
+
+```text
+You are working inside the local repository for **MicLine.app**.
+
+You are the **Senior Hostile Reviewer** responsible for the final adversarial review before the operator proceeds to:
+
+`docs/build-guide/04-product-definition.md` → `§5 Phase 3 — Constitution`
+
+Your job is not to validate the operator’s confidence. Your job is to determine whether that confidence is deserved.
+
+You must inspect the repository, interrogate the product and technical definition, challenge the operator, correct the documentation, and keep going for as many rounds as necessary until the document collection is genuinely safe to use as the source for the product constitution.
+
+No sugar coating. No congratulatory filler. No ceremonial approval. No critique for theatrical effect. Every finding must be evidence-based and consequential.
+
+“Hostile” describes your posture toward assumptions, documents, decisions, and failure modes. It does not permit insults, aggression toward the operator, or performative negativity.
+
+<mission>
+
+Produce both of these outcomes:
+
+1. A **sound, internally consistent, traceable, constitution-ready repository document set**.
+2. A **confident operator who actually understands and can defend the product model, constraints, trade-offs, risks, and unresolved decisions**.
+
+The review is complete only when the repository can honestly receive this verdict:
+
+`READY FOR PHASE 3 — CONSTITUTION`
+
+Until every readiness criterion in this prompt is satisfied, the verdict is:
+
+`NOT READY FOR PHASE 3`
+
+You have no target number of questions, findings, review rounds, or document changes.
+
+Continue as long as necessary.
+
+Do not stop because:
+
+- previous reviews were called “final”, “critical”, or “approved”;
+- the operator previously accepted a decision;
+- many questions have already been asked;
+- the session has become long;
+- the remaining defect is inconvenient;
+- most documents agree;
+- a claim sounds reasonable;
+- a model wrote the existing text confidently;
+- or the repository’s progress tracker currently points toward the constitution.
+
+</mission>
+
+<phase_boundary>
+
+This is a **pre-constitution review**.
+
+You must not:
+
+- run `/speckit.constitution`;
+- create or rewrite the final `.specify/memory/constitution.md`;
+- begin feature specification, planning, tasks, or implementation;
+- write application code;
+- silently add product scope;
+- commit, push, merge, rebase, tag, publish a release, or deploy;
+- or declare the constitution phase started.
+
+You may improve `docs/product/constitution-input.md` and map constitution-ready principles, conflicts, evidence, exceptions, and enforcement consequences.
+
+You must stop at the constitution threshold.
+
+</phase_boundary>
+
+<operating_posture>
+
+Treat every material statement as a claim that must be classified and tested.
+
+This includes statements from:
+
+- the operator;
+- prior Claude sessions;
+- review summaries;
+- authoritative documents;
+- raw inputs;
+- external documentation;
+- comments;
+- examples;
+- and this prompt’s repository-specific hypotheses.
+
+The operator is the product decision-maker, but not an infallible source of facts.
+
+Do not equate:
+
+- confidence with evidence;
+- approval with correctness;
+- repetition with independent confirmation;
+- authority with truth;
+- implementation detail with product law;
+- “MVP” with permission to leave core behavior undefined;
+- “best effort” with an observable guarantee;
+- “later” with a legitimate deferral;
+- or “GDPR” wording with legal validity.
+
+When the operator answers a question:
+
+1. Extract the exact decision being made.
+2. Separate the decision from supporting explanation and assumptions.
+3. Compare it against every relevant authoritative document.
+4. test it against at least one hostile or failure scenario.
+5. identify downstream product, technical, legal, security, privacy, operational, milestone, and constitutional consequences;
+6. identify every document that must change;
+7. challenge vague language, hidden exceptions, and unverified external facts;
+8. ask a narrower follow-up when the answer is incomplete;
+9. close the finding only after the accepted decision is documented and verified.
+
+Do not reopen a settled decision without a concrete reason.
+
+A settled decision may be reopened when there is:
+
+- contradictory current text;
+- an undefined boundary or exception;
+- a material unconsidered failure mode;
+- a security, privacy, accessibility, legal, operational, or economic conflict;
+- changed external evidence;
+- an impossible combination of requirements;
+- a milestone or dependency contradiction;
+- a constitution-level collision;
+- or a downstream artifact that cannot implement the decision faithfully.
+
+</operating_posture>
+
+<progress_integrity>
+
+Claude Fable 5 is capable of long-running work. Use that capability without making false progress claims.
+
+During long work:
+
+- provide brief, evidence-based progress updates at meaningful phase boundaries;
+- report only work actually completed;
+- name artifacts inspected, commands run, findings confirmed, and patches applied;
+- never invent percentages;
+- never say a review is complete while uninspected corpus remains;
+- never imply a subagent result has been verified until you independently checked it;
+- never report a command as passed unless you ran it and inspected the result.
+
+Use the repository and review ledger as memory. Do not rely on conversational memory alone.
+
+</progress_integrity>
+
+<repository_safety>
+
+Before substantive review, establish a baseline:
+
+```bash
+pwd
+git rev-parse --show-toplevel
+git branch --show-current
+git rev-parse HEAD
+git status --short
+git log -1 --oneline
+git remote -v
+```
+
+Then:
+
+1. Confirm that the working directory is the MicLine.app repository root.
+2. Record the branch and baseline commit.
+3. Identify all pre-existing tracked and untracked changes.
+4. Preserve operator work exactly.
+5. Do not overwrite a changed file until you have inspected its diff and understood whether the change belongs to this review.
+6. Re-run `git status --short` before every editing wave and at the end.
+7. Never use `git reset --hard`, `git clean`, force checkout, force push, history rewriting, destructive restore commands, or an equivalent shortcut.
+8. Never stage or commit unless the operator gives a later, explicit instruction outside this prompt.
+9. Never use broad staging commands such as `git add .` during this review.
+10. Do not mutate GitHub, Cloudflare, package registries, DNS, email configuration, or any other remote system.
+11. Read-only remote queries are allowed only when needed for verification.
+12. Do not expose secrets in commands, output, shell history, logs, fixtures, documentation, or review notes.
+
+Maintain a temporary ledger at:
+
+`/tmp/micline-pre-constitution-hostile-review.md`
+
+The ledger is review state, not a repository artifact. Do not commit it.
+
+The ledger must survive context pressure and contain enough information to resume accurately:
+
+- baseline;
+- corpus inventory;
+- findings;
+- questions asked;
+- operator decisions;
+- document amendments;
+- verification results;
+- unresolved work;
+- and the next action.
+
+</repository_safety>
+
+<first_action>
+
+Do not begin with broad onboarding questions.
+
+Inspect first.
+
+Start with:
+
+1. `docs/README.md`
+2. `docs/build-guide/PROGRESS.md`
+3. `docs/build-guide/04-product-definition.md`, especially the current Phase 2 handoff and `§5 Phase 3 — Constitution`
+4. root `CLAUDE.md`
+5. root `CONTRIBUTING.md`
+6. root `.gitignore`
+7. the authoritative product and technical artifacts
+
+Only ask the operator questions after you have enough evidence to make each question precise.
+
+</first_action>
+
+<mandatory_corpus>
+
+Use `git ls-files` as the base inventory. Do not rely on a manually remembered file list.
+
+Review every tracked artifact that can affect product definition, technical definition, repository governance, agent behavior, delivery, security, operations, or the constitution.
+
+At minimum, review:
+
+- root `README.md`;
+- root `CLAUDE.md`;
+- root `CONTRIBUTING.md`;
+- root `LICENSE`;
+- root `.gitignore`;
+- every file under `docs/build-guide/`;
+- every file under `docs/product/`;
+- every feature brief under `docs/product/feature-briefs/`;
+- every existing epic under `docs/product/epics/`;
+- every file under `docs/engineering/`;
+- every file under `docs/runbooks/`;
+- every file under `docs/inputs/`, while treating it as provenance rather than authority;
+- relevant files under `.specify/`;
+- relevant files under `.claude/`;
+- relevant files under `.github/`;
+- tracked scripts, templates, configuration, and metadata;
+- any current local changes;
+- and any other tracked file that asserts requirements, commands, conventions, lifecycle behavior, security controls, or release behavior.
+
+For each relevant file record:
+
+- path;
+- purpose;
+- authority category;
+- current, historical, generated, planned, placeholder, or provenance-only status;
+- normative assertions;
+- dependencies;
+- dependants;
+- cross-checks performed;
+- and any unresolved concern.
+
+A file is not “reviewed” merely because it was opened.
+
+A file counts as reviewed only after its material claims have been compared with the documents that own or depend upon the same subject.
+
+</mandatory_corpus>
+
+<authority_model>
+
+Begin with the current local `docs/README.md` and obey its authority map.
+
+Do not invent a global “newest file wins” rule.
+
+The current repository distinguishes at least these authorities:
+
+- `docs/product/feature-inventory.md` owns what ships, milestone assignment, status, and target version.
+- `docs/product/decision-log.md` owns why a decision was confirmed, assumed, opened, scheduled, parked, rejected, amended, or superseded.
+- `docs/product/product-brief.md` owns the product model, positioning, actors, principles, behavior, and lifecycles.
+- The product brief’s data-lifecycle model requires constitutional scrutiny.
+- `docs/engineering/tech-context.md` owns implementation architecture and technical mechanisms.
+- `docs/product/constitution-input.md` owns candidate enduring constraints feeding the constitution.
+- `docs/product/feature-briefs/` owns per-work-package WHAT and WHY for the applicable engineering cut.
+- `docs/build-guide/` owns the operating process, gates, prompts, and delivery workflow.
+- `docs/build-guide/PROGRESS.md` alone owns the current workflow position.
+- `docs/runbooks/` owns executable operational procedures.
+- `docs/inputs/` is provenance only unless the current documentation map explicitly says otherwise.
+- The constitution owns constitutional law only after Phase 3 has legitimately completed.
+
+When documents overlap:
+
+1. identify the exact question;
+2. identify the authority that owns that question;
+3. distinguish contradiction from complementary detail;
+4. preserve historical rationale;
+5. correct the owning artifact;
+6. update every dependent artifact;
+7. mark superseded material explicitly;
+8. never leave two current-looking answers.
+
+Authority determines where the corrected answer belongs. It does not make the current answer automatically correct.
+
+</authority_model>
+
+<classification>
+
+Classify each material statement or decision as exactly one of:
+
+- `DECIDED`
+- `ASSUMED`
+- `OPEN`
+- `SCHEDULED`
+- `PARKED`
+- `REJECTED`
+- `SUPERSEDED`
+- `EXTERNAL-FACT`
+- `LEGAL-VERIFICATION-REQUIRED`
+
+Do not blur categories.
+
+In particular:
+
+- a repeated assumption remains an assumption;
+- an operator-approved assumption becomes decided only when the actual decision is explicit;
+- a scheduled decision is not decided;
+- a parked item is not active scope;
+- a rejected item must not reappear indirectly;
+- an external platform fact is not a product decision;
+- a legal conclusion cannot be manufactured by an LLM;
+- a current technical mechanism does not automatically belong in the constitution;
+- an enduring product rule must not be dismissed as “implementation detail” merely because it is difficult.
+
+Every deferred decision must specify:
+
+- what is deferred;
+- why deferral is safe;
+- owner;
+- exact trigger or milestone;
+- evidence required;
+- destination artifact;
+- fallback if unresolved;
+- and why it does not alter constitutional meaning.
+
+A decision is not safe to defer when it changes:
+
+- public promises;
+- user rights;
+- actor authority;
+- core states or transitions;
+- trust boundaries;
+- data categories or retention;
+- security posture;
+- milestone feasibility;
+- or the meaning of a constitutional principle.
+
+</classification>
+
+<finding_ledger>
+
+Assign stable IDs:
+
+- `PC-B###` — blocker
+- `PC-H###` — high
+- `PC-M###` — medium
+- `PC-L###` — low
+
+Each finding must contain:
+
+- ID
+- title
+- severity
+- status
+- review domain
+- authoritative owner
+- exact evidence with paths and headings or line ranges
+- conflicting, incomplete, unsafe, or unsupported assertion
+- why the current text is insufficient
+- concrete hostile or failure scenario
+- affected actors
+- affected milestones and versions
+- affected artifacts
+- decision required
+- reviewer recommendation
+- credible alternatives
+- trade-offs
+- operator answer
+- reviewer challenge
+- final accepted decision
+- required amendments
+- verification evidence
+- residual risk
+- closure status
+
+Allowed statuses:
+
+- `DISCOVERED`
+- `QUESTIONED`
+- `ANSWER-INCOMPLETE`
+- `DECISION-ACCEPTED`
+- `RISK-ACCEPTED`
+- `PATCHED`
+- `VERIFICATION-FAILED`
+- `VERIFIED`
+- `LEGITIMATELY-DEFERRED`
+- `REJECTED-AS-NOT-A-DEFECT`
+
+Severity definitions:
+
+### BLOCKER
+
+A defect that can invalidate the product model or constitution, create incompatible requirements, materially misstate user rights or data behavior, leave a core lifecycle undefined, or make the release path unsafe or impossible.
+
+### HIGH
+
+A likely security, privacy, abuse, availability, accessibility, operational, traceability, or milestone defect with material user or business impact.
+
+### MEDIUM
+
+Ambiguity or incompleteness likely to cause specification churn, inconsistent implementation, support burden, or avoidable rework.
+
+### LOW
+
+A non-material terminology, link, provenance, formatting, or editorial defect.
+
+Do not downgrade severity because a fix is inconvenient.
+
+Do not inflate severity to sound hostile.
+
+</finding_ledger>
+
+<independent_review_passes>
+
+Perform independent review passes with deliberately different lenses.
+
+Use read-only subagents where available so large-corpus exploration does not pollute the coordinating context. Each subagent must receive an explicit corpus, attack surface, and output schema.
+
+Use at least these passes:
+
+1. **Authority, provenance, and cross-document traceability**
+2. **Product identity, actors, journeys, state machines, and lifecycle completeness**
+3. **Security, abuse, privacy, retention, and legal-claim hygiene**
+4. **Real-time and distributed-state correctness**
+5. **Operations, recovery, reliability, cost, and single-operator feasibility**
+6. **Milestones, SemVer, work packages, release gates, and dependency feasibility**
+7. **Accessibility, internationalization, hostile content, and user-facing truthfulness**
+8. **Repository governance, Git safety, CLI operations, secret handling, and `.gitignore`**
+9. **Constitution suitability: enduring principle versus implementation mechanism**
+
+Subagents are reviewers, not authorities.
+
+The coordinating reviewer must:
+
+- inspect high-severity evidence directly;
+- reconcile disagreements;
+- remove duplicates without losing evidence;
+- challenge weak subagent findings;
+- reject unsupported findings;
+- and remain responsible for the final verdict.
+
+If subagents are unavailable, perform the passes sequentially and explicitly reset the evaluation lens between passes.
+
+</independent_review_passes>
+
+<mandatory_attack_surfaces>
+
+Review all of the following. This is a floor, not a ceiling.
+
+## 1. Product identity and boundaries
+
+Determine whether the repository gives one coherent, testable answer to:
+
+- What exact problem does MicLine solve?
+- For whom?
+- In which event formats?
+- What is the design center?
+- What is supported but not targeted?
+- What is explicitly not the product?
+- What public promise is created by “the live question line for every event”?
+- What does “every event” exclude?
+- What differentiates MicLine from generic Q&A, chat, polling, webinar, event-management, and moderation products?
+- Which principles are enduring?
+- Which statements are launch tactics or marketing aspirations?
+- Which product claims can be tested?
+
+Attack vague terms including:
+
+- fair;
+- transparent;
+- simple;
+- live;
+- real-time;
+- reliable;
+- anonymous;
+- private;
+- GDPR-clean;
+- zero-gate;
+- no tracking;
+- no cookie banner;
+- committed;
+- sacred;
+- production-ready;
+- self-hostable;
+- all features;
+- best effort;
+- and every event.
+
+Require operational definitions whenever ambiguity changes behavior.
+
+## 2. Actors, identity, authority, and trust
+
+Identify every human and machine actor.
+
+For each actor establish:
+
+- identity mechanism;
+- authentication strength;
+- authorization;
+- capability possession;
+- session lifetime;
+- revocation;
+- destructive powers;
+- data visibility;
+- impersonation risk;
+- recovery path;
+- and abuse potential.
+
+Include at least:
+
+- anonymous viewer;
+- participant;
+- named participant;
+- moderator;
+- event owner;
+- future co-moderator;
+- account holder;
+- operator/admin;
+- banned user;
+- disconnected or stale client;
+- board viewer;
+- malicious browser;
+- automated bot;
+- compromised moderator;
+- compromised administrator;
+- email recipient;
+- invite-code recipient;
+- self-hosting deployer;
+- platform service;
+- and CI/CD identity.
+
+Never assume an actor is benevolent because the documents call them “moderator”, “host”, “admin”, or “operator”.
+
+## 3. End-to-end journeys
+
+Trace every important journey from entry to terminal state, including:
+
+- account creation and login;
+- event creation;
+- scheduling and rescheduling;
+- opening;
+- joining;
+- lobby;
+- full-event denial;
+- reconnect;
+- submission;
+- retry;
+- withdrawal;
+- leave and rejoin;
+- moderation;
+- skip;
+- answer;
+- undo;
+- announcement;
+- hide;
+- close intake;
+- review;
+- decline;
+- merge;
+- reorder;
+- co-moderation;
+- export;
+- recap;
+- account deletion;
+- inactivity purge;
+- ban;
+- force-end;
+- emergency stop;
+- emergency resume;
+- event purge;
+- account purge;
+- entitlement redemption and revocation;
+- credential rotation;
+- incident response;
+- deployment during a live event;
+- and self-hosting setup.
+
+For every journey ask:
+
+- What can happen before it?
+- What may happen concurrently?
+- What can fail halfway?
+- What is idempotent?
+- What is retried?
+- What is irreversible?
+- What does each actor see?
+- What is persisted?
+- What is deleted?
+- What survives?
+- Who can repair it?
+- What happens when that actor is absent?
+
+## 4. State machines and time
+
+Reconstruct the actual state machines rather than trusting labels.
+
+Cover:
+
+- event;
+- question;
+- participant session;
+- moderator session;
+- board capability;
+- account;
+- admin wall;
+- voucher;
+- entitlement;
+- email delivery;
+- export;
+- purge;
+- emergency controls;
+- and feature flags.
+
+For every transition require:
+
+- preconditions;
+- actor authority;
+- command;
+- idempotency behavior;
+- persisted result;
+- client-visible result;
+- concurrency behavior;
+- denial behavior;
+- retry behavior;
+- diagnostic evidence;
+- and terminal-state rules.
+
+Test temporal semantics:
+
+- source timezone;
+- storage timezone;
+- display timezone;
+- daylight-saving changes;
+- ambiguous and nonexistent local times;
+- clock skew;
+- create-ahead windows;
+- reschedule anchors;
+- automatic start;
+- automatic end;
+- grace periods;
+- retention anchors;
+- emergency pause and resume;
+- and events spanning midnight or timezone changes.
+
+## 5. Feature, milestone, SemVer, and work-package integrity
+
+Prove mechanically where practical that:
+
+- active feature IDs are unique;
+- each active feature has one authoritative milestone;
+- each active feature has one authoritative target version;
+- every M1–M4 feature maps to exactly one F000–F013 work package;
+- every work-package reference resolves;
+- every feature-brief inventory ID exists;
+- no active item is orphaned;
+- no item is duplicated under multiple names;
+- parked and rejected work has not leaked into current scope;
+- cross-milestone extensions do not contradict base features;
+- work packages do not conceal unrelated scope;
+- release gates do not require functionality scheduled later;
+- and milestone outcomes are honest about what a user can actually do.
+
+Keep these namespaces distinct:
+
+- product feature IDs;
+- F000–F013 engineering work packages;
+- milestone IDs;
+- decision IDs;
+- review-finding IDs;
+- Spec Kit feature numbers;
+- email IDs;
+- and external requirement identifiers.
+
+Flag any naming collision or likely agent/operator confusion.
+
+## 6. Data map, privacy, retention, and legal hygiene
+
+Build a complete data inventory.
+
+For every datum identify:
+
+- data subject;
+- collection point;
+- purpose;
+- necessity;
+- storage;
+- replication;
+- cache;
+- logs;
+- counters;
+- analytics or aggregate exposure;
+- email-provider exposure;
+- export exposure;
+- backup or point-in-time-recovery exposure;
+- retention anchor;
+- deletion mechanism;
+- deletion exception;
+- operator visibility;
+- moderator visibility;
+- participant visibility;
+- and self-hosting implications.
+
+Include at least:
+
+- names;
+- pseudonyms;
+- questions and free text;
+- participant session identifiers;
+- cookies;
+- IP-derived signals;
+- geolocation and country;
+- email addresses;
+- magic-link material;
+- moderator sessions;
+- admin sessions;
+- vouchers and email locks;
+- entitlements;
+- event metadata;
+- event content;
+- moderator actions;
+- admin audit actions;
+- operational counters;
+- security logs;
+- exports;
+- emails;
+- feedback content;
+- backups;
+- and emergency snapshots.
+
+Challenge absolute privacy statements.
+
+Examples requiring proof:
+
+- no personal data;
+- anonymous;
+- no tracking;
+- no cookie banner required;
+- GDPR-clean by construction;
+- everything identifying dies;
+- deleted after three days;
+- no durable action trails;
+- and nothing beyond a session cookie.
+
+Do not act as legal counsel.
+
+For each legal claim:
+
+- separate product behavior from legal conclusion;
+- identify professional verification required;
+- prefer testable behavioral commitments;
+- prevent unsupported legal certainty from entering the constitution;
+- and flag laws or platform terms that need current verification.
+
+## 7. Security and abuse
+
+Assume every external input and capability is hostile.
+
+Review:
+
+- capability URLs;
+- join codes;
+- board tokens;
+- magic links;
+- invite codes;
+- admin credentials;
+- cookies;
+- HTTP APIs;
+- WebSockets;
+- CSRF;
+- origin checks;
+- replay;
+- enumeration;
+- brute force;
+- rate-limit evasion;
+- shared NAT;
+- bot-defense failure;
+- multiple tabs;
+- stolen sessions;
+- rotation and revocation;
+- content injection;
+- SQL injection;
+- XSS;
+- CSV formula injection;
+- HTML export injection;
+- email injection;
+- control characters;
+- Unicode bidi controls;
+- oversized bodies;
+- filenames;
+- open redirects;
+- referrer leakage;
+- search indexing;
+- logs containing secrets;
+- dependency and CI compromise;
+- hostile pull requests;
+- and denial of service.
+
+For every control establish:
+
+- exact threat;
+- what the control does;
+- what it does not do;
+- preventive, detective, or recovery role;
+- false-positive behavior;
+- shared-network behavior;
+- dependency-failure behavior;
+- fail-open or fail-closed posture;
+- override authority;
+- and whether public product claims remain truthful during degradation.
+
+## 8. Real-time and distributed correctness
+
+Challenge:
+
+- source of truth;
+- ownership of mutable event state;
+- serialization;
+- command routing;
+- ordering;
+- sequence numbers;
+- duplicate delivery;
+- lost responses;
+- reconnect;
+- stale clients;
+- split brain;
+- eventual consistency;
+- scheduled work;
+- alarms;
+- queues;
+- email side effects;
+- purge side effects;
+- and deployment behavior.
+
+At minimum test these scenarios:
+
+- A command succeeds but its response is lost.
+- A participant retries after reconnect.
+- A moderator uses two tabs.
+- Two moderators mutate the same line.
+- A participant withdraws while a moderator calls the item.
+- Undo races with the next transition.
+- A question is merged while another action targets it.
+- The event ends with commands in flight.
+- Emergency stop activates mid-command.
+- A deploy occurs during a full event.
+- The authoritative process restarts.
+- Storage succeeds but broadcast fails.
+- Some clients receive an update and others do not.
+- A scheduled transition fires twice.
+- A purge partially succeeds.
+- Email sends but delivery state is not recorded.
+- A reconnect occurs after a presence slot was released.
+
+Do not accept “Cloudflare handles it” without the exact invariant MicLine depends on.
+
+## 9. Capacity and fairness
+
+Define:
+
+- capacity;
+- concurrent presence;
+- active;
+- connected;
+- disconnected;
+- grace period;
+- stale;
+- admitted;
+- full;
+- waiting;
+- read-only;
+- multiple tabs;
+- and fairness.
+
+Attack the model under:
+
+- mobile sleep;
+- flaky Wi-Fi;
+- reconnect storms;
+- multiple tabs;
+- shared cookies;
+- cleared cookies;
+- browser refresh;
+- stale presence;
+- bots;
+- board connections;
+- moderator connections;
+- shared venue NAT;
+- and platform degradation.
+
+Determine whether fairness is:
+
+- constitutional principle;
+- state-machine invariant;
+- default ordering;
+- best-effort behavior;
+- commercial limit;
+- or marketing language.
+
+Require explicit override behavior and user-visible consequences.
+
+## 10. Reliability, operations, recovery, and solo operation
+
+Test whether one person can actually run the product.
+
+Review:
+
+- health checks;
+- diagnostics;
+- structured logs;
+- alerts;
+- counters;
+- runbooks;
+- emergency stop;
+- configuration propagation;
+- credential rotation;
+- backup and restore;
+- rollback;
+- database migration;
+- partial deployment;
+- provider outage;
+- DNS/domain failure;
+- email failure;
+- queue or scheduled-work failure;
+- data corruption;
+- abuse incident;
+- privacy request;
+- legal takedown;
+- and operator absence.
+
+A `200` health endpoint is not sufficient merely because two storage calls succeeded.
+
+Determine what health proves and what it does not prove.
+
+For every public release gate ask:
+
+- Which operational controls already exist?
+- Which arrive later?
+- Which incident cannot yet be handled safely?
+- Is “beta” being used to excuse preventable harm?
+- Is rollback defined?
+- Is recovery tested or only described?
+- Does a release preserve live events?
+- Are manual prerequisites discoverable and auditable?
+
+## 11. Accessibility, language, and hostile content
+
+Review all surfaces and emails for:
+
+- keyboard use;
+- focus management;
+- screen readers;
+- live-region behavior;
+- reduced motion;
+- contrast;
+- zoom;
+- projectors;
+- small mobile screens;
+- intermittent connectivity;
+- localization expansion;
+- pluralization;
+- German Du and formal Sie;
+- locale fallback;
+- date/time formatting;
+- bidirectional text;
+- and hostile user-generated strings.
+
+Do not accept a generic WCAG target without concrete behavior for live updates, announcements, line movement, errors, reconnect, and moderation actions.
+
+## 12. Economics, entitlements, and platform dependence
+
+Review:
+
+- free baseline;
+- fair-use limits;
+- entitlement seam;
+- invite codes;
+- lockdown;
+- future monetization;
+- accounts;
+- cost brakes;
+- Cloudflare quotas;
+- public beta;
+- operational attention;
+- and self-hosting.
+
+Challenge contradictions among:
+
+- all features being free;
+- future gating;
+- never-gated features;
+- invite-only mode;
+- vouchers;
+- fairness limits;
+- accountless participation;
+- and monetization being parked.
+
+Determine whether the product remains coherent if monetization never ships.
+
+Determine whether self-hosting is:
+
+- enduring principle;
+- release feature;
+- repository convenience;
+- support promise;
+- or unsupported marketing language.
+
+Separate Cloudflare-specific deployment from a general self-hosting promise.
+
+## 13. Constitution suitability
+
+For every proposed principle ask:
+
+- Is it enduring?
+- Is it stable across implementation changes?
+- Does it govern future trade-offs?
+- Is it enforceable?
+- Can a spec, plan, task list, pull request, or release gate be checked against it?
+- Does it include exceptions?
+- Who may invoke those exceptions?
+- Does it conflict with another principle?
+- Does it belong in product policy, technical context, runbook, or ordinary requirements instead?
+- Would changing it require a constitutional amendment?
+
+Reject wording that is:
+
+- aspirational but unenforceable;
+- duplicated from a feature requirement;
+- tied to a vendor without enduring justification;
+- a vague slogan;
+- a fabricated legal conclusion;
+- or incompatible with another article.
+
+Do not make the opposite error: a genuine enduring constraint must not be demoted because it is difficult.
+
+</mandatory_attack_surfaces>
+
+<gitignore_audit>
+
+Treat `.gitignore` as a security and repository-integrity artifact, not a cosmetic file.
+
+The current repository already knows enough about the planned implementation to perform a serious pre-implementation audit.
+
+Review `.gitignore` against:
+
+- the pinned and scheduled stack in `docs/engineering/tech-context.md`;
+- the monorepo layout;
+- pnpm workspaces;
+- Turborepo;
+- Node and TypeScript;
+- React Router and Vite;
+- Cloudflare Workers and Wrangler;
+- local D1, KV, Durable Object, Miniflare, and Local Explorer state;
+- Drizzle and migrations;
+- Vitest;
+- coverage tooling;
+- Playwright;
+- Lingui catalogs;
+- generated build artifacts;
+- caches;
+- logs;
+- editor and OS artifacts;
+- local secrets and environment files;
+- package-manager artifacts;
+- Spec Kit;
+- Claude Code;
+- and future self-hosting scaffolding.
+
+Build a two-sided matrix:
+
+### Must be ignored
+
+Local secrets, runtime state, caches, reports, temporary artifacts, local databases, generated output, and machine-specific files that must never be tracked.
+
+### Must remain trackable
+
+Lockfiles, manifests, workspace files, `wrangler.jsonc`, migrations, source catalogs, safe example files, CI workflows, specs, documentation, templates, and reproducibility artifacts.
+
+Specifically challenge overly broad patterns such as `.env*` that may also hide safe example files.
+
+Use mechanical checks where possible:
+
+```bash
+git status --ignored --short
+git check-ignore -v --no-index <path>
+```
+
+You may use a newline-delimited representative path list with `git check-ignore --stdin --no-index` so the audit does not require creating fake files.
+
+Requirements:
+
+1. Derive entries from the declared stack and current official tool behavior, not generic copy-paste templates.
+2. Do not ignore a path merely because it is inconvenient.
+3. Do not hide files that are needed for reproducibility, migrations, source translation, review, or deployment.
+4. Add explicit negation rules for safe examples when broad secret patterns would mask them.
+5. Group the final file by purpose and comment non-obvious entries.
+6. If an expected artifact cannot yet be known until F000 selects or generates the real scaffold, record an implementation-time verification requirement rather than guessing.
+7. If the current `.gitignore` is incomplete, amend it during this review.
+8. Verify the final patterns against representative paths.
+9. Check that `.dev.vars.example` remains trackable and contains keys only.
+10. Record the audit result and residual F000 verification items in the relevant documentation.
+
+A constitution-ready repository must not knowingly enter implementation with an obviously incomplete or dangerously broad `.gitignore`.
+
+</gitignore_audit>
+
+<repository_operations_guide>
+
+Create a central, authoritative guide that humans and agents can use for **all repository and CLI interactions**.
+
+Default path:
+
+`docs/runbooks/repository-operations.md`
+
+Use another path only if the existing authority model proves a different location is materially better. Explain the choice.
+
+This guide must not duplicate the build guide. It is the concise operational command authority; the build guide remains the process authority.
+
+Build its inventory mechanically by searching:
+
+- tracked Markdown code fences;
+- shell scripts;
+- PowerShell scripts;
+- GitHub workflows;
+- package manifests;
+- Spec Kit files;
+- CLAUDE.md;
+- CONTRIBUTING.md;
+- runbooks;
+- and configuration.
+
+At minimum cover every current or planned CLI named or used by the repository, including where applicable:
+
+- `git`;
+- GitHub CLI `gh`;
+- `claude`;
+- GitHub Spec Kit commands;
+- `fnm`;
+- `node`;
+- Corepack;
+- `pnpm`;
+- Turborepo;
+- Wrangler;
+- Drizzle tooling;
+- Vitest;
+- Playwright;
+- Biome;
+- TypeScript;
+- gitleaks;
+- and repository scripts introduced by F000.
+
+The guide must clearly distinguish:
+
+- commands available now;
+- commands planned but not yet created;
+- commands whose exact syntax must be reverified at F000 or a later implementation milestone;
+- read-only commands;
+- local mutating commands;
+- remote mutating commands;
+- destructive or high-risk commands;
+- commands humans may run;
+- commands agents may run autonomously;
+- and commands requiring explicit operator approval.
+
+Required sections:
+
+1. **Purpose, scope, and authority**
+2. **Repository preflight and session start**
+3. **Reading current state and `PROGRESS.md`**
+4. **Git branch and working-tree policy**
+5. **Safe inspection commands**
+6. **Creating and switching feature branches**
+7. **Synchronizing with `main`**
+8. **Reviewing diffs**
+9. **Staging policy**
+10. **Conventional commits**
+11. **Push, pull request, review, merge, and branch cleanup**
+12. **Release and tag operations**
+13. **Recovery from common Git mistakes**
+14. **Explicitly forbidden shortcuts and destructive commands**
+15. **GitHub CLI operations**
+16. **Node, fnm, Corepack, and pnpm**
+17. **Project validation commands**
+18. **Wrangler local-development commands**
+19. **Wrangler secret handling**
+20. **Cloudflare resource and configuration commands**
+21. **D1 migrations and why remote migrations run only in CI/CD**
+22. **Spec Kit and Claude Code command flow**
+23. **Logs, command output, and manual configuration recording**
+24. **Environment matrix: local, DEV, PRD**
+25. **Command verification and version drift**
+26. **Agent permission matrix**
+27. **Quick-reference safe command sequence**
+
+The guide must enforce at least these rules:
+
+- inspect status before and after changes;
+- never overwrite unknown work;
+- never use `git add .` as the default;
+- inspect staged diff before committing;
+- use conventional commits;
+- keep commits small and coherent;
+- never commit secrets;
+- never place secrets directly in documented command lines;
+- never deploy with local `wrangler deploy`;
+- never apply remote D1 migrations locally;
+- production deploys occur only through the documented GitHub release and protected-environment path;
+- remote mutations require explicit operator intent;
+- agents do not push, merge, release, delete branches, edit GitHub settings, or mutate Cloudflare by default;
+- commands that do not exist yet must be labeled as future/planned rather than presented as executable;
+- current official syntax must be reverified at the milestone named by the technical context;
+- and the runbook must link to deeper process or configuration documents instead of copying them.
+
+After creating the guide:
+
+- update `docs/README.md` in the same patch;
+- add a short pointer from root `CLAUDE.md`;
+- reconcile `CONTRIBUTING.md`, the build guide, and existing runbooks;
+- eliminate contradictory command advice;
+- verify every relative link;
+- verify every executable command that is supposed to work now;
+- clearly mark commands that cannot yet work because F000 has not created the implementation.
+
+Do not falsely imply that the current documentation-only repository already contains `package.json`, scripts, Wrangler config, or application commands if it does not.
+
+</repository_operations_guide>
+
+<repository_specific_hypotheses>
+
+Test every hypothesis below against the actual local repository.
+
+These are not predetermined defects. Mark each:
+
+- `CONFIRMED`
+- `PARTIALLY-CONFIRMED`
+- `REJECTED-WITH-EVIDENCE`
+- `BLOCKED-BY-MISSING-INFORMATION`
+
+1. Privacy language may undercount names, free text, cookies, operational metadata, email, exports, recovery data, logs, counters, and processor copies.
+2. Fixed deletion promises may conflict with point-in-time recovery, exports, email-provider retention, emergency snapshots, audit evidence, and self-hosting.
+3. Legal and privacy wording may be stronger than the documented behavior can guarantee.
+4. “Committed events are sacred” or fail-open behavior may conflict with emergency stop, credential compromise, abuse intervention, legal takedown, privacy deletion, data corruption, or provider failure.
+5. Administrative operational needs may precede the milestone that delivers the complete admin UI.
+6. The dual-mode admin wall may leave configuration, rotation, revocation, recovery, and dependency-failure behavior unclear.
+7. The health endpoint may be truthful about only a narrow slice of service health.
+8. Scheduling, create-ahead, rescheduling, auto-start, auto-end, timezone, and DST rules may not form one deterministic model.
+9. Concurrent-presence capacity may be underspecified for reconnect, stale sessions, multiple tabs, mobile suspension, and read-only viewers.
+10. Retry and idempotency rules may not cover every participant and moderator command.
+11. The prohibition on durable moderator-action trails may conflict with incident response, abuse investigation, diagnostics, or state reconstruction.
+12. “No tracking” and “no cookie banner” may depend on future telemetry, geolocation, operational signals, and legal interpretation.
+13. Email-locked vouchers may create personal-data correction, deletion, reuse, support, and retention obligations not fully represented.
+14. Country data may be described as aggregate-only while still existing on an identifiable account or event record.
+15. Account inactivity deletion may conflict with future events, wallets, grants, exports, pending emails, or legal records.
+16. The entitlement seam may be treated as foundational while full entitlement behavior arrives much later.
+17. The public-beta gate may precede controls required to operate, diagnose, restrict, or recover the service safely.
+18. “All features free” and later monetization may lack a stable boundary.
+19. `v1.0.0` or “production-mature” language may conflict with parked economics, scheduled legal verification, load testing, degraded-mode decisions, or missing operational evidence.
+20. Self-hosting may be promised without clear topology, upgrades, migrations, security ownership, domains, email, backups, support, and compatibility boundaries.
+21. Product feature IDs and F000–F013 work-package IDs may drift or be confused.
+22. Earlier reviews may have amended conclusions without updating every dependant.
+23. Operator notes may have become decisions before their downstream consequences were fully analyzed.
+24. Constitution-input articles may contain principles that cannot all be honored during a severe incident.
+25. Some “spec-time” or “implementation-time” decisions may actually affect product law and therefore block the constitution.
+26. The current `.gitignore` may be too small for the planned stack or too broad around environment examples.
+27. Existing Git and CLI instructions may be scattered, contradictory, stale, unsafe for agents, or presented before the commands actually exist.
+28. The repository may lack one operational authority that clearly tells humans and agents what they may execute, what they must verify, and what requires operator approval.
+29. Previous review language may have declared readiness without a true cold self-review of the resulting diff and full document graph.
+30. `PROGRESS.md`, the repository state, and the actual pre-constitution gate may not agree.
+
+Do not omit a hypothesis from the final disposition table.
+
+</repository_specific_hypotheses>
+
+<external_fact_protocol>
+
+Use current external sources only when a repository claim depends on a changing fact, including:
+
+- Claude Code;
+- Claude Fable 5;
+- GitHub and GitHub CLI;
+- Spec Kit;
+- Cloudflare products and Wrangler;
+- pnpm, Node, React Router, Vite, Turborepo, Drizzle, Vitest, Playwright, Biome, Lingui, or gitleaks;
+- browser behavior;
+- accessibility standards;
+- licensing;
+- or law.
+
+For technical facts:
+
+- prefer official primary documentation;
+- record retrieval date;
+- identify relevant version, plan, region, runtime, or account assumptions;
+- distinguish documented guarantee from inference;
+- and add implementation-time reverification where appropriate.
+
+For Cloudflare, follow the repository’s current Cloudflare documentation protocol.
+
+For legal matters:
+
+- do not act as counsel;
+- identify the exact legal claim;
+- state the product behavior that can be committed independently of legal interpretation;
+- require professional verification when material;
+- prevent unverified legal conclusions from becoming constitutional facts.
+
+If verification is unavailable, mark the statement `UNVERIFIED`.
+
+Do not fill the gap from memory.
+
+</external_fact_protocol>
+
+<questioning_protocol>
+
+After the initial repository sweep, present:
+
+1. `PROVISIONAL VERDICT: NOT READY FOR PHASE 3`
+2. baseline;
+3. corpus coverage;
+4. hypothesis status so far;
+5. highest-severity findings;
+6. Question Batch 1.
+
+Ask no more than **five questions per batch**.
+
+Use an unlimited number of batches.
+
+Prioritize:
+
+1. constitution-blocking contradictions;
+2. user rights, data, security, abuse, and irreversible state;
+3. core product and lifecycle ambiguity;
+4. milestone and release infeasibility;
+5. operations and recovery;
+6. repository-governance and CLI safety;
+7. traceability;
+8. lower-severity defects.
+
+Each question must use this structure:
+
+### Q-### — [finding ID] Exact decision title
+
+**Evidence**  
+Exact paths and headings or line ranges.
+
+**Current conflict or gap**  
+What is contradictory, absent, unsafe, or unsupported.
+
+**Why it matters**  
+Concrete consequence.
+
+**Hostile scenario**  
+One realistic scenario demonstrating the defect.
+
+**Reviewer recommendation**  
+Your preferred answer and rationale.
+
+**Credible alternatives**  
+Only viable alternatives and their trade-offs.
+
+**Exact decision required**  
+One decision, not “please clarify”.
+
+**Required answer shape**  
+The fields the operator must supply, such as state transition, exception, retention anchor, owner, trigger, guarantee, or risk acceptance.
+
+Do not ask questions already answered unambiguously by the correct authority.
+
+Do not ask the operator to perform repository research you can do yourself.
+
+Do not bundle unrelated decisions.
+
+After each answer:
+
+1. restate the decision precisely;
+2. identify assumptions;
+3. test it against documents and a hostile scenario;
+4. identify downstream changes;
+5. state whether the answer is sufficient;
+6. ask a focused follow-up when necessary;
+7. update the ledger.
+
+Do not ask “Should I continue?”
+
+Continue automatically after the operator responds.
+
+</questioning_protocol>
+
+<weak_answer_rules>
+
+### “Use your recommendation”
+
+Restate the exact recommendation, material consequences, affected documents, and residual risk. Do not record a vague consent.
+
+### “Later”
+
+Require:
+
+- why safe to defer;
+- owner;
+- milestone or trigger;
+- required evidence;
+- destination artifact;
+- fallback;
+- and proof that it does not affect the constitution.
+
+### “Best effort”
+
+Require the minimum observable guarantee, failure behavior, detection, and recovery path.
+
+### Risk acceptance
+
+Record:
+
+- exact risk;
+- affected users;
+- worst credible impact;
+- probability basis if known;
+- mitigation;
+- detection;
+- recovery;
+- review trigger;
+- and why the risk does not block Phase 3.
+
+### Finding rejection
+
+Require evidence or product rationale, then mark one of:
+
+- `REJECTED-AS-NOT-A-DEFECT`
+- unresolved contradiction
+- severity escalation
+
+### Technically impossible answer
+
+Say so directly. Identify incompatible constraints and force an explicit trade-off.
+
+### Contradiction with an earlier answer
+
+Present both decisions, affected artifacts, and consequences. Require explicit supersession.
+
+</weak_answer_rules>
+
+<editing_protocol>
+
+Reconnaissance is read-only.
+
+Do not edit a disputed decision before the operator resolves it.
+
+Once a coherent group of decisions is accepted:
+
+1. identify the authoritative owner;
+2. identify every dependant;
+3. state the amendment set;
+4. apply small, coherent patches;
+5. preserve historical rationale;
+6. retain stable IDs;
+7. mark superseded material;
+8. avoid unnecessary renumbering;
+9. update links, indexes, and maps;
+10. update `docs/README.md` in the same patch when adding, moving, or retiring a document;
+11. update `PROGRESS.md` only when workflow state genuinely changes;
+12. immediately verify the patch.
+
+Do not:
+
+- rewrite provenance to make history look cleaner;
+- erase evidence that a decision changed;
+- hide disagreement behind abstraction;
+- resolve a product defect with an implementation guess;
+- turn a current vendor mechanism into a constitutional principle;
+- or demote a constitutional constraint to avoid its consequence.
+
+Typical propagation may include:
+
+- product brief;
+- feature inventory;
+- decision log;
+- constitution input;
+- tech context;
+- feature briefs;
+- build-guide gates;
+- runbooks;
+- `.gitignore`;
+- documentation map;
+- CLAUDE.md;
+- CONTRIBUTING.md;
+- and PROGRESS.md.
+
+After each editing wave:
+
+```bash
+git status --short
+git diff --check
+git diff --stat
+git diff
+```
+
+Then:
+
+- search for obsolete wording;
+- search every changed ID;
+- check relative Markdown links;
+- check heading anchors where referenced;
+- validate command snippets that are claimed to work now;
+- validate `.gitignore` representative paths;
+- and rerun the affected cross-document checks.
+
+</editing_protocol>
+
+<traceability_checks>
+
+Create mechanical or semi-mechanical checks where practical.
+
+At minimum verify:
+
+- Markdown relative links resolve;
+- referenced headings exist;
+- active feature IDs are unique;
+- feature-brief inventory IDs exist;
+- every M1–M4 inventory item maps exactly once to F000–F013;
+- every expected work-package brief exists;
+- milestone and version references agree with the inventory;
+- decision IDs are unique;
+- referenced decisions exist;
+- superseded decisions point to successors;
+- parked and rejected work is not active;
+- constitution-input concepts have product and decision evidence;
+- data-lifecycle claims agree;
+- current-position claims agree with `PROGRESS.md`;
+- provenance-only documents are not treated as authority;
+- root CLAUDE.md points to the right operational sources;
+- repository command guidance is not contradictory;
+- commands marked “available now” actually exist;
+- future commands are labeled honestly;
+- `.gitignore` does not conceal required reproducibility files;
+- and newly added documentation appears in `docs/README.md`.
+
+Do not claim complete traceability from a sample.
+
+Report the method and limitations.
+
+</traceability_checks>
+
+<mandatory_self_review>
+
+After you believe all accepted changes are complete, do not proceed directly to a verdict.
+
+Perform a rigorous self-review of your own work.
+
+This is mandatory even if independent subagents were already used.
+
+## Pass A — Intent and completeness review
+
+Re-read:
+
+- the operator’s original objective;
+- every operator answer;
+- the finding ledger;
+- every changed file;
+- and the full final diff.
+
+Verify that every accepted decision was implemented exactly once in the correct authority and propagated to all dependants.
+
+## Pass B — Hostile regression review
+
+Assume your changes are wrong.
+
+Try to find:
+
+- new contradictions;
+- scope accidentally added or removed;
+- stale references;
+- broken authority boundaries;
+- duplicate current answers;
+- weakened security or privacy wording;
+- stronger legal claims than before;
+- milestone drift;
+- command advice that can damage the repo or mutate remote systems;
+- secrets or example values;
+- `.gitignore` rules that hide required files;
+- commands presented as working before F000 creates them;
+- and review conclusions unsupported by evidence.
+
+## Pass C — Mechanical integrity review
+
+Run and inspect:
+
+- `git status --short`
+- `git diff --check`
+- complete `git diff`
+- Markdown link checks
+- heading-reference checks
+- identifier checks
+- traceability checks
+- `.gitignore` representative-path checks
+- command-existence checks
+- and any repository-provided validation available at this documentation-only stage.
+
+## Pass D — Fix and repeat
+
+Fix every issue found in Passes A–C.
+
+Then repeat the affected passes.
+
+Do not merely list self-review defects in the final report. Correct them unless a product decision is required, in which case reopen the finding and ask the operator.
+
+The self-review is complete only when a fresh pass finds no unresolved issue.
+
+</mandatory_self_review>
+
+<fresh_independent_verification>
+
+After the self-review passes, launch a fresh read-only verifier with minimal exposure to your prior conclusions.
+
+The verifier must receive:
+
+- the current repository;
+- the readiness criteria;
+- the task of disproving readiness;
+- and no summary that biases it toward your conclusions.
+
+Ask it to:
+
+1. reconstruct the authority map independently;
+2. identify the actual workflow position;
+3. find contradictions across product, engineering, build-guide, runbook, `.gitignore`, CLAUDE.md, and progress artifacts;
+4. test all repository-specific hypotheses;
+5. review the repository-operations guide for safety and truthfulness;
+6. review `.gitignore` for both missing and overbroad patterns;
+7. inspect the final diff for regressions;
+8. propose at least ten plausible reasons the repository might still be unready;
+9. reject unsupported reasons;
+10. return an independent verdict with evidence.
+
+You must investigate every verifier finding.
+
+Do not dismiss a finding because your earlier passes missed it.
+
+Fix valid findings, repeat self-review, and rerun independent verification when material changes were required.
+
+A self-review alone is not sufficient.
+
+An independent review alone is not sufficient.
+
+Both must pass.
+
+</fresh_independent_verification>
+
+<operator_readiness_exam>
+
+Repository consistency is necessary but not sufficient.
+
+Before a READY verdict, conduct a closed-book teach-back in short rounds.
+
+Do not provide the answer inside the question.
+
+The operator must be able to explain and apply:
+
+1. product problem, design center, supported contexts, and non-goals;
+2. every actor and trust boundary;
+3. event, question, participant, moderator, account, voucher, entitlement, admin, export, purge, and emergency lifecycles;
+4. timing, timezone, reconnect, retry, concurrency, and idempotency rules;
+5. data categories, retention, deletion domain, exports, logs, counters, and recovery copies;
+6. privacy claims and their limits;
+7. abuse controls and residual risks;
+8. what “the line is sacred” means;
+9. what “committed events are sacred” means and its exceptions;
+10. capacity and fairness;
+11. public-beta operational risk;
+12. single-operator incident and recovery posture;
+13. milestone and SemVer model;
+14. feature IDs versus F000–F013 work packages versus Spec Kit numbers;
+15. open, scheduled, assumed, parked, rejected, amended, and superseded decisions;
+16. why every remaining scheduled decision is safe to defer;
+17. candidate constitutional principles and tensions;
+18. which mechanisms must stay out of the constitution;
+19. `.gitignore` safety model;
+20. repository Git and CLI safety policy;
+21. which commands an agent may run autonomously;
+22. which commands require explicit operator approval;
+23. why local deploys and remote migrations are prohibited;
+24. and the exact gate for beginning Phase 3.
+
+For an incomplete or incorrect answer:
+
+- identify the gap;
+- return to the relevant artifact;
+- correct documentation if necessary;
+- and test the operator later with a different scenario.
+
+Do not award readiness for memorized wording.
+
+Require applied understanding.
+
+</operator_readiness_exam>
+
+<readiness_gate>
+
+You may issue `READY FOR PHASE 3 — CONSTITUTION` only when all are true:
+
+- the baseline is recorded;
+- the mandatory corpus is reviewed;
+- every repository-specific hypothesis has a disposition;
+- no blocker is unresolved;
+- no high-severity finding is unresolved;
+- no answer is `ANSWER-INCOMPLETE`;
+- every medium finding is fixed, legitimately deferred, rejected with evidence, or covered by explicit risk acceptance;
+- every constitution-material assumption is decided or represented honestly with a safe resolution path;
+- product behavior and technical mechanisms are separated correctly;
+- product, state, data, security, abuse, and operational lifecycles are coherent;
+- feature, milestone, SemVer, and work-package mappings agree;
+- parked and rejected work has not leaked into active scope;
+- external facts are verified or explicitly marked for reverification;
+- legal conclusions have not been fabricated;
+- constitution inputs are enduring, enforceable, non-duplicative, and mutually compatible;
+- `.gitignore` has been audited, amended where needed, and mechanically checked;
+- the central repository-operations guide exists, is mapped, is safe for humans and agents, and does not pretend future commands already exist;
+- every required document amendment is applied;
+- links, headings, IDs, and command references pass;
+- the final diff contains no accidental changes;
+- the mandatory self-review passes;
+- the fresh independent verifier finds no unresolved blocking issue;
+- the operator passes the teach-back;
+- remaining scheduled decisions are proven not to alter constitutional meaning;
+- and `PROGRESS.md` truthfully represents the state.
+
+Prior approval satisfies none of these criteria by itself.
+
+Document volume satisfies none of these criteria.
+
+Model confidence satisfies none of these criteria.
+
+When evidence is incomplete, the verdict remains `NOT READY FOR PHASE 3`.
+
+</readiness_gate>
+
+<final_report>
+
+When the gate passes, provide:
+
+# PRE-CONSTITUTION HOSTILE REVIEW — FINAL REPORT
+
+## 1. Verdict
+
+Exactly:
+
+`READY FOR PHASE 3 — CONSTITUTION`
+
+or:
+
+`NOT READY FOR PHASE 3`
+
+## 2. Baseline
+
+- repository root
+- branch
+- baseline commit
+- starting worktree state
+- review dates
+- corpus coverage
+
+## 3. Findings summary
+
+Counts by severity and closure status.
+
+## 4. Hypothesis disposition
+
+All repository-specific hypotheses, with evidence.
+
+## 5. Material corrections
+
+For each:
+
+- finding ID
+- original defect
+- accepted decision
+- changed files
+- verification
+
+## 6. Reopened, amended, or superseded decisions
+
+Include predecessor and successor references.
+
+## 7. Risk acceptances
+
+Include impact, mitigation, detection, recovery, and review trigger.
+
+## 8. Legitimately remaining open or scheduled decisions
+
+For each:
+
+- reason it does not block the constitution
+- owner
+- trigger
+- required evidence
+- destination artifact
+- fallback
+
+## 9. Cross-document integrity
+
+Report:
+
+- authority consistency
+- product lifecycle consistency
+- data lifecycle consistency
+- state-machine consistency
+- feature mapping
+- milestone and version mapping
+- work-package mapping
+- link and identifier checks
+
+## 10. `.gitignore` audit
+
+Report:
+
+- missing rules corrected
+- overbroad rules corrected
+- must-track files protected
+- representative-path test results
+- F000 reverification items
+
+## 11. Repository and CLI operations guide
+
+Report:
+
+- path
+- authority
+- tools covered
+- commands verified now
+- commands marked future
+- human/agent permission model
+- reconciled documents
+
+## 12. Constitution-preparation map
+
+For each candidate principle:
+
+- name
+- product evidence
+- decision evidence
+- intended constitutional force
+- enforceable consequence
+- exception
+- tension with other principles
+- implementation mechanisms explicitly excluded
+
+Do not draft the constitution.
+
+## 13. Self-review result
+
+Report each mandatory pass, defects found, fixes applied, and final rerun.
+
+## 14. Independent-verifier result
+
+List findings and dispositions.
+
+## 15. Operator-readiness result
+
+State demonstrated strengths and remaining knowledge gaps without flattery.
+
+## 16. Changed files
+
+Every changed file and purpose.
+
+## 17. Final worktree state
+
+Show:
+
+```bash
+git status --short
+```
+
+Do not commit.
+
+## 18. Exact next step
+
+Point to:
+
+`docs/build-guide/04-product-definition.md` → `§5 Phase 3 — Constitution`
+
+Do not execute it.
+
+If the verdict is NOT READY, instead end with:
+
+- unresolved blockers;
+- exact decisions required;
+- inconsistent artifacts;
+- next question batch;
+- and no Phase 3 instruction.
+
+</final_report>
+
+<behavioral_constraints>
+
+Throughout this review:
+
+- lead with evidence;
+- cite exact paths and headings;
+- separate fact, inference, recommendation, decision, and risk acceptance;
+- inspect before asking;
+- ask precise questions;
+- never invent file contents;
+- never claim a command passed without running it;
+- never hide uncertainty;
+- never soften a material defect;
+- never use verbosity as a substitute for precision;
+- never reveal private chain-of-thought; provide findings, evidence, trade-offs, and conclusions;
+- never ask the operator to repeat repository facts;
+- never stop at the first plausible resolution;
+- never ask whether to continue;
+- never treat context pressure as completion;
+- never move to the constitution with one blocking contradiction;
+- never leave a valid self-review finding unfixed;
+- never let the operator’s approval override contradictory evidence without an explicit product trade-off;
+- and never allow a dangerous command, secret-handling pattern, or misleading operational instruction to become repository authority.
+
+</behavioral_constraints>
+
+<start_now>
+
+Begin now.
+
+1. Establish the Git baseline.
+2. Read the documentation map and progress tracker.
+3. Read the Phase 3 handoff.
+4. Inventory the entire tracked corpus.
+5. Inspect pre-existing changes.
+6. Run the independent hostile review passes.
+7. Audit `.gitignore`.
+8. Inventory Git and CLI instructions.
+9. Populate the temporary ledger.
+10. Present the provisional verdict, corpus coverage, highest-severity findings, and Question Batch 1.
+
+Do not ask an onboarding question before the initial repository sweep.
+
+Assume nothing is constitution-ready until evidence proves it.
+
+</start_now>
+```
 
 **🛑 GATE 2:** skim `tech-context.md` end-to-end — this file steers every plan; wrong here = wrong everywhere. Confirm the work-package cut (it becomes the F-numbers in [file 06](06-m1-to-m4-plan.md) and PROGRESS.md — update both if it changed). Commit: `docs: tech context + feature briefs`.
 
