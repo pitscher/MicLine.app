@@ -1,7 +1,7 @@
 # F001 — Event creation & scheduling
 
 **Milestone:** M2 — Moderator identity and event setup · **Target version:** `v0.2.0` · **Implements:** EVT-01, EVT-02, EVT-03, EVT-04, MOD-03
-**Depends on:** F008 (config values, schema baseline). Auth is a dev-only stub until F002 replaces it.
+**Depends on:** F008 (config values, schema baseline). Auth is a stub until F002 replaces it — the fake session exists only under `ENVIRONMENT=local`, never on deployed envs (tech-context §3, S1 rule).
 
 ## User value
 

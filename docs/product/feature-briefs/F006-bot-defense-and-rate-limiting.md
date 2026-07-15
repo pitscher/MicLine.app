@@ -10,7 +10,7 @@ These are the beta window's actual defense (FR-1): with no event-count cap until
 ## In scope
 
 - **Turnstile (SAFE-01):** invisible, on exactly three actions — auth request, event creation, first submission per participant session (re-runs after leave-and-rejoin per PRT-04); zero-gate entry stays CAPTCHA-free; server-side siteverify; documented test keys locally/CI.
-- **Rate-limit matrix (SAFE-02):** the decided two-tier design and key matrix (tech-context §15) with **final numeric values decided in this spec** (and revisited with the OQ6 limit review): magic-link per-email + per-IP burst · event creation per-uid · **rescheduling** = burst brake + per-event daily cap (T8-5) · submission per-sid + per-event ceiling · entry/lookup paths per-IP at room-scale ceilings.
+- **Rate-limit matrix (SAFE-02):** the decided two-tier design and key matrix (tech-context §15) with **final numeric values decided in this spec** (and revisited with the OQ6 limit review): magic-link per-email (cap live since F002 — value revisited here) + per-IP burst · event creation per-uid · **rescheduling** = burst brake + per-event daily cap (T8-5) · submission per-sid + per-event ceiling · entry/lookup paths per-IP at room-scale ceilings.
 - **Venue-NAT constraint as tests:** a simulated room behind one IP must pass entry + submission flows unthrottled (FR-5, binding).
 - **Per-DO soft throttle:** the EventRoom sheds excess load as calm retry states, never raw errors.
 

@@ -45,7 +45,7 @@
 - Moderator data is the decided minimal set (email, optional display name, country for aggregates, console language, plus unavoidable operational state); every stored datum has a defined lifetime and exactly one deletion path — the product brief's data-lifecycle table is **binding**.
 - **Anonymous aggregates survive deletion only if unlinkable by construction** (no keys back to any person or event); everything identifying dies on schedule.
 - **Deletion honesty:** privacy claims must reflect storage reality, including infrastructure-level point-in-time-recovery windows on the global database. Marketing and legal pages never claim more privacy or more deletion than the platform delivers. Exports leave the deletion domain — stated honestly at export time and on the privacy page.
-- No third-party analytics or trackers on any surface. No durable trails of moderator in-event actions; the audit log is reserved for privileged admin/entitlement actions only (12-month lifetime).
+- No third-party analytics or trackers on any surface. No durable trails of moderator in-event actions; the audit log is reserved for privileged admin/entitlement actions only (short defined lifetime; 12-month default, operator-configurable like every platform value).
 - All moderator-authored text renders **inert** — never auto-linked, never clickable, no images (the M11 branding logo is the sole, entitlement-gated exception).
 
 ## VI. Committed events are sacred
@@ -69,6 +69,7 @@
 
 - Strict typing; schema validation at every trust boundary (HTTP, WebSocket, storage, config); no unchecked escape hatches.
 - Domain logic (state machine, auth, entitlements, purge) has unit tests covering every transition and invariant; **every data lifetime maps to exactly one enforcement job and one test proving deletion actually happens.**
+- **No untested behavior ships:** a pull request that introduces or changes product behavior must include tests covering that behavior — feature code without tests does not merge. (Bugfixes start from a failing test; that rule is the same principle.)
 - CI (lint, typecheck, test, build, secret scan) must be green to merge; the main branch is protected; deploys happen only via CI, never by hand.
 - An unextracted user-facing string fails CI (see XI).
 

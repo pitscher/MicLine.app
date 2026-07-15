@@ -1,7 +1,7 @@
 # F002 — Moderator auth (magic links)
 
 **Milestone:** M2 — Moderator identity and event setup · **Target version:** `v0.2.0` · **Implements:** AUTH-01, AUTH-02
-**Depends on:** F001 (replaces its auth stub). **Manual prerequisites:** rows 2 + 4 (email domain onboarded, `SESSION_SECRET` set) before the verify step. Model note from file 06: Opus-class for implement.
+**Depends on:** F001 (replaces its auth stub). **Manual prerequisites:** rows 2 + 4 (BOTH email sending domains onboarded — `micline.app` + `dev.micline.app` — and `SESSION_SECRET` set) before the verify step. Model note from file 06: Opus-class for implement.
 
 ## User value
 
@@ -9,7 +9,7 @@ One email, one click, ~30 days signed in, unlimited events — no passwords, no 
 
 ## In scope
 
-- **Magic-link flow (AUTH-01):** exactly tech-context §11.1 — always-200 request with uniform timing, hashed single-use tokens in D1 with atomic consume, 15-minute validity, calm expired-link screen; **E-1 as the email-template registry's first real template** (Lingui, moderator's console language); banned/soft-deleted addresses silently receive nothing (ban tooling itself is M6 — the seam is honored here).
+- **Magic-link flow (AUTH-01):** exactly tech-context §11.1 — always-200 request with uniform timing, hashed single-use tokens in D1 with atomic consume, 15-minute validity, calm expired-link screen; **E-1 as the email-template registry's first real template** (Lingui, moderator's console language); banned/soft-deleted addresses silently receive nothing (ban tooling itself is M6 — the seam is honored here). **The per-email send cap ships here** (SAFE-02 pull-forward, 2026-07-14 tech review — `auth_tokens` doubles as the counter; cap value decided at this spec).
 - **Sessions:** stateless HMAC cookie per tech-context §11.2; `requireUser()`/`requireAdmin()`; logout; per-request user-row check so bans/deletions bite immediately.
 - **Minimal account (AUTH-02):** email + optional display name + country (request geolocation, aggregates only) + persisted console language — **nothing else**; registration = first successful verify.
 - **Seams left, not wired:** Turnstile on the request (enforced in F006), M8 lockdown gate on registration.
