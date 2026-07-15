@@ -9,6 +9,7 @@
 - Product: docs/product/product-brief.md, docs/product/decision-log.md, docs/product/feature-inventory.md (authoritative for milestones M1–M13 + target versions)
 - Engineering: docs/engineering/tech-context.md  ← read before ANY /speckit.plan or implementation work
 - Process: docs/build-guide/ (how this project is built; current position: docs/build-guide/PROGRESS.md)
+- Ops: docs/runbooks/ (resource-bootstrap, security-incident-response, maintenance, manual-config-log; config-operations arrives with F008) · run costs: docs/engineering/runcost-estimate.md
 - Inputs (reference only): docs/inputs/
 
 ## Cloudflare documentation protocol (critical — operator's first Cloudflare project)
