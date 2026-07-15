@@ -678,6 +678,76 @@ Print the Superseded list, the interview's decisions (incl. ASSUMED ones),
 the final work-package cut, and the file tree you created.
 ```
 
+### Tech interview artifact review
+
+I read the created `docs/engineering/tech-context.md`, took notes and used the prompt below with Claude code and Fable 5 with max effort to run a critical review before moving on with `§5 Phase 3 — Constitution`.
+
+```text
+You are a senior SaaS and Cloudflare expert. Scan this repo to fully understand the product MicLine.app
+Important sections of the docs are:
+- docs/build-guide (we are currently at 04-product-definition.md -> §4 Phase 2 — Establish the tech context (the tech interview)
+- docs/product/*
+- docs/engineering/tech-context.md
+
+GOAL: After understanding the product MicLine.app you are a CRITICAL REVIEWER of the tech interview artifacts. You are thoroughly reviewing the created artifacts. There is no need to critique anything for the sake of doing it. You must always fund and explain your requested changes and work together with the operator until all your findings are evaluated (=accepted or rejected). The result of your work are validated tech interview artifacts ready to be used for the spec-driven development approach (build-guide ->
+05-feature-loop.md). The entire collection of the MicLine build-guide, the product artifacts and the tech interview artifacts need to be sound and aligned to avoid confusion and issues during the next steps.
+
+After reviewing the current state of the docs, the operator took some notes - incorporate them for your work:
+- Does the current setup protects itself from malicious users (be it a moderator, a future co-moderator or a participant)? Just one exampple: Never trust data from the user of the product (like submitted strings) etc.
+- An admin should be able to link a voucher he creates to an email address. This way he can enforce that once he hands a voucher to a person, that this person must use their own (set by the admin) email address while signing up as a moderator (this way voucher codes can not be transferred between people).
+- We need to check what admin statistics are being stored and what might be missing.
+- The docs (as an example but not necessarily limited to the build-guide) need to have a section with intructions for the operator (and agents) to follow what precisely needs to be done to introduce a new feature to MicLine (while development is ongoing of if the development is already done/all currenty planned features are implemented). It needs to be outlined from the very beginning (the feature described by the poerator the very first time) till it is fully implemented.
+- SEO must be properlysetup for the landing page and its sub-pages (refer to SEO best practices)
+- 2 auth modes for the admin UI: (1) Password and (2) Cloudflare Access. To (1) password is used for quick start, wrangler secret admin can put, signed 5-day session cookie, timing safe checks, throttled failures, admin UI will nudge towards Cloudflare Access. (2) Cloudflare Access recommended option, verified in-worker on every request, setting it up disables the password login automatically - CF Access always wins. If no option is configured: /admin fails closed with setup instructions. A one-click deploy should always fail with an obvious error instead of a running app with no auth for /admin.
+- MicLine needs to have proper protection against search engines to avoid certain pages being indexed
+- Deployment config var to enable/disable a /health endpoint which only returns HTTP 200 if MicLine core services are poerational (like the worker + D1 + maybe KV?). Must not be behind auth.
+- 2 MicLine deployment options (aside the mainly used GitHub pipeline deployment): (1) via Cloudflare deploy button and (2) via the CLI (maybe npm?). For CLI: npm scaffolds a fresh copy - repo downloaded, dependencies installed, fresh git history - and prints the setup steps.
+
+At any point in time you are required to ask questions if it helps you with your work instead of only relying on assumptions.
+
+After evaluating the operators notes, making a plan to integrate them and executing this plan, perform a thorough review of your work before moving on. Introduce fixes if required.
+
+At the end of this review you scan your work once more to check if any changes you made caused conflicts (from content to markdown links), state them clearly and fix them. Finally you create a summary of your work.
+```
+
+Outcomes (2026-07-14, every finding operator-evaluated; full amendment record in **tech-context §23**): security assessment passed with three accepted findings — S1 `ENVIRONMENT` becomes `local`/`dev`/`production` so the admin-wall bypass and F001 auth stub can never run on deployed envs · S2 the magic-link per-email send cap pulled forward into F002/M2 (closes the M2→M4 window with a live but unthrottled PRD auth endpoint) · S3 per-environment WS-Origin allowlist. Operator notes incorporated: DEV/PRD email sending domains split (`dev.micline.app` / `micline.app`, separate onboardings — 02 §2.7 row 2 rewritten) · binding resource-naming (`micline` prefix) + Resource-Tagging (`project:micline`, `env:*`) rule for the shared Cloudflare account · config-key descriptions + the admin-UI ~90 s propagation notice · audit-log retention and emergency-export link validity confirmed runtime-configurable · dependency-budget rule · test-per-feature rule (constitution-input IX + CONTRIBUTING) · Local Explorer + workers-sdk/miniflare notes. New committed docs: `docs/engineering/runcost-estimate.md` and `docs/runbooks/` `security-incident-response.md` · `maintenance.md` · `resource-bootstrap.md` (stub — F000 completes it).
+
+### Introduction of additional features + critical review
+
+I instructed Claude code and Fable 5 with max effort to evaluate some more features/tweaks I had in mind (list in prompt) and to, afterwards, run another critical review before moving on with `§5 Phase 3 — Constitution`.
+
+```text
+You are a senior SaaS and Cloudflare expert. Scan this repo to fully understand the product MicLine.app
+Important sections of the docs are:
+- docs/build-guide (we are currently at 04-product-definition.md -> §4 Phase 2 — Establish the tech context (the tech interview)
+- docs/product/*
+- docs/engineering/tech-context.md
+
+GOAL: After understanding the product MicLine.app you are a CRITICAL REVIEWER of the tech interview artifacts. You are thoroughly
+reviewing the created artifacts. There is no need to critique anything for the sake of doing it. You must always fund and explain your
+requested changes and work together with the operator until all your findings are evaluated (=accepted or rejected). The result of your
+work are validated tech interview artifacts ready to be used for the spec-driven development approach (build-guide ->
+05-feature-loop.md). The entire collection of the MicLine build-guide, the product artifacts and the tech interview artifacts need to be
+sound and aligned to avoid confusion and issues during the next steps.
+
+The operator created the following list of features/tweaks/ideas he had in mind to be challenged now before the constitution is being created as the next step.
+Here are the notes he took - incorporate them for your work (assessment can, if required, happen now via a structured interview, like for the tech interview):
+- Does the current setup protects itself from malicious users (be it a moderator, a future co-moderator or a participant)? Just one exampple: Never trust data from the user of the product (like submitted strings) etc.
+- An admin should be able to link a voucher he creates to an email address. This way he can enforce that once he hands a voucher to a person, that this person must use their own (set by the admin) email address while signing up as a moderator (this way voucher codes can not be transferred between people).
+- We need to check what admin statistics are being stored and what might be missing. Lets run through the entire list.
+- The docs (as an example but not necessarily limited to the build-guide) need to have a section with intructions for the operator (and agents) to follow what precisely needs to be done to introduce a new feature to MicLine (while development is ongoing and if the development is already done/all currently planned features are implemented). It needs to be outlined from the very beginning (the feature described by the poerator the very first time) till it is fully implemented. In short: There must be a funnel the operator can follow to extend/update MicLine in the future.
+- SEO must be properly setup for the landing page and its sub-pages (refer to SEO best practices)
+- 2 auth modes for the admin UI (ensure this does not collide with the current outline): (1) Password and (2) Cloudflare Access. To (1) password is used for quick start, wrangler secret admin can put, signed 5-day session cookie (this default needs to be stated for the operator to know, ideally right next to the step instructing him on how to setup (1)), timing safe checks, throttled failures, admin UI will nudge towards Cloudflare Access. (2) Cloudflare Access recommended option, verified in-worker on every request, setting it up disables the password login automatically - CF Access always wins. If no option is configured: `/admin` fails closed with setup instructions. A one-click deploy should always fail with an obvious error instead of a running app with no auth for `/admin`.
+- MicLine needs to have proper protection against search engines to avoid certain pages being indexed
+- Deployment config var to enable/disable a `/health` endpoint which only returns HTTP 200 if MicLine core services are operational (like the worker + D1 + maybe KV?). Must not be behind auth.
+- 2 MicLine deployment options (aside the mainly used GitHub pipeline deployment): (1) via Cloudflare deploy button and (2) via the CLI (maybe npm?). For CLI: npm scaffolds a fresh copy - repo downloaded, dependencies installed, fresh git history - and prints the setup steps.
+- For further activities within this repository, we should have a central place for humans and especially for agents to lookup where certain details/content can be found in this repo (because just the docs are already extensive and as of now there is not a single line of code written yet). Use industry known best practices to find a proper approach and get it setup for MicLine.app
+
+At any point in time you are required to ask questions if it helps you with your work instead of only relying on assumptions.
+
+At the end of this review you carefully scan your work once more to check if any changes you made caused conflicts (from content to markdown links), state them clearly and fix them. Finally you create a summary of your work if you consider everything to be ready for §5 Phase 3 — Constitution.
+```
+
 **🛑 GATE 2:** skim `tech-context.md` end-to-end — this file steers every plan; wrong here = wrong everywhere. Confirm the work-package cut (it becomes the F-numbers in [file 06](06-m1-to-m4-plan.md) and PROGRESS.md — update both if it changed). Commit: `docs: tech context + feature briefs`.
 
 From this gate on, **`docs/inputs/tech-decisions.md` is provenance, not authority**: it stays in the repo as the record of what was decided before Spec Kit took over, but plans and prompts cite only `tech-context.md` (file 06's plan addenda do exactly that). If reality changes later, update tech-context.md and the decision log — never the input file. This keeps the Spec Kit separation clean: the WHAT lives in specs, the HOW lives in one living document, and pre-history lives in `docs/inputs/`.
