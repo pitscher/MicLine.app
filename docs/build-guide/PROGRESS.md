@@ -4,7 +4,7 @@
 
 **The ritual (README, "Tracking your progress"):** at the end of every working session — (1) tick what you finished below, (2) set *Current position* to the next step, (3) commit: `git add docs/build-guide/PROGRESS.md && git commit -m "docs: progress"`. Returning after a longer pause: read this file, then run the re-entry protocol ([file 09](09-troubleshooting.md)).
 
-> **Current position:** Phases 1–4 — P2 tech interview done 2026-07-14 (all binding inputs decided incl. OQ1/OQ7/OQ8; artifacts written: docs/engineering/tech-context.md, docs/product/constitution-input.md, docs/product/feature-briefs/ ×14; cut F000–F013 confirmed unchanged). Next: **Gate 2** — skim tech-context.md end-to-end → commit `docs: tech context + feature briefs`, then P3 constitution ([file 04 §5](04-product-definition.md))
+> **Current position:** Phases 1–4 — P2 tech interview done 2026-07-14 (all binding inputs decided incl. OQ1/OQ7/OQ8; artifacts committed) **+ same-day tech-artifact critical review done** (the deep Gate-2 pass — amendments in tech-context §23; runcost estimate + security/maintenance/bootstrap runbooks committed). Next: commit the review changes (`docs: tech-context review amendments`), then **P3 constitution** ([file 04 §5](04-product-definition.md))
 
 > **Last updated:** 2026-07-14
 
@@ -34,7 +34,8 @@
 - [x] FR final pre-tech-interview review (2026-07-13) — skeptical senior-product pass; risk acceptances, capacity model, 14-day create-ahead default + truthfulness corrections applied (decision-log §FR)
 - [x] Build-guide critical review (2026-07-13) — same pass over docs/build-guide; FR-sync (files 04/06/07), stale-window note (01/09), rollback row + tag-deploy rule (09/06), M4-gate FR-6 step (06 + this file)
 - [x] **Gate 1 (final):** read all three product artifacts end-to-end post-revamp → commit `docs: product definition v1 finalized`
-- [x] P2 tech interview done 2026-07-14 → cut F000–F013 finalized (F008 separate; SAFE-03/04 inside F003) → **Gate 2** skim + commit = current next step *(tech-decisions.md is provenance-only from that commit on)*
+- [x] P2 tech interview done 2026-07-14 → cut F000–F013 finalized (F008 separate; SAFE-03/04 inside F003) → **Gate 2** commit `docs: tech context + feature briefs` done *(tech-decisions.md is provenance-only from that commit on)*
+- [x] Tech-artifact critical review (2026-07-14) — security assessment (S1/S2/S3 accepted + applied: `ENVIRONMENT=local` guard, per-email cap → F002, per-env Origin allowlist); operator notes incorporated (DEV email domain split, `micline` naming + Resource-Tagging rule, config descriptions + ~90 s propagation notice, test-per-feature rule); amendments: **tech-context §23**; new docs: runcost-estimate + security-incident-response / maintenance / resource-bootstrap (stub — F000 completes) runbooks
 - [ ] P3 constitution → **Gate 3** passed → committed
 - [ ] P4 epic briefs M5–M13 + forward-compat demands → **Gate 4** passed → committed
 - [ ] 03 §A milestone/label block run (13 GitHub Milestones + labels) + Roadmap Project board created via web UI (03 §A)
@@ -47,9 +48,9 @@
 
 ## M2 — Moderator identity and event setup · `v0.2.0` ([file 06 §8.2](06-m1-to-m4-plan.md))
 
-- [ ] 02 §2.7 row 2 done + logged (email domain) + `SESSION_SECRET` from row 4 — *before F002*
+- [ ] 02 §2.7 row 2 done + logged (email domains ×2: `micline.app` + `dev.micline.app`) + `SESSION_SECRET` from row 4 — *before F002*
 - [ ] **F001** event creation & scheduling (EVT-01…04, MOD-03)
-- [ ] **F002** moderator auth (AUTH-01/02) — incl. manual verify: real magic-link mail, SPF/DKIM/DMARC pass
+- [ ] **F002** moderator auth (AUTH-01/02) — incl. per-email send cap (2026-07-14 review) · manual verify: real magic-link mail, SPF/DKIM/DMARC pass
 - [ ] **Release `v0.2.0`** published + approved + PRD smoked
 
 ## M3 — Open-line event runtime · `v0.3.0` ([file 06 §8.3](06-m1-to-m4-plan.md))

@@ -26,6 +26,7 @@
 | Can't find where to approve a PRD deploy | Repo → Actions → the deploy-prd run → yellow "Review pending deployments" banner → tick `production` → Approve and deploy |
 | Plugin "not found in any marketplace" | `/plugin marketplace update claude-plugins-official` (or `add anthropics/claude-plugins-official`), retry |
 | Finder shows the repo folder as an application | Cosmetic: macOS treats any `*.app` directory as a bundle. Clone into a different local name — `gh repo clone pitscher/MicLine.app micline` ([file 02 §2.4](02-setup.md)); git and the remote are unaffected |
+| You suspect a security incident (leaked secret, odd traffic, takeover) | Run `docs/runbooks/security-incident-response.md` top to bottom — assess → contain (rotate) → throttle → escalate → log |
 | Away for weeks/months, lost the thread | Run the re-entry protocol below — never "scan the repo for hours" |
 | A spec keeps growing ("just one more thing") | New scope = new feature brief + new loop. Small loops are the point |
 | Unsure whether a change needs the full loop | [file 05 §7.12](05-feature-loop.md): repo-tracked but behavior-free → chore-lane PR; GitHub-only → click + log line; Cloudflare-only → prefer wrangler.jsonc/CLI, else click + log line |
@@ -36,7 +37,7 @@ The repo is built so its own artifacts *are* the state — recovery is a short c
 
 0. **Open `docs/build-guide/PROGRESS.md` first** — its *Current position* line names exactly where you stopped (you set it in the session-end ritual, README "Tracking your progress"). The steps below then *verify* that claim against reality rather than reconstruct it from scratch.
 1. **Orient outside-in:** the Releases page (= exactly what PRD runs) → the open Milestone + Roadmap Project (= what was planned) → open issues/PRs → `git log --oneline -15` (= what DEV has beyond the last release).
-2. **Freshen tools:** run the [file 02 §2.9](02-setup.md) ritual — brew tools + Claude Code, `specify self check` / `self upgrade` (with the §2.5 re-init if it moved), and any Node/pnpm pin bumps via the chore lane.
+2. **Freshen tools:** run `docs/runbooks/maintenance.md` for the missed cadences — it wraps the [file 02 §2.9](02-setup.md) ritual (brew tools + Claude Code, `specify self check` / `self upgrade` with the §2.5 re-init if it moved, Node/pnpm pin bumps via the chore lane) plus the security/usage checks around it.
 3. **Re-verify the point-in-time facts** of [file 01](01-model-strategy.md) — model lineups and prices move; the routing *pattern* survives, the names may not.
 4. **The re-entry prompt** — fresh session, strongest available model, `/effort high`:
 

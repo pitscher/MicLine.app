@@ -158,6 +158,7 @@ The one-screen threat map (threat → controls → built where):
 | Injection (SQLi / XSS) | Drizzle parameterized SQL · zod at every boundary · React escaping · security headers incl. CSP | F000 / F007 |
 | DoS & cost attacks | Cloudflare front door · Turnstile · rate-limit matrix · per-DO soft throttle | F006 |
 | Vulnerable dependencies | minimal deps (Article III) · Dependabot weekly · CodeQL | F000 |
+| Any of the above suspected to be *happening* | `docs/runbooks/security-incident-response.md` — contain (rotate secrets, kill-switch, WAF) → escalate (M6/M7 controls) → log | runbook (2026-07-14) |
 
 Honest residual risks, so you know what you're accepting: a public repo means attackers read your exact code (mitigated by having no secrets and no security-through-obscurity — everything above assumes the source is known); and beta Email Service means deliverability/limits could shift (mitigated by the service seam). Nothing here is "trust me" — every row has a check you can point at.
 
