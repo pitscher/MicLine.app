@@ -1,6 +1,6 @@
 # MicLine.app — Constitution input
 
-> Provenance: P2 tech interview, 2026-07-14 (operator + Claude, per docs/build-guide/04-product-definition.md §4). Purpose: the enduring **principles and constraints** feeding prompt P3 (`/speckit.constitution`). Deliberately contains **no technology choices, no schemas, no mechanisms** — those live in docs/engineering/tech-context.md and may change; everything below is meant to survive any implementation swap. Sources: product-brief.md "Product principles", decision-log (P2/P3/FR), and the tech-interview decisions where they hardened a principle into a constraint.
+> Provenance: P2 tech interview, 2026-07-14 (operator + Claude, per docs/build-guide/04-product-definition.md §4) · additional-features review, 2026-07-15 (decision-log §AF — admin-wall model, export inertness, default-deny indexing, bounded inputs). Purpose: the enduring **principles and constraints** feeding prompt P3 (`/speckit.constitution`). Deliberately contains **no technology choices, no schemas, no mechanisms** — those live in docs/engineering/tech-context.md and may change; everything below is meant to survive any implementation swap. Sources: product-brief.md "Product principles", decision-log (P2/P3/FR), and the tech-interview decisions where they hardened a principle into a constraint.
 
 ## I. Public repository, zero secrets
 
@@ -46,7 +46,8 @@
 - **Anonymous aggregates survive deletion only if unlinkable by construction** (no keys back to any person or event); everything identifying dies on schedule.
 - **Deletion honesty:** privacy claims must reflect storage reality, including infrastructure-level point-in-time-recovery windows on the global database. Marketing and legal pages never claim more privacy or more deletion than the platform delivers. Exports leave the deletion domain — stated honestly at export time and on the privacy page.
 - No third-party analytics or trackers on any surface. No durable trails of moderator in-event actions; the audit log is reserved for privileged admin/entitlement actions only (short defined lifetime; 12-month default, operator-configurable like every platform value).
-- All moderator-authored text renders **inert** — never auto-linked, never clickable, no images (the M11 branding logo is the sole, entitlement-gated exception).
+- All moderator-authored text renders **inert** — never auto-linked, never clickable, no images (the M11 branding logo is the sole, entitlement-gated exception). The same inertness extends to every generated export file (user content escaped, never executable) and to display hygiene (direction-override characters stripped at intake).
+- Surfaces beyond the public marketing pages are excluded from search-engine indexing **by default** (fail-closed noindex on every response; indexability only by deliberate allowlisting — capability URLs and event surfaces can never leak into an index by omission).
 
 ## VI. Committed events are sacred
 
@@ -62,12 +63,14 @@
 
 ## VIII. Admin access constraints
 
-- `/admin` sits behind **one dedicated mandatory auth wall**, independent of moderator auth. Whatever the mechanism, two constraints are permanent: **emergency reset must always be possible via Cloudflare account access alone** (no lockout dead-end, no redeploy), and the wall must **fail closed** if its enforcement layer is missing or misconfigured.
-- Admin identity is managed exclusively platform-side (secret-based allowlist); there is no in-product admin management. Destructive actions require step-up confirmation regardless of the wall.
+- `/admin` sits behind **one dedicated mandatory auth wall**, independent of moderator auth — **the wall is the admin auth**: the admin is not a product user, and product auth (magic links) plays no role in admin access. The control plane must never depend on the product's own email pipeline.
+- Multiple wall mechanisms may exist (currently: password quick-start; platform access layer), but **exactly one is active at a time, selected by configuration with fixed precedence — the stronger mechanism always wins.**
+- Whatever the active mechanism, three constraints are permanent: **emergency reset must always be possible via Cloudflare account access alone** (no lockout dead-end, no redeploy); the wall must **fail closed** if its enforcement layer is missing or misconfigured — including a fresh deploy with no wall configured, which yields setup instructions, never an open admin UI; admin identity is managed exclusively platform-side (secrets/allowlist — no in-product admin management).
+- Destructive actions require step-up confirmation regardless of the wall.
 
 ## IX. Quality gates
 
-- Strict typing; schema validation at every trust boundary (HTTP, WebSocket, storage, config); no unchecked escape hatches.
+- Strict typing; schema validation at every trust boundary (HTTP, WebSocket, storage, config) plus bounded input sizes at the edge; no unchecked escape hatches.
 - Domain logic (state machine, auth, entitlements, purge) has unit tests covering every transition and invariant; **every data lifetime maps to exactly one enforcement job and one test proving deletion actually happens.**
 - **No untested behavior ships:** a pull request that introduces or changes product behavior must include tests covering that behavior — feature code without tests does not merge. (Bugfixes start from a failing test; that rule is the same principle.)
 - CI (lint, typecheck, test, build, secret scan) must be green to merge; the main branch is protected; deploys happen only via CI, never by hand.

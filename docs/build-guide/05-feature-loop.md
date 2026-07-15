@@ -1,6 +1,6 @@
 > **MicLine Build Guide — Part 5 of 10** · [◀ Product definition (interviews → tech context → constitution → epics)](04-product-definition.md) · [⌂ Index](README.md) · [M1–M4 execution plan ▶](06-m1-to-m4-plan.md)
 
-**In this part:** The loop every feature runs: 10 steps, how Claude drives GitHub for you, the three testing rings that protect `main`(=DEV), how to work each gate (incl. the reusable PG critic prompt), the post-launch bugfix lane, and the lighter lanes for config-only changes (§7.12).
+**In this part:** The intake funnel every new idea passes first (§7.0 — from "operator describes it" to a numbered feature, during the build and after `v1.0.0`), then the loop every feature runs: 10 steps, how Claude drives GitHub for you, the three testing rings that protect `main`(=DEV), how to work each gate (incl. the reusable PG critic prompt), the post-launch bugfix lane, and the lighter lanes for config-only changes (§7.12).
 **Prerequisites:** Gates 1–4 passed · milestones + labels created ([03 §A](03-github-operations.md) block). · **Your time:** ~25 min read; thereafter each feature costs roughly 1–3 h of your attention spread across its loop. *(your active attention; Claude runtime and limit pauses excluded)*
 
 ## §7 The feature loop (repeat for every feature, F000 → …)
@@ -34,6 +34,22 @@ Claude runs `gh issue create …`; the same pattern covers issue updates/comment
 | 7 | Issues (optional) | `/speckit.taskstoissues` | Sonnet 5 | — |
 | 8 | Implement | `/speckit.implement` (P5f) | per file-01 routing | approve permission prompts |
 | 9 | Converge + review + merge | `/speckit.converge`, PR review (P5g) | Fable→Opus review, Sonnet fixes | 🛑 G-D before merge |
+
+### 7.0 The intake funnel — how new scope enters (before step 0)
+
+*(Added by the 2026-07-15 additional-features review — decision-log AF-4. This is the missing front door: the loop below turns a **brief** into shipped code, but nothing previously said how an idea becomes a brief.)*
+
+```
+raw idea ─▶ ① capture ─▶ ② product decision ─▶ ③ tech & constitution check ─▶ ④ brief ─▶ ⑤ the loop (steps 0–9) ─▶ shipped release
+```
+
+1. **Capture** the idea verbatim, before any design: a GitHub issue (feature template) or a dated note. Don't polish it — the funnel exists so raw ideas are safe to write down.
+2. **Product decision** (fresh session, PG-style critic rules): Claude reads `docs/product/product-brief.md`, `feature-inventory.md`, `decision-log.md` and challenges the idea against the boundaries first — the **rejected table** (REJ-\*: needs an explicit, recorded reopen — never resurrect silently), the **parked table** (PRK-\*: only its unparking condition unparks it), and the brief's **final product boundaries**. You decide. The outcome is *recorded, not just chatted*: a **decision-log entry** (new dated two-letter section per the FR/AF convention — decision, why, rejected alternatives), a **feature-inventory row** (new stable ID, status, and **exactly one owning milestone — or parked with a condition**), and a product-brief touch *only* if positioning, principles, or the data-lifecycle table change.
+3. **Tech & constitution check:** does `docs/engineering/tech-context.md` need an amendment (edit the section + add a numbered entry to its amendment record)? Does the idea collide with a constitution article? A collision means stop: either the idea dies or the constitution is amended deliberately (`/speckit.constitution`) — never silently ignored.
+4. **Brief:** `docs/product/feature-briefs/⟨id⟩.md`, ≤1 page, WHAT/WHY only (milestone, target version, inventory IDs, in/out of scope, dependencies); any HOW you're tempted to write goes into tech-context.
+5. **Execute** through the loop below, starting at step 0 (issue on the milestone) — no shortcuts; the constitution's spec-driven article applies from here.
+
+**Phase rules.** *During the build (pre-`v1.0.0`):* new scope lands in a **future** milestone — its kickoff interview ([file 07 §9](07-m5-to-m13.md)) picks it up — or parks. The **current** milestone's scope changes only by explicit decision (that's a re-cut: a decision-log matter, and PROGRESS.md + the file-06 map get updated). *After `v1.0.0` (all planned features shipped):* the funnel is identical; the accepted feature becomes (part of) the **next minor release** `v1.⟨N⟩.0` (SemVer policy, [file 03 §D](03-github-operations.md)) with its own GitHub milestone; [file 10](10-whats-next.md) is the standing menu of seeds feeding this funnel. **Not new scope?** A defect takes the bugfix lane (§7.11); tooling/config takes the chore lanes (§7.12). When unsure where anything lives: `docs/README.md` (the documentation map) says which document owns what.
 
 ### 7.1 Specify
 

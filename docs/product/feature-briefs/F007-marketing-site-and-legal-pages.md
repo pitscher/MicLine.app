@@ -11,7 +11,8 @@ Moderators land, understand the line pillar in one screen, and create an event; 
 
 - **Landing (MKT-01):** moderator-pitch hero on the line pillar, 3-step how-it-works, create CTA, prominent join-code box, honest privacy block, visual line mock; clean — depth in sub-pages; **no pricing page, no repo link, no SLA disclaimers on the hero**.
 - **Sub-pages (MKT-02):** how it works · FAQ (incl. the honest outage entry pointing at the emergency machinery) · privacy — truthful lifetimes and deletion incl. the **event-row vs event-content split** and the **≤30-day infrastructure point-in-time-recovery sentence** (interview decision), export responsibility, geolocation disclosure · terms — best-effort/no-SLA phrased as what MicLine *does* · Impressum · contact.
-- SEO/OG tags per locale; static SSR; page copy through Lingui (en+de); no client JS beyond CTA + locale switcher; **no trackers**.
+- **SEO (AF-5, binding checklist):** per-locale titles + meta descriptions, canonical URLs, hreflang (en/de), OG/Twitter cards, JSON-LD structured data (WebSite/Organization + FAQPage), semantic heading structure; `robots.txt` + `sitemap.xml` covering **marketing pages only**; static SSR; page copy through Lingui (en+de); no client JS beyond CTA + locale switcher; **no trackers**.
+- **Indexing allowlist (AF-6):** flips exactly the marketing surfaces out of F000's default-deny `X-Robots-Tag: noindex` baseline — **on production only**; DEV and every non-marketing route (join, board, console, auth, admin, exports) stay noindexed forever.
 - Footer: GitHub repo, Releases (changelog), roadmap Project, Discussions.
 
 ## Out of scope

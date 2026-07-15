@@ -12,7 +12,8 @@ The product's boldest privacy promise — *event content dies 3 days after the e
 - **3-day content purge (EVT-07):** DO self-purge at end+3 d via its multiplexed alarm (real deletion — DO storage has no recovery tier); in-product countdown surfaces (my-events; recap consumes it in F011); **no reminder email** (T7-4).
 - **Event stats aggregates (EVT-06):** snapshot at event end into the keyless aggregates store — unlinkable by construction; survives account/event deletion (D4).
 - **Retention enforcement for every lifetime (OPS-03):** cron sweeper per tech-context §10 — auth tokens, inactive accounts (1 month; carve-outs: future event scheduled, M8 wallet), audit log (platform config; default 12 months), KV code cleanup, defensive DO re-arm.
-- **The rule:** every row of the data-lifecycle table maps to exactly one enforcement job **and one test proving deletion actually happens**.
+- **The rule:** every row of the data-lifecycle table maps to exactly one enforcement job **and one test proving deletion actually happens** — from AF-3 on this includes the `ops_counters` retention row (24-mo config default).
+- **Ops counters (AF-3):** every purge job writes its retention counters — runs + rows purged per lifetime; this is the M12 verification evidence (tech-context §16).
 - **M7 seams only:** purge sites check the emergency flag (pause + 24 h resume grace machinery itself is M7).
 
 ## Out of scope

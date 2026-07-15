@@ -22,4 +22,4 @@ Real authentication (F002) · join/participant runtime (M3) · recap, countdown 
 
 ## Dependencies & seams
 
-Lifecycle timing rides the decided persistence architecture (auto-open/auto-end via DO alarm + cron backstop — tech-context §10). Every limit/value reads from F008's config, never a literal.
+Lifecycle timing rides the decided persistence architecture (auto-open/auto-end via DO alarm + cron backstop — tech-context §10). Every limit/value reads from F008's config, never a literal. Writes its AF-3 ops counters (events created / deleted — tech-context §16).

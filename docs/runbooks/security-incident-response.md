@@ -12,7 +12,7 @@
 
 ## 1 · Assess (≤15 minutes — classify, don't investigate deeply yet)
 
-1. What is the signal? Workers Logs (odd request patterns, auth spikes) · Cloudflare dashboard usage graphs (request/DO/email anomalies) · Email Service send counts vs. expectation · GitHub security tab (secret-scanning or CodeQL alert, unfamiliar workflow run) · account notification emails · a vulnerability report.
+1. What is the signal? Workers Logs (odd request patterns, auth spikes) · `/health` returning 503 on either environment (from M1/F008 — infrastructure check: D1/KV) · Cloudflare dashboard usage graphs (request/DO/email anomalies) · Email Service send counts vs. expectation · GitHub security tab (secret-scanning or CodeQL alert, unfamiliar workflow run) · account notification emails · a vulnerability report.
 2. Classify into one (or more) of: **A leaked credential/secret** · **B abusive traffic/cost attack** · **C suspected account takeover (GitHub/Cloudflare/mailbox)** · **D suspected data breach (someone read or exfiltrated stored data)**.
 3. If **C**: change that account's password + rotate its 2FA/sessions FIRST (GitHub → Settings → Sessions; Cloudflare → My Profile → Active sessions; mailbox provider equivalent), then continue below — everything else is downstream of the two accounts.
 
@@ -20,7 +20,7 @@
 
 Rotations are ordered by blast radius (smallest user impact first). All commands run from the repo root.
 
-**2.1 `SESSION_SECRET` (from M2 · F002)** — invalidates every moderator session (global logout; users just log in again via magic link; participant cookies re-mint on next visit). *This is the designed lever — there is no per-session revocation by design (tech-context §11.2).*
+**2.1 `SESSION_SECRET` (from M2 · F002)** — invalidates every moderator session (global logout; users just log in again via magic link; participant cookies re-mint on next visit) — and, from M6 in password-wall mode, the admin session too (`ml_admin` is signed with the same secret — tech-context §11.4). *This is the designed lever — there is no per-session revocation by design (tech-context §11.2).*
 
 ```bash
 openssl rand -base64 32 | pnpm wrangler secret put SESSION_SECRET --env dev
@@ -37,7 +37,7 @@ pnpm wrangler secret put TURNSTILE_SECRET_KEY --env production
 
 **2.3 `CLOUDFLARE_API_TOKEN` (from M1 · F000)** — dashboard → My Profile → API Tokens → `micline-ci` → **Roll** (or delete + recreate from the same template: Edit Cloudflare Workers + D1:Edit + Workers KV Storage:Edit). Update the secret in **both** GitHub Environments (`dev` AND `production`): repo → Settings → Environments. CI deploys fail until both are updated — that's the confirmation the old token is dead.
 
-**2.4 Other Wrangler secrets** (`FEEDBACK_EMAIL` from M4, `ADMIN_EMAILS` from M6) — same `pnpm wrangler secret put ⟨NAME⟩ --env ⟨e⟩` pattern; rotate if the incident touched them.
+**2.4 Other Wrangler secrets** (`FEEDBACK_EMAIL` from M4; `ADMIN_EMAILS` and — in password-wall mode — `ADMIN_PASSWORD` from M6) — same `pnpm wrangler secret put ⟨NAME⟩ --env ⟨e⟩` pattern; rotate if the incident touched them. Rotating `ADMIN_PASSWORD` plus `SESSION_SECRET` fully evicts a password-mode admin session (AF-7).
 
 **2.5 Access sessions (from M6)** — Zero Trust dashboard → revoke active Access sessions for the `micline-admin` app; review the allowlist policy for entries you didn't add.
 
@@ -75,5 +75,6 @@ If personal data was plausibly read or exfiltrated: scope it — durable data su
 | `SESSION_SECRET` | every moderator session (logout) + participant cookies | users log in again / cookies re-mint — self-healing |
 | `TURNSTILE_SECRET_KEY` | submissions/auth/creation for seconds between widget-rotate and secret-put | none needed |
 | `CLOUDFLARE_API_TOKEN` | CI deploys | update both GitHub Environments |
-| `ADMIN_EMAILS` | admin role grants at next login | set correct list, log in again |
+| `ADMIN_EMAILS` | Access-mode admin allowlist checks (AF-7) | set correct list, re-authenticate at the wall |
+| `ADMIN_PASSWORD` (M6, password mode) | admin-wall login (password mode) | set new secret, log in at `/admin` again |
 | Access policy/sessions (M6) | admin UI access | Cloudflare dashboard is always sufficient to rebuild the wall (reset-by-construction requirement) |

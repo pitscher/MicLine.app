@@ -7,6 +7,7 @@
 - [ ] **Dependabot PRs** (grouped weekly): review + merge through the chore lane (build-guide 05 §7.12). A major-version bump gets its release notes read, not rubber-stamped.
 - [ ] **GitHub → Security tab:** CodeQL alerts, secret-scanning alerts, Dependabot alerts — triage to zero (fix, dismiss-with-reason, or issue).
 - [ ] **Actions:** last `ci.yml` / `deploy-dev.yml` runs green; Deployments sidebar shows DEV/PRD where you expect them.
+- [ ] **Health check (from M1/F008):** `curl -s https://dev.micline.app/health` and `https://micline.app/health` → 200 (AF-8; a 503 names the failing service — escalate via the incident runbook).
 - [ ] **Cloudflare dashboard glance** (from first deploy): Workers requests, DO duration, email sends vs. the 3,000/mo allotment, D1/DO storage growth — anything that doesn't match `docs/engineering/runcost-estimate.md` expectations is investigated (a DO that never hibernates is the classic silent cost driver).
 
 ## Monthly (~20 min) — from F000
@@ -28,7 +29,7 @@
 - [ ] **Account security review:** GitHub + Cloudflare + operator-mailbox sessions/tokens/2FA devices — anything unfamiliar → incident runbook §1.3.
 - [ ] **`micline-ci` API token:** confirm scopes still minimal (Workers/D1/KV edit); rotate if it's grown old enough to make you uncomfortable (procedure: incident runbook §2.3 — cheap, safe).
 - [ ] **Resource inventory:** every `micline*`-prefixed resource still tagged `project:micline` + `env:*` (tech-context §3; conventions in `resource-bootstrap.md`); nothing orphaned from experiments.
-- [ ] Access policy allowlist review (from M6); Turnstile widget hostnames still exactly `micline.app` + `dev.micline.app` (from M4).
+- [ ] Access policy allowlist review (from M6, Access wall mode — AF-7; in password mode instead: confirm `ADMIN_PASSWORD` is set and the Access nudge still shows); Turnstile widget hostnames still exactly `micline.app` + `dev.micline.app` (from M4).
 - [ ] Interaction limits renewal if pre-launch (02 §2.4 step 5, max 6 months); re-check at/after the M4 gate.
 
 ## How to run this file

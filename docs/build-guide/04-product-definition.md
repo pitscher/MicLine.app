@@ -748,6 +748,8 @@ At any point in time you are required to ask questions if it helps you with your
 At the end of this review you carefully scan your work once more to check if any changes you made caused conflicts (from content to markdown links), state them clearly and fix them. Finally you create a summary of your work if you consider everything to be ready for §5 Phase 3 — Constitution.
 ```
 
+Outcomes (2026-07-15, every note operator-evaluated — product record: decision-log **§AF**; technical record: tech-context **§24**): all ten notes accepted, two of them as amendments to previously closed decisions. **AF-7** the admin wall becomes dual-mode (`ADMIN_PASSWORD` quick-start with a signed 5-day session, or Cloudflare Access — recommended and always winning; fails closed with setup instructions when unconfigured) **and the wall is now the admin auth**: the operator's review surfaced that magic-link login has no place on `/admin` — the admin is not a product user, `users.role` was dropped, and the control plane no longer depends on MicLine's own email pipeline (amends OQ1's 2026-07-14 closure and D1/T8-1). **AF-9** self-hosting ratified as a repo-side path at M12 (new **OPS-07**: Deploy-to-Cloudflare button + C3 `--template` scaffold — deliberately no own npm package — + SELF_HOSTING guide; forward-compat demands binding on M1–M4). Further: **AF-8** `/health` endpoint (new **FND-07**, M1/F008, deploy-time var); **AF-2** voucher email lock (locked ⇒ single-use, M8); **AF-3** three-store admin-stats model with the keyless `ops_counters` catalog written from each signal's first milestone; **AF-5/AF-6** SEO checklist + default-deny `X-Robots-Tag` indexing (F000 baseline, F007 allowlists marketing on PRD); **AF-1** hardening addenda (export injection rules for M5, body-size caps, CSRF stance, bidi strip, Referrer-Policy); **AF-4** the intake funnel ([file 05 §7.0](05-feature-loop.md)); **AF-10** the documentation map at `docs/README.md`. The product brief is now **Revision 5**.
+
 **🛑 GATE 2:** skim `tech-context.md` end-to-end — this file steers every plan; wrong here = wrong everywhere. Confirm the work-package cut (it becomes the F-numbers in [file 06](06-m1-to-m4-plan.md) and PROGRESS.md — update both if it changed). Commit: `docs: tech context + feature briefs`.
 
 From this gate on, **`docs/inputs/tech-decisions.md` is provenance, not authority**: it stays in the repo as the record of what was decided before Spec Kit took over, but plans and prompts cite only `tech-context.md` (file 06's plan addenda do exactly that). If reality changes later, update tech-context.md and the decision log — never the input file. This keeps the Spec Kit separation clean: the WHAT lives in specs, the HOW lives in one living document, and pre-history lives in `docs/inputs/`.
@@ -850,10 +852,12 @@ product-decision reopen and stop for my call.
    decisions from the decision log's "Scheduled decisions" registry, and —
    most important — a "Demands on M1–M4" section listing every concrete
    forward-compat requirement the current build arc must satisfy, e.g.:
-   - M6/M8 → M1: `users.role` column + `requireAdmin()` gate from day one;
-     all gateable behavior behind the Article-VI entitlement interface with
-     a hardcoded free baseline; append-only audit-log table for privileged
-     admin/entitlement actions only; event/user soft-delete semantics.
+   - M6/M8 → M1: `requireAdmin()` as the wall-guard seam (AF-7: the wall is
+     the admin auth — no `users.role` column, the admin is not a product
+     user); all gateable behavior behind the Article-VI entitlement interface
+     with a hardcoded free baseline; append-only audit-log table for
+     privileged admin/entitlement actions only; event/user soft-delete
+     semantics; ops-counter writes from each signal's milestone (AF-3).
    - M5/M7 → M3/M4: the recap/export data must be assemblable from what the
      DO + D1 actually store; the M7 emergency machinery consumes the M5
      export service — design the M4 recap with that seam in mind.

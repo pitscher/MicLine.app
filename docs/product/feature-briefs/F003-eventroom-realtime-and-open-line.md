@@ -14,7 +14,8 @@ The product's category claim becomes running truth: a fair, transparent line whe
 - **Realtime engine (LINE-07):** EventRoom DO per event, hibernation WS, role/pid tags, snapshot+deltas, graceful reconnect; the **T9-2 acceptance criteria appear verbatim in the spec** (no silent loss · duplicate-free retries · explicit save states · automatic recovery).
 - **Presence & event-full (FR-2):** concurrent-presence counting, reconnect grace (config value, direction ~60 s — final number in this spec), cap admission, live count.
 - **Announcements (MOD-02):** one current, replaces previous, uniform auto-expiry from platform config via the DO alarm, clear-early, re-send restarts.
-- **Content rules (SAFE-03) + profanity filter (SAFE-04):** enforcement at the submission boundary (trim, 1–280 + per-event bounds, whitespace collapse, control-char strip; optional per-event wordlist filter, default off — block-vs-mask semantics decided here per FR-5); moderator-authored text renders inert.
+- **Content rules (SAFE-03) + profanity filter (SAFE-04):** enforcement at the submission boundary (trim, 1–280 + per-event bounds, whitespace collapse, control-char strip — explicitly incl. bidi/direction-override characters, AF-1; optional per-event wordlist filter, default off — block-vs-mask semantics decided here per FR-5); moderator-authored text renders inert.
+- **Ops counters (AF-3):** writes the event-runtime counters it owns — started / ended manually / auto-ended, event-full rejections, peak concurrent presence (tech-context §16).
 - **Alarm multiplexer:** announcement expiry, grace expiries, auto-end broadcast (self-purge slot added by F010).
 - **Tests:** every transition, the one-Now and one-active-item invariants, skip-stub visibility, undo windows, announcement expiry, presence admission — **the ≥80 % service/DO coverage gate starts here**.
 

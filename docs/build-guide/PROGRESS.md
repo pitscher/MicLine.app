@@ -4,9 +4,9 @@
 
 **The ritual (README, "Tracking your progress"):** at the end of every working session — (1) tick what you finished below, (2) set *Current position* to the next step, (3) commit: `git add docs/build-guide/PROGRESS.md && git commit -m "docs: progress"`. Returning after a longer pause: read this file, then run the re-entry protocol ([file 09](09-troubleshooting.md)).
 
-> **Current position:** Phases 1–4 — P2 tech interview done 2026-07-14 (all binding inputs decided incl. OQ1/OQ7/OQ8; artifacts committed) **+ same-day tech-artifact critical review done** (the deep Gate-2 pass — amendments in tech-context §23; runcost estimate + security/maintenance/bootstrap runbooks committed). Next: commit the review changes (`docs: tech-context review amendments`), then **P3 constitution** ([file 04 §5](04-product-definition.md))
+> **Current position:** Phases 1–4 — P2 tech interview done 2026-07-14 (amendments in tech-context §23) **+ additional-features review done 2026-07-15** (ten operator notes evaluated — decision-log §AF, tech-context §24; product brief now Revision 5). Next: commit the review changes (`docs: additional-features review — §AF/§24 amendments`), then **P3 constitution** ([file 04 §5](04-product-definition.md))
 
-> **Last updated:** 2026-07-14
+> **Last updated:** 2026-07-15
 
 > **Paused mid-feature?** If a `/speckit.implement` run was interrupted, the HANDOFF note lives in that feature's `specs/⟨NNN⟩/tasks.md` ([file 08 §D](08-claude-code-reference.md)) — this file only points there.
 
@@ -36,6 +36,7 @@
 - [x] **Gate 1 (final):** read all three product artifacts end-to-end post-revamp → commit `docs: product definition v1 finalized`
 - [x] P2 tech interview done 2026-07-14 → cut F000–F013 finalized (F008 separate; SAFE-03/04 inside F003) → **Gate 2** commit `docs: tech context + feature briefs` done *(tech-decisions.md is provenance-only from that commit on)*
 - [x] Tech-artifact critical review (2026-07-14) — security assessment (S1/S2/S3 accepted + applied: `ENVIRONMENT=local` guard, per-email cap → F002, per-env Origin allowlist); operator notes incorporated (DEV email domain split, `micline` naming + Resource-Tagging rule, config descriptions + ~90 s propagation notice, test-per-feature rule); amendments: **tech-context §23**; new docs: runcost-estimate + security-incident-response / maintenance / resource-bootstrap (stub — F000 completes) runbooks
+- [x] Additional-features review (2026-07-15) — ten operator notes evaluated, all accepted (decision-log **§AF**; tech-context **§24**): dual-mode admin wall — the wall IS the admin auth, `users.role` dropped (AF-7) · `/health` endpoint = new **FND-07** in F008 (AF-8) · self-hosting = new **OPS-07** at M12 via deploy button + C3 template (AF-9) · voucher email lock, locked ⇒ single-use (AF-2) · `ops_counters` admin-stats model, counters from first availability (AF-3) · SEO checklist + default-deny noindex (AF-5/6) · hardening addenda: export injection rules, body caps, CSRF stance, bidi strip, Referrer-Policy (AF-1) · intake funnel = file 05 §7.0 (AF-4) · documentation map = docs/README.md (AF-10); product brief → **Revision 5**
 - [ ] P3 constitution → **Gate 3** passed → committed
 - [ ] P4 epic briefs M5–M13 + forward-compat demands → **Gate 4** passed → committed
 - [ ] 03 §A milestone/label block run (13 GitHub Milestones + labels) + Roadmap Project board created via web UI (03 §A)
@@ -43,7 +44,7 @@
 ## M1 — Deployable foundation · `v0.1.0` ([file 06 §8.1](06-m1-to-m4-plan.md); each package = full [file 05](05-feature-loop.md) loop, merged, DEV smoked)
 
 - [ ] **F000** foundations & pipeline — loop done · exit checklist: [ ] a `pnpm dev` hello · [ ] b CI green · [ ] c fake secret blocked · [ ] d **02 §2.7 row 1** done + deploy-dev re-run + dev.micline.app live · [ ] e branch protection ON
-- [ ] **F008** platform config, flags & hardening baseline (FND-03/04/06)
+- [ ] **F008** platform config, flags & hardening baseline (FND-03/04/06/07 — incl. `/health` + `ops_counters`; no `users.role`, AF-7)
 - [ ] **Release `v0.1.0`** published + `production` approved + PRD responds (unannounced)
 
 ## M2 — Moderator identity and event setup · `v0.2.0` ([file 06 §8.2](06-m1-to-m4-plan.md))
@@ -79,13 +80,13 @@
 ## M5–M12 — post-beta milestones ([file 07](07-m5-to-m13.md); each: kickoff ritual → briefs gated → loops → release)
 
 - [ ] **M5** Moderator control and data portability → `v0.5.0` (kickoff owns: export-format list, snapshot naming)
-- [ ] **M6** Operator control plane → `v0.6.0` (admin wall = Cloudflare Access + one-time PIN — OQ1 closed, tech-context §11.4; incl. manual row 5: Zero Trust org + Access app)
+- [ ] **M6** Operator control plane → `v0.6.0` (admin wall = dual-mode, AF-7: `ADMIN_PASSWORD` quick-start with 5-day session, or Cloudflare Access — recommended, always wins; wall = the admin auth; tech-context §11.4; Access path = manual row 5)
 - [ ] **M7** Emergency operations and recovery → `v0.7.0` (emergency copy set at spec)
 - [ ] **M8** Entitlements, invite codes and lockdown → `v0.8.0` (kickoff owns OQ3 voucher UX) → *operationally controlled public service*
 - [ ] **M9** Curated moderation → `v0.9.0` (kickoff owns filter matrix, curated defaults, co-mod mechanism) → *differentiated product*
 - [ ] **M10** Extended event toolkit → `v0.10.0` (kickoff owns markdown-lite subset, TMS vs Lunaria, de-formal)
 - [ ] **M11** Design system, identity and experience overhaul → `v0.11.0` (kickoff owns logo/colors OQ9, sound-cue decision)
-- [ ] **M12** Operational maturity and compliance → **`v1.0.0`** (evidence gate: load test before degraded modes; rebuild-from-zero runbook; cost model; compliance pack) → 🎉 **first production-mature release**
+- [ ] **M12** Operational maturity and compliance → **`v1.0.0`** (evidence gate: load test before degraded modes; rebuild-from-zero runbook; cost model; compliance pack; self-hosting paths OPS-07 — AF-9) → 🎉 **first production-mature release**
 
 ## M13 — Monetization, if ever (provisional `v1.1.0`)
 

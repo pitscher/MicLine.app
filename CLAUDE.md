@@ -6,6 +6,7 @@
 - Spec-driven: no feature code without a `specs/⟨NNN⟩-*/` spec+plan+tasks. If asked to code outside that flow, push back and point to the loop.
 
 ## Ground truth documents
+- Map: docs/README.md — where every document lives + which one is authoritative; check here first when unsure (keep it updated when docs move)
 - Product: docs/product/product-brief.md, docs/product/decision-log.md, docs/product/feature-inventory.md (authoritative for milestones M1–M13 + target versions)
 - Engineering: docs/engineering/tech-context.md  ← read before ANY /speckit.plan or implementation work
 - Process: docs/build-guide/ (how this project is built; current position: docs/build-guide/PROGRESS.md)

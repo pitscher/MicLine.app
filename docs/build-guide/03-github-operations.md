@@ -155,7 +155,7 @@ The one-screen threat map (threat → controls → built where):
 | Magic-link auth abuse | hashed single-use tokens (TTL 15 min) · anti-enumeration 200s · rate limits · Turnstile | F002 / F006 |
 | Session theft / forgery | HMAC-signed HttpOnly+Secure+SameSite=Lax cookies · constant-time compare | F002 |
 | WebSocket hijack / cross-site use | Origin allowlist at upgrade · DO re-checks role on every mutating message | F003 |
-| Injection (SQLi / XSS) | Drizzle parameterized SQL · zod at every boundary · React escaping · security headers incl. CSP | F000 / F007 |
+| Injection (SQLi / XSS / export files) | Drizzle parameterized SQL · zod at every boundary + body-size caps · React escaping · security headers incl. CSP · export escaping (CSV formula-escape, HTML snapshot — M5, AF-1) | F000 / F007 / M5 |
 | DoS & cost attacks | Cloudflare front door · Turnstile · rate-limit matrix · per-DO soft throttle | F006 |
 | Vulnerable dependencies | minimal deps (Article III) · Dependabot weekly · CodeQL | F000 |
 | Any of the above suspected to be *happening* | `docs/runbooks/security-incident-response.md` — contain (rotate secrets, kill-switch, WAF) → escalate (M6/M7 controls) → log | runbook (2026-07-14) |

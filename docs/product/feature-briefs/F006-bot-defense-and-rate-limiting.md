@@ -20,4 +20,4 @@ Entitlement caps and lockdown (M8) · force-end/ban (M6) · emergency stop (M7) 
 
 ## Dependencies & seams
 
-All limits behind the one `ratelimit.ts` interface; every threshold is a platform-config value (F008), not a literal.
+All limits behind the one `ratelimit.ts` interface; every threshold is a platform-config value (F008), not a literal. Writes its AF-3 ops counters (Turnstile failures; rate-limit hits per limiter — tech-context §16).

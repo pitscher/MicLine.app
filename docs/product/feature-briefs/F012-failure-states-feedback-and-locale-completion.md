@@ -20,4 +20,4 @@ Degraded modes (M12-only, post-load-test) · admin-ended/emergency behaviors (M6
 
 ## Dependencies & seams
 
-E-2 goes through the registry — no ad-hoc send. The stale-board chip completes F009's seam; save states shipped in F005 are members of this inventory, not duplicates.
+E-2 goes through the registry — no ad-hoc send. The stale-board chip completes F009's seam; save states shipped in F005 are members of this inventory, not duplicates. Feedback submissions increment their AF-3 ops counter (tech-context §16).

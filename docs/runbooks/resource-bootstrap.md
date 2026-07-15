@@ -13,7 +13,7 @@ The Cloudflare account is shared with other projects; every MicLine resource mus
 | KV namespace (`CONFIG` binding) | `micline-config-dev` | `micline-config` | F000 (below) |
 | CI API token | `micline-ci` (one token, both envs) | — | 02 §2.7 row 1 |
 | Turnstile widget | `micline` (one widget, both hostnames) | — | 02 §2.7 row 3 (M4) |
-| Access application | `micline-admin` (both hostnames' `/admin*`) | — | row 5 (M6) |
+| Access application — only if the recommended Access wall mode is chosen; the `ADMIN_PASSWORD` quick-start needs no Cloudflare resource (AF-7) | `micline-admin` (both hostnames' `/admin*`) | — | row 5 (M6) |
 | R2 bucket | `micline-exports-dev` | `micline-exports` | M7 only — do not create earlier |
 
 **Resource Tags** (Cloudflare Resource Tagging, public beta): every taggable resource (Workers, D1, KV, R2, zone-level where sensible) gets `project:micline` + `env:dev` or `env:production`, applied right after creation — enables dashboard filtering and usage/billing attribution. API-first (a PUT replaces the whole tag set — always write the full set); dashboard: Manage Account → Resource Tagging. Each tagging action is logged in `manual-config-log.md` like any manual step.
